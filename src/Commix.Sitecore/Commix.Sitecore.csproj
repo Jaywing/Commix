@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sitecore.Kernel.NoReferences" Version="9.0.171219" />
+    <PackageReference Include="Sitecore.Mvc.NoReferences" Version="9.0.171219" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Commix.Core\Commix.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>
