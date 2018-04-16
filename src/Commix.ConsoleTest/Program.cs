@@ -1,68 +1,165 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Commix.Core;
-using Commix.Core.Pipeline;
-using Commix.Core.Pipeline.Model;
-using Commix.Core.Pipeline.Model.Processors;
-using Commix.Core.Pipeline.Property;
-using Commix.Core.Schema;
-using Commix.Core.Schema.Extensions;
+using Commix;
+using Commix.Pipeline;
+using Commix.Pipeline.Model;
+using Commix.Pipeline.Model.Processors;
+using Commix.Pipeline.Property;
+using Commix.Schema;
+using Commix.Schema.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.ConsoleTest
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            var context = new ModelMappingContext<TestOutput>(new TestInput());
+            ServiceLocator.ServiceProvider = new ServiceCollection()
+                .Commix()
+                .BuildServiceProvider();
 
-            var pipeline = new ModelMappingPipeline<TestOutput>();
+            var threads = new List<Thread>();
 
-            pipeline.Add(new PipelineDiagnosticsProcessor<TestOutput>());
-            pipeline.Add(new OutputInitialiseProcessor<TestOutput>());
-            pipeline.Add(new SchemaGeneratorProcessor<TestOutput>());
-            pipeline.Add(new ModelMapperProcessor<TestOutput>());
+            for (int i = 0; i < 100; i++)
+            {
+                var id = i;
+                var thread = new Thread(() =>
+                {
+                    for (int xi = 0; i < 1000; i++)
+                    {
+                        try
+                        {
+                            var input = new TestInput();
+                            var output = input.As<TestOutput>();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                       
+                    }
 
-            pipeline.Run(context);
+                    Console.WriteLine($"{id} complete");
+                });
 
-            Console.ReadKey();
+                threads.Add(thread);
+
+                thread.Start();
+            }
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
             Console.WriteLine("Press any key to quit.");
+            Console.ReadKey();
         }
     }
 
+    public class UopModelMappingPipeline : ModelMappingPipeline
+    {
+        public UopModelMappingPipeline(SchemaGeneratorProcessor schemaGenerator, ModelMapperProcessor modelMapper)
+        {
+            Add(schemaGenerator, null);
+            Add(modelMapper, null);
+        }
+    }
 
-    public class PipelineDiagnosticsProcessor<T> : IProcessor<ModelMappingContext<T>>
+    public static class CommixRegistrar
+    {
+        public static IServiceCollection Commix(this IServiceCollection serviceCollection)
+        {
+            var commix = new CommixFactories();
+            
+            serviceCollection.AddSingleton<IModelPipelineFactory>(commix);
+            serviceCollection.AddSingleton<IPropertyProcessorFactory>(commix);
+
+            serviceCollection
+                .RegisterProcessors("Commix");
+
+            serviceCollection.AddSingleton<SchemaGeneratorProcessor, InMemorySchemaGeneratorProcessor>();
+            serviceCollection.AddSingleton<ModelMapperProcessor>();
+            serviceCollection.AddSingleton<ModelMappingPipeline, UopModelMappingPipeline>();
+
+            CommixExtensions.PipelineFactory = commix;
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection RegisterProcessors(this IServiceCollection serviceCollection, string assemblyPrefix)
+        {
+            IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(assembly => assembly.FullName.StartsWith(assemblyPrefix));
+
+            foreach (Assembly loadedAssembly in assemblies)
+                RegisterProcessors(serviceCollection, loadedAssembly);
+
+            return serviceCollection;
+        }
+
+        public static IServiceCollection RegisterProcessors(this IServiceCollection serviceCollection, Assembly assembly)
+        {
+            foreach (Type processorType in assembly.GetTypes())
+            {
+                switch (processorType)
+                {
+                    case var type when type.IsAbstract || type.IsInterface:
+                        continue;
+                    case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
+                        serviceCollection.AddTransient(type);
+                        break;
+                }
+            }
+
+            return serviceCollection;
+        }
+    }
+
+    public static class ServiceLocator
+    {
+        public static ServiceProvider ServiceProvider { get; set; }
+    }
+
+    public class CommixFactories : IModelPipelineFactory, IPropertyProcessorFactory
+    {
+        private readonly ConcurrentDictionary<Type, ModelMappingPipeline> _pipelines = new ConcurrentDictionary<Type, ModelMappingPipeline>();
+
+        public ModelMappingPipeline GetPipeline(Type outputType)
+        {
+            return _pipelines.GetOrAdd(outputType, ServiceLocator.ServiceProvider.GetRequiredService<ModelMappingPipeline>());
+        }
+
+        public IPropertyProcesser GetProcessor(Type processorType)
+            => (IPropertyProcesser)ServiceLocator.ServiceProvider.GetRequiredService(processorType);
+    }
+
+    public class PipelineDiagnosticsProcessor : IProcessor<ModelContext, ModelProcessorContext>
     {
         public Action Next { get; set; }
-        public void Run(ModelMappingContext<T> context)
+       
+        public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
         {
             var timer = new Stopwatch();
             timer.Start();
             Next();
             timer.Stop();
-            Console.WriteLine($"Pipeline elapsed {timer.Elapsed:G}.");
-        }
-    }
-
-    public class AsyncPipelineDiagnosticsProcessor<T> : IAsyncProcessor<ModelMappingContext<T>>
-    {
-        public Func<Task> NextAsync { get; set; }
-        public async Task Run(ModelMappingContext<T> context, CancellationToken cancellationToken)
-        {
-            var timer = new Stopwatch();
-            timer.Start();
-            await NextAsync();
-            timer.Stop();
-            Console.WriteLine($"Pipeline elapsed {timer.Elapsed:G}.");
+            Console.WriteLine($"Pipeline elapsed {timer.Elapsed.TotalMilliseconds}ms.");
         }
     }
 
     public class TestInput
     {
-        public string SomeString { get; set; } = "Hello World";
+        public string Name { get; set; } = "Hello World";
 
         public TestInput2 Nested { get; set; } = new TestInput2();
     }
@@ -72,42 +169,41 @@ namespace Commix.ConsoleTest
         public string Name { get; set; } = "Source Nested";
     }
 
-    public class TestOutput : IFluentSchema<TestOutput>
+    public class TestOutput : IFluentSchema
     {
-        public string SomeString { get; set; }
+        public string Name { get; set; }
         public string SomeDerivedString { get; set; }
 
         public TestOutput2 Nested { get; set; }
 
-        public void Map(SchemaBuilder<TestOutput> schemaBuilder)
-        {
-            schemaBuilder
-                .Property(m => m.Nested, c => c.Nested())
+        public SchemaBuilder Map()
+            => this.Schema(s => s
+                .Property(m => m.Nested, c => c.NestedFrom())
                 .Property(m => m.SomeDerivedString, c => c
-                    .From(x => x.SomeString, m => m.Add(Processor.Use<Processor1<TestOutput>>())))
-                .Property(m => m.SomeString, c => c.From());
-        }
-    }
+                    .Get("Name")
+                    .Add(Processor.Use<Processor1>()))
+                .Property(m => m.Name, c => c.Get()));
 
-    public class TestOutput2 : IFluentSchema<TestOutput2>
-    {
-        public string Name { get; set; }
-        public void Map(SchemaBuilder<TestOutput2> schemaBuilder)
+
+        public class TestOutput2 : IFluentSchema
         {
-            schemaBuilder.Property(m => m.Name, c => c.From());
+            public string Name { get; set; }
+
+            public SchemaBuilder Map()
+                => this.Schema(s => s
+                    .Property(m => m.Name, c => c.Get())
+                );
         }
     }
 
-    public class Processor1<T> : IPropertyMappingProcesser<T>
+    public class Processor1 : IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(PropertyMappingContext<T> context)
+        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            context.Value = $"Source was: '{context.Value}'";
+            pipelineContext.Value = $"Source was: '{pipelineContext.Value}'";
 
             Next();
         }
-
-        public Dictionary<string, object> Options { get; set; }
     }
 }

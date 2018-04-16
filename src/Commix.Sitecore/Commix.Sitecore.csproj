@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
     <PackageReference Include="Sitecore.Kernel.NoReferences" Version="9.0.171219" />
     <PackageReference Include="Sitecore.Mvc.NoReferences" Version="9.0.171219" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Commix.Core\Commix.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\Commix\Commix.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,34 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Commix.Core.Pipeline.Property;
-
+using Commix.Pipeline.Property;
+using Commix.Schema;
 using Sitecore.Data;
+using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class ItemSwitchProcessor<TModel> : IPropertyMappingProcesser<TModel>
+    public class ItemSwitchProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(PropertyMappingContext<TModel> context)
+
+        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (!(context.ModelMappingContext.Input is Item item))
-                throw new InvalidOperationException($"{typeof(FieldSwitchProcessor<TModel>)} expects source of {typeof(Item)}");
+            if (!(pipelineContext.ModelContext.Input is Item item))
+                throw new InvalidOperationException($"{typeof(FieldSwitchProcessor)} expects source of {typeof(Item)}");
             
-            switch (context.Value)
+            switch (pipelineContext.Value)
             {
                 case string stringValue:
-                    context.Value = item.Database.GetItem(stringValue);
+                    pipelineContext.Value = item.Database.GetItem(stringValue);
                     break;
                 case ID idValue:
-                    context.Value = item.Database.GetItem(idValue);
+                    pipelineContext.Value = item.Database.GetItem(idValue);
+                    break;
+                case ReferenceField referenceField:
+                    pipelineContext.Value = item.Database.GetItem(referenceField.TargetID);
                     break;
             }
 
             Next();
         }
-
-        public Dictionary<string, object> Options { get; set; }
     }
 }
