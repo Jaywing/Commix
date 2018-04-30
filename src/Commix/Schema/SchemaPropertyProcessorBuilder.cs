@@ -14,9 +14,12 @@ namespace Commix.Schema
             _processorType = processorType ?? throw new ArgumentNullException(nameof(processorType));
         }
 
-        public void Option(string key, object value)
+        public void AddProcessorOption(string key, object value)
         {
-            _options.Add(key, value);
+            if (_options.ContainsKey(key))
+                _options[key] = value;
+            else
+                _options.Add(key, value);
         }
         
         public PropertyProcessorSchema Build()
@@ -25,5 +28,12 @@ namespace Commix.Schema
         }
     }
 
-   
+    public static class SchemaPropertyProcessorBuilderExtensions
+    {
+        public static SchemaPropertyProcessorBuilder Option<T>(this SchemaPropertyProcessorBuilder builder, string key, T value)
+        {
+            builder.AddProcessorOption(key, value);
+            return builder;
+        } 
+    }
 }

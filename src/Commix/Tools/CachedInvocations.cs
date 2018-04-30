@@ -8,7 +8,7 @@ namespace Commix.Tools
     /// <summary>
     /// Internal methods for cached invocations.
     /// </summary>
-    internal class CachedInvocations
+    internal class CachedInvocations 
     {
         /// <summary>
         /// The method cache for storing function implementations.

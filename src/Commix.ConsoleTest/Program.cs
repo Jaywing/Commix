@@ -33,7 +33,7 @@ namespace Commix.ConsoleTest
                 var id = i;
                 var thread = new Thread(() =>
                 {
-                    for (int xi = 0; i < 1000; i++)
+                    for (int xi = 0; xi < 1000; xi++)
                     {
                         try
                         {

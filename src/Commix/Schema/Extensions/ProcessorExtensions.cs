@@ -108,5 +108,14 @@ namespace Commix.Schema.Extensions
                 .Add(Processor.Use<PropertyGetterSetterProcessor>(c => c
                     .Option(PropertyGetterSetterProcessor.SourcePropertyOption, sourceProperty)));
         }
+
+        public static SchemaPropertyBuilder<TModel, TProp> Ensure<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, Type type, object replacement)
+        {
+            return builder
+                .Add(Processor.Use<PropertyEnsureProcessor>(c => c
+                    .Option(PropertyEnsureProcessor.EnsureType, type)
+                    .Option(PropertyEnsureProcessor.EnsureReplacement, replacement)));
+        }
     }
 }
