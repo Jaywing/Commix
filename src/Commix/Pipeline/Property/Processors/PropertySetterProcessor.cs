@@ -16,16 +16,16 @@ namespace Commix.Pipeline.Property.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Value);
-            
             Next();
+
+            FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Value);
         }
 
-        public Task Run(PropertyContext context, CancellationToken cancellationToken)
+        public async Task Run(PropertyContext context, CancellationToken cancellationToken)
         {
-            FastPropertyAccessor.SetValue(context.PropertyInfo, context.ModelContext.Output, context.Value);
+            await NextAsync();
 
-            return NextAsync();
+            FastPropertyAccessor.SetValue(context.PropertyInfo, context.ModelContext.Output, context.Value);
         }
     }
 }
