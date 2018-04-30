@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jamie Gould</Authors>
+    <Company>Jaywing</Company>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +21,5 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy  &quot;$(TargetPath)&quot; &quot;D:\Git\jaywing.visualstudio.com\UOP\Sitecore\lib&quot; /y" />
-  </Target>
 
 </Project>
