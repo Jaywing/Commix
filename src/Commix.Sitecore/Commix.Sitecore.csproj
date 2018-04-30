@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <AssemblyName>Commix.Sitecore</AssemblyName>  
+    <RootNamespace>Commix.Sitecore</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jamie Gould</Authors>
     <Company>Jaywing</Company>
+    <Version>1.0.0</Version>  
   </PropertyGroup>
 
   <ItemGroup>
