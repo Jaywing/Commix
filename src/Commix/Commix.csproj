@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <AssemblyName>Commix</AssemblyName>  
+    <RootNamespace>Commix</RootNamespace>  
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>  
+    <Authors>Jamie Gould</Authors>  
+    <Company>Jaywing</Company>  
+    <Version>1.0.0</Version>  
   </PropertyGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy  &quot;$(TargetPath)&quot; &quot;D:\Git\jaywing.visualstudio.com\UOP\Sitecore\lib&quot; /y" />
-  </Target>
 
 
 </Project>

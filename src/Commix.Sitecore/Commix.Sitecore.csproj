@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <AssemblyName>Commix.Sitecore</AssemblyName>  
+    <RootNamespace>Commix.Sitecore</RootNamespace>  
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Jamie Gould</Authors>
+    <Company>Jaywing</Company>
+    <Version>1.0.0</Version>  
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +24,5 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy  &quot;$(TargetPath)&quot; &quot;D:\Git\jaywing.visualstudio.com\UOP\Sitecore\lib&quot; /y" />
-  </Target>
 
 </Project>

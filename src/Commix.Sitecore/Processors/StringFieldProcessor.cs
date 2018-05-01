@@ -26,6 +26,4 @@ namespace Commix.Sitecore.Processors
             Next();
         }
     }
-
-    
 }
