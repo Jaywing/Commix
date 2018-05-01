@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,40 +28,9 @@ namespace Commix.ConsoleTest
                 .Commix()
                 .BuildServiceProvider();
 
-            var threads = new List<Thread>();
 
-            for (int i = 0; i < 100; i++)
-            {
-                var id = i;
-                var thread = new Thread(() =>
-                {
-                    for (int xi = 0; xi < 1000; xi++)
-                    {
-                        try
-                        {
-                            var input = new TestInput();
-                            var output = input.As<TestOutput>();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                            throw;
-                        }
-                       
-                    }
-
-                    Console.WriteLine($"{id} complete");
-                });
-
-                threads.Add(thread);
-
-                thread.Start();
-            }
-
-            foreach (var thread in threads)
-            {
-                thread.Join();
-            }
+            var input = new TestInput();
+            var output = input.As<TestOutput>();
 
             Console.WriteLine("Press any key to quit.");
             Console.ReadKey();
@@ -68,10 +39,10 @@ namespace Commix.ConsoleTest
 
     public class UopModelMappingPipeline : ModelMappingPipeline
     {
-        public UopModelMappingPipeline(SchemaGeneratorProcessor schemaGenerator, ModelMapperProcessor modelMapper)
+        public UopModelMappingPipeline(SchemaGeneratorProcessor schemaGenerator, IModelMapperProcessor modelMapper)
         {
-            Add(schemaGenerator, null);
-            Add(modelMapper, null);
+            Add(schemaGenerator, new ModelProcessorContext());
+            Add(modelMapper, new ModelProcessorContext());
         }
     }
 
@@ -87,8 +58,17 @@ namespace Commix.ConsoleTest
             serviceCollection
                 .RegisterProcessors("Commix");
 
+            var modelMapperProcessorFactory = new Func<IServiceProvider, IModelMapperProcessor>(provider =>
+            {
+                var modelMapper = provider.GetRequiredService<ModelMapperProcessor>();
+                return new LoggingModelMapperProcessor(modelMapper);
+            });
+
             serviceCollection.AddSingleton<SchemaGeneratorProcessor, InMemorySchemaGeneratorProcessor>();
+
             serviceCollection.AddSingleton<ModelMapperProcessor>();
+            serviceCollection.AddSingleton(modelMapperProcessorFactory);
+            
             serviceCollection.AddSingleton<ModelMappingPipeline, UopModelMappingPipeline>();
 
             CommixExtensions.PipelineFactory = commix;
@@ -125,6 +105,91 @@ namespace Commix.ConsoleTest
         }
     }
 
+    public class LoggingModelMapperProcessor : IModelMapperProcessor
+    {
+        private readonly ConcurrentDictionary<int, ThreadModelMapTrace> _threadTraces =
+            new ConcurrentDictionary<int, ThreadModelMapTrace>();
+
+        private readonly IModelMapperProcessor _processor;
+
+        public LoggingModelMapperProcessor(IModelMapperProcessor processor)
+        {
+            _processor = processor ?? throw new ArgumentNullException(nameof(processor));
+        }
+
+        public Action Next
+        {
+            get => _processor.Next;
+            set => _processor.Next = value;
+        }
+
+        public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
+        {
+            if (_processor is IObservableModelMapperProcessor observableProcessor)
+            {
+                _threadTraces.GetOrAdd(Thread.CurrentThread.ManagedThreadId,
+                    managedThreadId => new ThreadModelMapTrace(managedThreadId, observableProcessor));
+            }
+
+            _processor.Run(pipelineContext, processorContext);
+        }
+    }
+
+    public class ThreadModelMapTrace : IDisposable
+    {
+        public int ManagedThreadId { get; }
+
+        private readonly IDisposable _onRun;
+        private readonly IDisposable _onComplete;
+
+        private readonly Stack<Guid> _instanceStack = new Stack<Guid>();
+
+        public ThreadModelMapTrace(int managedThreadId, IObservableModelMapperProcessor observableProcessor)
+        {
+            ManagedThreadId = managedThreadId;
+
+            var onRun = Observable.FromEventPattern<ModelMapperMonitor.ModelMapperMonitorArgs>(
+                h => observableProcessor.Monitor.RunEvent += h,
+                h => observableProcessor.Monitor.RunEvent -= h);
+
+            _onRun = onRun.Subscribe(OnNext);
+
+            var onComplete = Observable.FromEventPattern<ModelMapperMonitor.ModelMapperMonitorArgs>(
+                h => observableProcessor.Monitor.CompleteEvent += h,
+                h => observableProcessor.Monitor.CompleteEvent -= h);
+
+            _onComplete = onComplete.Subscribe(OnComplete);
+        }
+
+        private void OnNext(EventPattern<ModelMapperMonitor.ModelMapperMonitorArgs> eventPattern)
+        {
+            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Run): {eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
+            _instanceStack.Push(eventPattern.EventArgs.PipelineContext.InstanceId);
+        }
+
+        private void OnComplete(EventPattern<ModelMapperMonitor.ModelMapperMonitorArgs> eventPattern)
+        {
+            _instanceStack.Pop();
+
+            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Complete):{eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _onRun?.Dispose();
+                _onComplete?.Dispose();
+            }
+        }
+    }
+
     public static class ServiceLocator
     {
         public static ServiceProvider ServiceProvider { get; set; }
@@ -140,7 +205,9 @@ namespace Commix.ConsoleTest
         }
 
         public IPropertyProcesser GetProcessor(Type processorType)
-            => (IPropertyProcesser)ServiceLocator.ServiceProvider.GetRequiredService(processorType);
+        {
+            return (IPropertyProcesser) ServiceLocator.ServiceProvider.GetRequiredService(processorType);
+        }
     }
 
     public class PipelineDiagnosticsProcessor : IProcessor<ModelContext, ModelProcessorContext>
@@ -189,11 +256,28 @@ namespace Commix.ConsoleTest
         {
             public string Name { get; set; }
 
+            public TestOutput3 Test3 { get; set; }
+
             public SchemaBuilder Map()
                 => this.Schema(s => s
                     .Property(m => m.Name, c => c.Get())
+                    .Property(m => m.Test3, p => p
+                        .Add(Processor.Use<Processor2>())
+                        .Set())
                 );
         }
+    }
+
+    public class TestOutput3 : IFluentSchema
+    {
+        public int Prop3 { get; set; }
+        
+        public SchemaBuilder Map()
+            => this.Schema(s => s
+                .Property(m => m.Prop3, p => p
+                    .ConstantValue(9001)
+                    .Set())
+            );
     }
 
     public class Processor1 : IPropertyProcesser
@@ -202,6 +286,17 @@ namespace Commix.ConsoleTest
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
             pipelineContext.Value = $"Source was: '{pipelineContext.Value}'";
+
+            Next();
+        }
+    }
+
+    public class Processor2 : IPropertyProcesser
+    {
+        public Action Next { get; set; }
+        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        {
+            pipelineContext.Value = new TestOutput3().As<TestOutput3>();
 
             Next();
         }

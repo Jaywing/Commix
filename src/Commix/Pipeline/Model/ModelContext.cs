@@ -9,9 +9,10 @@ namespace Commix.Pipeline.Model
     {
         public object Input { get; }
         public object Output { get; set; }
-        
         public ModelSchema Schema { get; set; }
-
+        public Guid InstanceId { get; } = Guid.NewGuid();
+        public Guid ParentId { get; set; }
+        
         public ModelContext(object input, object output)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));

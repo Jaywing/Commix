@@ -18,5 +18,11 @@ namespace Commix.Pipeline.Property
             ModelContext = modelContext ?? throw new ArgumentNullException(nameof(modelContext));
             PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         }
+
+        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialValue)
+            : this(modelContext, propertyInfo)
+        {
+            Value = initialValue;
+        }
     }
 }

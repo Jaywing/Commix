@@ -10,6 +10,6 @@ namespace Commix.Pipeline.Model
 
     public class ModelProcessorContext
     {
-        // todo: Model Processor options
+        public Guid ModelProcessorInstance { get; } = Guid.NewGuid();
     }
 }

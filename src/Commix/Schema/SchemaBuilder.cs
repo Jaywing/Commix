@@ -9,15 +9,18 @@ namespace Commix.Schema
 {
     public abstract class SchemaBuilder
     {
-        protected readonly List<Func<PropertySchema>> PropertyBuilders = new List<Func<PropertySchema>>();
+        protected List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
+
+        protected Type ModelType { get; set; }
         
         public ModelSchema Build()
         {
-            var modelSchema = new ModelSchema();
+            var modelSchema = new ModelSchema(ModelType);
 
             foreach (Func<PropertySchema> propertyBuilder in PropertyBuilders)
             {
                 var propertySchema = propertyBuilder();
+
                 modelSchema.Properties.Add(propertySchema);
             }
 
@@ -27,6 +30,11 @@ namespace Commix.Schema
     
     public class SchemaBuilder<TModel> : SchemaBuilder
     {
+        public SchemaBuilder()
+        {
+            ModelType = typeof(TModel);
+        }
+        
         public SchemaBuilder<TModel> Property<TProp>(Expression<Func<TModel, TProp>> property,
             Action<SchemaPropertyBuilder<TModel, TProp>> configure)
         {
