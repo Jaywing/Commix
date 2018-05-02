@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commix.Sitecore", "src\Comm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commix", "src\Commix\Commix.csproj", "{57C4DF10-617F-4AE1-94B5-039F88D20114}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commix.Diagnostics", "src\Commix.Diagnostics\Commix.Diagnostics.csproj", "{F3C2F5D1-0A22-4652-9A6B-CBB95BBC6DED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C2F5D1-0A22-4652-9A6B-CBB95BBC6DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C2F5D1-0A22-4652-9A6B-CBB95BBC6DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C2F5D1-0A22-4652-9A6B-CBB95BBC6DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C2F5D1-0A22-4652-9A6B-CBB95BBC6DED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
