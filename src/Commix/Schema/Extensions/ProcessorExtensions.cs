@@ -117,5 +117,13 @@ namespace Commix.Schema.Extensions
                     .Option(PropertyEnsureProcessor.EnsureType, type)
                     .Option(PropertyEnsureProcessor.EnsureReplacement, replacement)));
         }
+
+        public static SchemaPropertyBuilder<TModel, TProp> ConstantValue<TModel, TProp, TValue>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, TValue value)
+        {
+            return builder
+                .Add(Processor.Use<ConstantValueProcessor<TValue>>(c => c
+                    .Option(ConstantValueProcessor<TValue>.ConstantValueOption, value)));
+        }
     }
 }

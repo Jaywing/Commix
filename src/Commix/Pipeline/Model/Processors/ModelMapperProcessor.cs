@@ -1,31 +1,46 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
 namespace Commix.Pipeline.Model.Processors
 {
-    public class ModelMapperProcessor : IAsyncProcessor<ModelContext>, IProcessor<ModelContext, ModelProcessorContext>
+    public interface IModelMapperProcessor : IProcessor<ModelContext, ModelProcessorContext>
+    {
+        
+    }
+
+    public interface IObservableModelMapperProcessor
+    {
+        ModelMapperMonitor Monitor { get; }
+    }
+
+    public class ModelMapperProcessor : IModelMapperProcessor, IObservableModelMapperProcessor
     {
         private readonly IPropertyProcessorFactory _processorFactory;
 
-        public ModelMapperProcessor(IPropertyProcessorFactory processorFactory) => _processorFactory = processorFactory ?? throw new ArgumentNullException(nameof(processorFactory));
-
         public Action Next { get; set; }
-        
-        #region Sync
+
+        public ModelMapperMonitor Monitor { get; } = new ModelMapperMonitor();
+
+        public ModelMapperProcessor(IPropertyProcessorFactory processorFactory)
+        {
+            _processorFactory = processorFactory ?? throw new ArgumentNullException(nameof(processorFactory));
+        }
 
         public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
         {
             if (pipelineContext.Schema != null)
             {
+                Monitor.OnRunEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
+
                 foreach (var propertySchema in pipelineContext.Schema.Properties)
                 {
                     RunPropertyPipeline(pipelineContext, propertySchema);
                 }
+
+                Monitor.OnCompleteEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
             }
 
             Next();
@@ -47,44 +62,33 @@ namespace Commix.Pipeline.Model.Processors
         }
 
         private PropertyContext CreatePropertyContext(ModelContext context, PropertySchema propertySchema)
+            => new PropertyContext(context, propertySchema.PropertyInfo, context.Input);
+    }
+
+    public class ModelMapperMonitor
+    {
+        public event EventHandler<ModelMapperMonitorArgs> RunEvent;
+        public event EventHandler<ModelMapperMonitorArgs> CompleteEvent;
+        
+        public class ModelMapperMonitorArgs
         {
-            return new PropertyContext(context, propertySchema.PropertyInfo) { Value = context.Input };
-        }
+            public DateTime Timestamp { get; } = DateTime.Now;
+            public Type ModelType { get; }
 
-        #endregion
-
-        #region Async
-
-        public Func<Task> NextAsync { get; set; }
-
-        public async Task Run(ModelContext context, CancellationToken cancellationToken)
-        {
-            if (context.Schema != null)
+            public ModelMapperMonitorArgs(Type modelType)
             {
-                foreach (var propertySchema in context.Schema.Properties)
-                {
-                    await RunPropertyPipelineAsync(context, propertySchema, cancellationToken);
-                }
+                ModelType = modelType ?? throw new ArgumentNullException(nameof(modelType));
             }
-
-            await NextAsync();
         }
 
-        private async Task RunPropertyPipelineAsync(ModelContext context, PropertySchema propertySchema, CancellationToken cancellationToken)
+        public void OnRunEvent(ModelMapperMonitorArgs e)
         {
-            var propertyPipeline = new AsyncPropertyMappingPipeline();
-            foreach (var propertyProcessorSchemas in propertySchema.Processors)
-            {
-                var processor = _processorFactory.GetProcessor(propertyProcessorSchemas.Type);
-                if (processor is IAsyncPropertyMappingProcesser asyncProcessor)
-                {
-                    propertyPipeline.Add(asyncProcessor);
-                }
-            }
-
-            await propertyPipeline.Run(CreatePropertyContext(context, propertySchema), cancellationToken);
+            RunEvent?.Invoke(this, e);
         }
 
-        #endregion
+        public virtual void OnCompleteEvent(ModelMapperMonitorArgs e)
+        {
+            CompleteEvent?.Invoke(this, e);
+        }
     }
 }

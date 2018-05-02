@@ -8,7 +8,7 @@ using Commix.Tools;
 
 namespace Commix.Pipeline.Property.Processors
 {
-    public class PropertySetterProcessor : IPropertyProcesser, IAsyncPropertyMappingProcesser
+    public class PropertySetterProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
         
@@ -19,13 +19,6 @@ namespace Commix.Pipeline.Property.Processors
             Next();
 
             FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Value);
-        }
-
-        public async Task Run(PropertyContext context, CancellationToken cancellationToken)
-        {
-            await NextAsync();
-
-            FastPropertyAccessor.SetValue(context.PropertyInfo, context.ModelContext.Output, context.Value);
         }
     }
 }

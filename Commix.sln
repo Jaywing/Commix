@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commix.ConsoleTest", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commix.Sitecore", "src\Commix.Sitecore\Commix.Sitecore.csproj", "{60FEC536-07A6-481D-8C5B-201758B4222A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commix.Diagnostics", "src\Commix.Diagnostics\Commix.Diagnostics.csproj", "{A64BB2ED-3DC8-4483-9B79-35DEBE40EBEB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commix", "src\Commix\Commix.csproj", "{57C4DF10-617F-4AE1-94B5-039F88D20114}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commix", "src\Commix\Commix.csproj", "{57C4DF10-617F-4AE1-94B5-039F88D20114}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{60FEC536-07A6-481D-8C5B-201758B4222A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60FEC536-07A6-481D-8C5B-201758B4222A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60FEC536-07A6-481D-8C5B-201758B4222A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A64BB2ED-3DC8-4483-9B79-35DEBE40EBEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A64BB2ED-3DC8-4483-9B79-35DEBE40EBEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A64BB2ED-3DC8-4483-9B79-35DEBE40EBEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A64BB2ED-3DC8-4483-9B79-35DEBE40EBEB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57C4DF10-617F-4AE1-94B5-039F88D20114}.Release|Any CPU.ActiveCfg = Release|Any CPU
