@@ -28,9 +28,47 @@ namespace Commix.ConsoleTest
                 .Commix()
                 .BuildServiceProvider();
 
+            var results = new ConcurrentBag<TestOutput>();
 
-            var input = new TestInput();
-            var output = input.As<TestOutput>();
+            var threads = new List<Thread>();
+            for (int i = 0; i < 50; i++)
+            {
+                var id = i;
+                var thread = new Thread(() =>
+                {
+                    var input = new TestInput();
+
+                    for (int xi = 0; xi < 50; xi++)
+                    {
+                        try
+                        {
+                            var output = input.As<TestOutput>();
+
+                            results.Add(output);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+
+                    }
+                    Console.WriteLine($"{id} complete");
+                });
+                threads.Add(thread);
+
+                thread.Start();
+            }
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
+            foreach (TestOutput testOutput in results)
+            {
+                if (string.IsNullOrEmpty(testOutput.Name))
+                    throw new NullReferenceException();
+            }
 
             Console.WriteLine("Press any key to quit.");
             Console.ReadKey();
@@ -64,12 +102,12 @@ namespace Commix.ConsoleTest
                 return new LoggingModelMapperProcessor(modelMapper);
             });
 
-            serviceCollection.AddSingleton<SchemaGeneratorProcessor, InMemorySchemaGeneratorProcessor>();
+            serviceCollection.AddTransient<SchemaGeneratorProcessor, InMemorySchemaGeneratorProcessor>();
 
             serviceCollection.AddSingleton<ModelMapperProcessor>();
             serviceCollection.AddSingleton(modelMapperProcessorFactory);
             
-            serviceCollection.AddSingleton<ModelMappingPipeline, UopModelMappingPipeline>();
+            serviceCollection.AddTransient<ModelMappingPipeline, UopModelMappingPipeline>();
 
             CommixExtensions.PipelineFactory = commix;
 
@@ -152,26 +190,33 @@ namespace Commix.ConsoleTest
                 h => observableProcessor.Monitor.RunEvent += h,
                 h => observableProcessor.Monitor.RunEvent -= h);
 
-            _onRun = onRun.Subscribe(OnNext);
+            _onRun = onRun
+                .Where(x => Thread.CurrentThread.ManagedThreadId == ManagedThreadId)
+                .Subscribe(OnNext);
 
             var onComplete = Observable.FromEventPattern<ModelMapperMonitor.ModelMapperMonitorArgs>(
                 h => observableProcessor.Monitor.CompleteEvent += h,
                 h => observableProcessor.Monitor.CompleteEvent -= h);
 
-            _onComplete = onComplete.Subscribe(OnComplete);
+            _onComplete = onComplete
+                .Where(x => Thread.CurrentThread.ManagedThreadId == ManagedThreadId)
+                .Subscribe(OnComplete);
         }
 
         private void OnNext(EventPattern<ModelMapperMonitor.ModelMapperMonitorArgs> eventPattern)
         {
-            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Run): {eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
-            _instanceStack.Push(eventPattern.EventArgs.PipelineContext.InstanceId);
+            //Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Run): {eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
+            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId} {eventPattern.EventArgs.ModelType} (Run)");
+
+            _instanceStack.Push(Guid.NewGuid());
         }
 
         private void OnComplete(EventPattern<ModelMapperMonitor.ModelMapperMonitorArgs> eventPattern)
         {
-            _instanceStack.Pop();
+             _instanceStack.Pop();
 
-            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Complete):{eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
+            Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId} {eventPattern.EventArgs.ModelType} (Complete)");
+            //Console.WriteLine($"{string.Concat(Enumerable.Repeat('>', _instanceStack.Count))} {ManagedThreadId}-{eventPattern.EventArgs.PipelineContext.InstanceId}(Complete):{eventPattern.EventArgs.PipelineContext.Schema.ModelType}");
         }
 
         public void Dispose()
@@ -197,11 +242,12 @@ namespace Commix.ConsoleTest
 
     public class CommixFactories : IModelPipelineFactory, IPropertyProcessorFactory
     {
-        private readonly ConcurrentDictionary<Type, ModelMappingPipeline> _pipelines = new ConcurrentDictionary<Type, ModelMappingPipeline>();
+        private readonly ConcurrentDictionary<(int ThreadId, Type modelType), ModelMappingPipeline> _pipelines = new ConcurrentDictionary<(int ThreadId, Type modelType), ModelMappingPipeline>();
 
         public ModelMappingPipeline GetPipeline(Type outputType)
         {
-            return _pipelines.GetOrAdd(outputType, ServiceLocator.ServiceProvider.GetRequiredService<ModelMappingPipeline>());
+            return (ModelMappingPipeline)ServiceLocator.ServiceProvider.GetRequiredService<ModelMappingPipeline>();
+            //return _pipelines.GetOrAdd((Thread.CurrentThread.ManagedThreadId, outputType), ServiceLocator.ServiceProvider.GetRequiredService<ModelMappingPipeline>());
         }
 
         public IPropertyProcesser GetProcessor(Type processorType)

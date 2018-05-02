@@ -31,19 +31,19 @@ namespace Commix.Pipeline.Model.Processors
 
         public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
         {
-            Monitor.OnRunEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(this, pipelineContext, processorContext));
-
             if (pipelineContext.Schema != null)
             {
+                Monitor.OnRunEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
+
                 foreach (var propertySchema in pipelineContext.Schema.Properties)
                 {
                     RunPropertyPipeline(pipelineContext, propertySchema);
                 }
+
+                Monitor.OnCompleteEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
             }
 
             Next();
-
-            Monitor.OnCompleteEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(this, pipelineContext, processorContext));
         }
 
         private void RunPropertyPipeline(ModelContext context, PropertySchema propertySchema)
@@ -73,16 +73,11 @@ namespace Commix.Pipeline.Model.Processors
         public class ModelMapperMonitorArgs
         {
             public DateTime Timestamp { get; } = DateTime.Now;
-            public IObservableModelMapperProcessor Processor { get; }
-            public ModelContext PipelineContext { get; }
-            public ModelProcessorContext ProcessorContext { get; }
+            public Type ModelType { get; }
 
-            public ModelMapperMonitorArgs(IObservableModelMapperProcessor processor, ModelContext pipelineContext,
-                ModelProcessorContext processorContext)
+            public ModelMapperMonitorArgs(Type modelType)
             {
-                Processor = processor ?? throw new ArgumentNullException(nameof(processor));
-                PipelineContext = pipelineContext ?? throw new ArgumentNullException(nameof(pipelineContext));
-                ProcessorContext = processorContext;
+                ModelType = modelType ?? throw new ArgumentNullException(nameof(modelType));
             }
         }
 
