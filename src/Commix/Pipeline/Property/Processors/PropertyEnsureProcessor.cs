@@ -36,8 +36,8 @@ namespace Commix.Pipeline.Property.Processors
                         return;
                     // Best case we have a replacement of the same type to use
                     case var _ when processorContext.TryGetOption(EnsureReplacement, out object replacement) &&
-                                    replacement.GetType().IsInstanceOfType(typeToEnsure) &&
-                                    pipelineContext.Value.GetType().IsInstanceOfType(typeToEnsure):
+                                    typeToEnsure.IsInstanceOfType(replacement) &&
+                                    !typeToEnsure.IsInstanceOfType(pipelineContext.Value):
                         pipelineContext.Value = replacement;
                         break;
                 }
