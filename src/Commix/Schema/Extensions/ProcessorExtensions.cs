@@ -6,7 +6,7 @@ using Commix.Pipeline.Property.Processors;
 
 namespace Commix.Schema.Extensions
 {
-    public static class ProcessorExtensions
+    public static partial class ProcessorExtensions
     {
         /// <summary>
         /// Map a nested class, unrelated to source model or property, context will be set to the source parent model.
@@ -132,6 +132,13 @@ namespace Commix.Schema.Extensions
             return builder
                 .Add(Processor.Use<ConstantValueProcessor<TValue>>(c => c
                     .Option(ConstantValueProcessor<TValue>.ConstantValueOption, value)));
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> Collection<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, Action<CollectionPropertyBuilder<TModel, TProp>> collection)
+        {
+            collection(new CollectionPropertyBuilder<TModel, TProp>(builder));
+            return builder;
         }
     }
 }

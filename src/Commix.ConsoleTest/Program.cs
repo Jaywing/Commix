@@ -17,6 +17,21 @@ namespace Commix.ConsoleTest
     {
         static void Main(string[] args)
         {
+            Type typeToEnsure = typeof(IEnumerable<TestInput2>);
+            
+
+            var sourceType = new List<Object>().GetType();
+
+            var replacementtype = new List<TestInput2>().GetType();
+
+            if (typeToEnsure.IsAssignableFrom(replacementtype) &&
+                !sourceType.IsAssignableFrom(typeToEnsure))
+            {
+
+            }
+            
+            var x = typeof(IEnumerable<object>).IsAssignableFrom(typeof(TestInput[]));
+            
             ServiceLocator.ServiceProvider = new ServiceCollection()
                 .Commix()
                 .BuildServiceProvider();

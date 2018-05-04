@@ -100,5 +100,12 @@ namespace Commix.Sitecore
             return builder
                 .Add(Processor.Use<ChildrenSwitchProcessor>());
         }
+
+        public static SchemaPropertyBuilder<TModel, TProp> MultiList<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder)
+        {
+            return builder
+                .Add(Processor.Use<MultiListProcessor>());
+        }
     }
 }

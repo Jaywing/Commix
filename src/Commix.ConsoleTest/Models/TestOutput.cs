@@ -15,7 +15,7 @@ namespace Commix.ConsoleTest.Models
 
         public TestOutput2 Nested { get; set; }
 
-        public TestOutput2 Col { get; set; }
+        public IEnumerable<TestInput2> Col { get; set; }
 
         public SchemaBuilder Map()
             => this.Schema(s => s
@@ -25,8 +25,9 @@ namespace Commix.ConsoleTest.Models
                     .Add(Processor.Use<Processor1>()))
                 .Property(m => m.Name, c => c.Get())
                 .Property(m => m.Col, c => c
-                    .ConstantValue("Hello")
-                    .Ensure(typeof(TestOutput2), new TestOutput2(){Name = "switched"})
+                    .ConstantValue(new List<TestInput>{new TestInput(), new TestInput()})
+                    .Collection(x => x.Define<TestInput, TestInput2>())
+                    .Ensure(typeof(IEnumerable<TestInput2>), new List<TestInput2>{new TestInput2(){Name = "switched"}})
                     .Set())
             );
 
