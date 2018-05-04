@@ -24,14 +24,14 @@ namespace Commix.ConsoleTest
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
                 {
                     var input = new TestInput();
 
-                    for (int xi = 0; xi < 50; xi++)
+                    for (int xi = 0; xi < 1; xi++)
                     {
                         try
                         {
