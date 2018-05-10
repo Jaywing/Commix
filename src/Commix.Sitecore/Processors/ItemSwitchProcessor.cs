@@ -19,16 +19,16 @@ namespace Commix.Sitecore.Processors
             if (!(pipelineContext.ModelContext.Input is Item item))
                 throw new InvalidOperationException($"{typeof(FieldSwitchProcessor)} expects source of {typeof(Item)}");
             
-            switch (pipelineContext.Value)
+            switch (pipelineContext.Context)
             {
                 case string stringValue:
-                    pipelineContext.Value = item.Database.GetItem(stringValue);
+                    pipelineContext.Context = item.Database.GetItem(stringValue);
                     break;
                 case ID idValue:
-                    pipelineContext.Value = item.Database.GetItem(idValue);
+                    pipelineContext.Context = item.Database.GetItem(idValue);
                     break;
                 case ReferenceField referenceField:
-                    pipelineContext.Value = item.Database.GetItem(referenceField.TargetID);
+                    pipelineContext.Context = item.Database.GetItem(referenceField.TargetID);
                     break;
             }
 

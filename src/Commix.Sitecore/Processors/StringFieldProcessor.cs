@@ -18,9 +18,9 @@ namespace Commix.Sitecore.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Value is TextField field)
+            if (pipelineContext.Context is TextField field)
             {
-                pipelineContext.Value = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString());
+                pipelineContext.Context = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString());
             }
 
             Next();

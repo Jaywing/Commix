@@ -14,10 +14,10 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext context, PropertyProcessorSchema meta)
         {
-            if (!(context.Value is Item item))
+            if (!(context.Context is Item item))
                 throw new InvalidOperationException();
 
-            context.Value = item.Name;
+            context.Context = item.Name;
 
             Next();
         }

@@ -11,7 +11,7 @@ namespace Commix.ConsoleTest.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            pipelineContext.Value = $"Source was: '{pipelineContext.Value}'";
+            pipelineContext.Context = $"Source was: '{pipelineContext.Context}'";
 
             Next();
         }

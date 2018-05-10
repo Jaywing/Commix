@@ -11,7 +11,24 @@ namespace Commix.Pipeline.Property
         public ModelContext ModelContext { get; }
         public PropertyInfo PropertyInfo { get; }
 
-        public object Value { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="PropertyMappingPipeline"/> is faulted.
+        /// A faulted pipline will continue to Run whilst Next is called, but once the Pipeline complete if the 
+        /// faulted flag is still set the value will not used to set the target property.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if aborted; otherwise, <c>false</c>.
+        /// </value>
+        public bool Faulted { get; set; }
+
+        /// <summary>
+        /// Pipline context, this value will be initialised populate, transformed by the Pipline and then ultimately 
+        /// if the Aborted flag is not set  used by a SetProcessor to set the target property.
+        /// </summary>
+        /// <value>
+        /// Pipline context.
+        /// </value>
+        public object Context { get; set; }
 
         public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo)
         {
@@ -19,10 +36,10 @@ namespace Commix.Pipeline.Property
             PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         }
 
-        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialValue)
+        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialContext)
             : this(modelContext, propertyInfo)
         {
-            Value = initialValue;
+            Context = initialContext;
         }
     }
 }

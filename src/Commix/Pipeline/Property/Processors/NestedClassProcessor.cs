@@ -25,18 +25,18 @@ namespace Commix.Pipeline.Property.Processors
        
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Value != null)
+            if (pipelineContext.Context != null)
             {
                 if (processorContext.Options.ContainsKey(OutputTypeOption) && processorContext.Options[OutputTypeOption] is Type outputType)
                 {
-                    var mappingContext = new ModelContext(pipelineContext.Value, Activator.CreateInstance(outputType));
+                    var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType));
 
                     ModelMappingPipeline pipeline = _pipelineFactory.GetPipeline(outputType);
 
                     if (pipeline != null)
                     {
                         pipeline.Run(mappingContext);
-                        pipelineContext.Value = mappingContext.Output;
+                        pipelineContext.Context = mappingContext.Output;
 
                         Next();
                     }

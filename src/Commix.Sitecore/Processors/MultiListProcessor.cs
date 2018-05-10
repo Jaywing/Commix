@@ -11,10 +11,10 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.Value)
+            switch (pipelineContext.Context)
             {
                 case MultilistField multilistField:
-                    pipelineContext.Value = multilistField.GetItems();
+                    pipelineContext.Context = multilistField.GetItems();
                     break;
             }
 

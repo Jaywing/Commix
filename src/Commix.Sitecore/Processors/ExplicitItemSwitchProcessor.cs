@@ -18,7 +18,7 @@ namespace Commix.Sitecore.Processors
                 throw new InvalidOperationException($"{typeof(FieldSwitchProcessor)} expects source of {typeof(Item)}");
             
             if (processorContext.Options.ContainsKey(Path))
-                pipelineContext.Value = item.Database.GetItem(processorContext.Options[Path].ToString());
+                pipelineContext.Context = item.Database.GetItem(processorContext.Options[Path].ToString());
 
             Next();
         }

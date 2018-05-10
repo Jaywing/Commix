@@ -21,9 +21,9 @@ namespace Commix.Pipeline.Property.Processors
             PropertyInfo sourcePropertyInfo = GetPropertyInfo(pipelineContext, processorContext);
             if (sourcePropertyInfo != null)
             {
-                pipelineContext.Value = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.ModelContext.Input);
+                pipelineContext.Context = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.ModelContext.Input);
                 Next();
-                FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Value);
+                FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Context);
             }
         }
 

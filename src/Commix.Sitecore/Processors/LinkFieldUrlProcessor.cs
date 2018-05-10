@@ -17,21 +17,21 @@ namespace Commix.Sitecore.Processors
         
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Value is LinkField linkField)
+            if (pipelineContext.Context is LinkField linkField)
             {
                 switch (linkField.LinkType.ToLower())
                 {
                     case "internal" when linkField.TargetItem != null:
-                        pipelineContext.Value = LinkManager.GetItemUrl(linkField.TargetItem);
+                        pipelineContext.Context = LinkManager.GetItemUrl(linkField.TargetItem);
                         break;
                     case "media" when linkField.TargetItem != null:
-                        pipelineContext.Value = MediaManager.GetMediaUrl(linkField.TargetItem);
+                        pipelineContext.Context = MediaManager.GetMediaUrl(linkField.TargetItem);
                         break;
                     case "anchor" when !string.IsNullOrEmpty(linkField.Anchor):
-                        pipelineContext.Value = $"#{linkField.Anchor}";
+                        pipelineContext.Context = $"#{linkField.Anchor}";
                         break;
                     default:
-                        pipelineContext.Value = linkField.Url;
+                        pipelineContext.Context = linkField.Url;
                         break;
                 }
             }
