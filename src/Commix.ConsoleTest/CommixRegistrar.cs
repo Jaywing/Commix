@@ -20,22 +20,16 @@ namespace Commix.ConsoleTest
             
             serviceCollection.AddSingleton<IModelPipelineFactory>(commix);
             serviceCollection.AddSingleton<IPropertyProcessorFactory>(commix);
+            serviceCollection.AddSingleton<IPropertyPipelineFactory>(commix);
 
             serviceCollection
                 .RegisterProcessors("Commix");
 
-            var modelMapperProcessorFactory = new Func<IServiceProvider, IModelMapperProcessor>(provider =>
-            {
-                var modelMapper = provider.GetRequiredService<ModelMapperProcessor>();
-                return new MonitoredModelMapperProcessor(modelMapper);
-            });
-
             serviceCollection.AddTransient<SchemaGeneratorProcessor, InMemorySchemaGeneratorProcessor>();
 
-            serviceCollection.AddSingleton<ModelMapperProcessor>();
-            serviceCollection.AddSingleton(modelMapperProcessorFactory);
-            
-            serviceCollection.AddTransient<ModelMappingPipeline, TestModelMappingPipeline>();
+            serviceCollection.AddSingleton<IModelMapperProcessor, ModelMapperProcessor>();
+            serviceCollection.AddTransient<ModelMappingPipeline>();
+            serviceCollection.AddTransient<PropertyMappingPipeline>();
 
             CommixExtensions.PipelineFactory = commix;
 

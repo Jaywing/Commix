@@ -9,36 +9,27 @@ namespace Commix.Pipeline.Model.Processors
         
     }
 
-    public interface IObservableModelMapperProcessor
-    {
-        ModelMapperMonitor Monitor { get; }
-    }
-
-    public class ModelMapperProcessor : IModelMapperProcessor, IObservableModelMapperProcessor
+    public class ModelMapperProcessor : IModelMapperProcessor
     {
         private readonly IPropertyProcessorFactory _processorFactory;
+        private readonly IPropertyPipelineFactory _propertyPipelineFactory;
 
         public Action Next { get; set; }
 
-        public ModelMapperMonitor Monitor { get; } = new ModelMapperMonitor();
-
-        public ModelMapperProcessor(IPropertyProcessorFactory processorFactory)
+        public ModelMapperProcessor(IPropertyProcessorFactory processorFactory, IPropertyPipelineFactory propertyPipelineFactory)
         {
             _processorFactory = processorFactory ?? throw new ArgumentNullException(nameof(processorFactory));
+            _propertyPipelineFactory = propertyPipelineFactory ?? throw new ArgumentNullException(nameof(propertyPipelineFactory));
         }
 
         public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
         {
             if (pipelineContext.Schema != null)
             {
-                Monitor.OnRunEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
-
                 foreach (var propertySchema in pipelineContext.Schema.Properties)
                 {
                     RunPropertyPipeline(pipelineContext, propertySchema);
                 }
-
-                Monitor.OnCompleteEvent(new ModelMapperMonitor.ModelMapperMonitorArgs(pipelineContext.Schema.ModelType));
             }
 
             Next();
@@ -46,7 +37,8 @@ namespace Commix.Pipeline.Model.Processors
 
         private void RunPropertyPipeline(ModelContext context, PropertySchema propertySchema)
         {
-            var propertyPipeline = new PropertyMappingPipeline();
+            var propertyPipeline = _propertyPipelineFactory.GetPropertyPipeline();
+
             foreach (PropertyProcessorSchema propertyProcessorSchema in propertySchema.Processors)
             {
                 var processor = _processorFactory.GetProcessor(propertyProcessorSchema.Type);
@@ -61,32 +53,5 @@ namespace Commix.Pipeline.Model.Processors
 
         private PropertyContext CreatePropertyContext(ModelContext context, PropertySchema propertySchema)
             => new PropertyContext(context, propertySchema.PropertyInfo, context.Input);
-    }
-
-    public class ModelMapperMonitor
-    {
-        public event EventHandler<ModelMapperMonitorArgs> RunEvent;
-        public event EventHandler<ModelMapperMonitorArgs> CompleteEvent;
-        
-        public class ModelMapperMonitorArgs
-        {
-            public DateTime Timestamp { get; } = DateTime.Now;
-            public Type ModelType { get; }
-
-            public ModelMapperMonitorArgs(Type modelType)
-            {
-                ModelType = modelType ?? throw new ArgumentNullException(nameof(modelType));
-            }
-        }
-
-        public void OnRunEvent(ModelMapperMonitorArgs e)
-        {
-            RunEvent?.Invoke(this, e);
-        }
-
-        public virtual void OnCompleteEvent(ModelMapperMonitorArgs e)
-        {
-            CompleteEvent?.Invoke(this, e);
-        }
     }
 }

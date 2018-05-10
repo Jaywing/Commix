@@ -7,7 +7,12 @@ namespace Commix.Pipeline.Model
 {
     public interface IModelPipelineFactory
     {
-        ModelMappingPipeline GetPipeline(Type outputType);
+        ModelMappingPipeline GetModelPipeline();
+    }
+
+    public interface IPropertyPipelineFactory
+    {
+        PropertyMappingPipeline GetPropertyPipeline();
     }
 
     public interface IPropertyProcessorFactory
