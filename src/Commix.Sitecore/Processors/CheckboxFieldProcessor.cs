@@ -17,11 +17,11 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.Value)
+            switch (pipelineContext.Context)
             {
                 case Field field when field.Type == "checkbox":
                     CheckboxField checkBoxField = field;
-                    pipelineContext.Value = checkBoxField.Checked;
+                    pipelineContext.Context = checkBoxField.Checked;
                     break;
             }
             

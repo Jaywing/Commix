@@ -13,7 +13,7 @@ namespace Commix.Pipeline.Property.Processors
         {
             if (processorContext.TryGetOption(ConstantValueOption, out T constantValue))
             {
-                pipelineContext.Value = constantValue;
+                pipelineContext.Context = constantValue;
             }
 
             Next();

@@ -29,13 +29,13 @@ namespace Commix.Sitecore.Processors
                 && int.TryParse(processorContext.Options[Height].ToString(), out int height))
                 mediaUrlOptions.Height = height;
             
-            switch (pipelineContext.Value)
+            switch (pipelineContext.Context)
             {
                 case ImageField imageField when imageField.MediaItem != null:
-                    pipelineContext.Value = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(imageField.MediaItem, mediaUrlOptions));
+                    pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(imageField.MediaItem, mediaUrlOptions));
                     break;
                 case MediaItem mediaItem:
-                    pipelineContext.Value = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem,mediaUrlOptions));
+                    pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem,mediaUrlOptions));
                     break;
             }
 

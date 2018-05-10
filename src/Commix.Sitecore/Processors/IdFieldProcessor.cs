@@ -20,14 +20,14 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (!(pipelineContext.Value is Field field))
+            if (!(pipelineContext.Context is Field field))
                 throw new InvalidOperationException();
 
             ID value;
             if (!ID.TryParse(field.GetValue(true), out value))
                 throw new InvalidOperationException();
             
-            pipelineContext.Value = value;
+            pipelineContext.Context = value;
             
             Next();
         }

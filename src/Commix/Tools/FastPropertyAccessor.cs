@@ -100,11 +100,13 @@ namespace Commix.Tools
             il.Emit(OpCodes.Castclass, type); // Cast to the instance type.
             il.Emit(OpCodes.Ldarg_1); // Load our value to the stack.
 
+           // without the later you can set a reference type property to anything you want!
             if (propertyType.IsValueType)
-            {
-                // Cast if a value type to set the correct type.
+                // Cast if a value type to set the correct type
                 il.Emit(OpCodes.Unbox_Any, propertyType);
-            }
+            else
+                // cast to reference type to ensure type safety
+                il.Emit(OpCodes.Castclass, propertyType);
 
             // Call the set method and return.
             il.Emit(OpCodes.Callvirt, method);

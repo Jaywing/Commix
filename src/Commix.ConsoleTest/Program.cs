@@ -19,7 +19,6 @@ namespace Commix.ConsoleTest
         {
             Type typeToEnsure = typeof(IEnumerable<TestInput2>);
             
-
             var sourceType = new List<Object>().GetType();
 
             var replacementtype = new List<TestInput2>().GetType();

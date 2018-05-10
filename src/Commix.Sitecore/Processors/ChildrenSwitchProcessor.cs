@@ -14,10 +14,10 @@ namespace Commix.Sitecore.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.Value)
+            switch (pipelineContext.Context)
             {
                 case Item parent:
-                    pipelineContext.Value = parent.GetChildren();
+                    pipelineContext.Context = parent.GetChildren();
                     break;
             }
 
