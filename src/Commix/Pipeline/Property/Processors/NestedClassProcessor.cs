@@ -31,7 +31,7 @@ namespace Commix.Pipeline.Property.Processors
                 {
                     var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType));
 
-                    ModelMappingPipeline pipeline = _pipelineFactory.GetPipeline(outputType);
+                    ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
 
                     if (pipeline != null)
                     {

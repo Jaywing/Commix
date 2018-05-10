@@ -1,17 +1,59 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
+using System.Reactive;
+using System.Threading;
 
+using Commix.Diagnostics;
+using Commix.Pipeline;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Model.Processors;
+using Commix.Pipeline.Property;
 
 namespace Commix.ConsoleTest
 {
-    public class TestModelMappingPipeline : ModelMappingPipeline
+    public class ConsolePipelineTrace : ThreadedPipelineTrace
     {
-        public TestModelMappingPipeline(SchemaGeneratorProcessor schemaGenerator, IModelMapperProcessor modelMapper)
+        public ConsolePipelineTrace(int managedThreadId, PipelineMonitor monitor)
+            : base(managedThreadId, monitor)
+        { }
+
+        protected override void OnRun(EventPattern<PipelineEventArgs> args)
         {
-            Add(schemaGenerator, new ModelProcessorContext());
-            Add(modelMapper, new ModelProcessorContext());
+            Console.WriteLine($"{ManagedThreadId}: Run");
+        }
+
+        protected override void OnComplete(EventPattern<PipelineEventArgs> args)
+        {
+            Console.WriteLine($"{ManagedThreadId}: Complete");
+        }
+
+        protected override void OnError(EventPattern<PipelineErrorEventArgs> args)
+        {
+            Console.WriteLine($"{ManagedThreadId} Error: {args.EventArgs.Error.Message}");
+        }
+
+        protected override void OnProcessorRun(EventPattern<PipelineProcessorEventArgs> args)
+        {
+            switch (args.EventArgs.PipelineContext)
+            {
+                case ModelContext modelContext:
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Model) Run");
+                    break;
+                case PropertyContext propertyContext:
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Property) Run");
+                    break;
+            }
+        }
+
+        protected override void OnProcessorComplete(EventPattern<PipelineProcessorEventArgs> args)
+        {
+            Console.WriteLine($"{ManagedThreadId}: Processor Complete");
+        }
+
+        protected override void OnProcessorError(EventPattern<PipelineProcessorExceptionEventArgs> args)
+        {
+            Console.WriteLine($"{ManagedThreadId} Processor Error: {args.EventArgs.Error.Message}");
         }
     }
 }
