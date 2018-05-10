@@ -14,34 +14,34 @@ namespace Commix.Diagnostics
         public event EventHandler<PipelineProcessorEventArgs> ProcessorCompleteEvent;
         public event EventHandler<PipelineProcessorExceptionEventArgs> ProcessorExceptionEvent; 
         
-        public void OnRunEvent(object pipelineContext)
+        public virtual void OnRunEvent(PipelineEventArgs e)
         {
-            RunEvent?.Invoke(this, new PipelineEventArgs(pipelineContext));
+            RunEvent?.Invoke(this, e);
         }
 
-        public void OnCompleteEvent(object pipelineContext)
+        public virtual void OnCompleteEvent(PipelineEventArgs e)
         {
-            CompleteEvent?.Invoke(this, new PipelineEventArgs(pipelineContext));
+            CompleteEvent?.Invoke(this, e);
         }
 
-        public void OnErrorEvent(object pipelineContext, Exception exception)
+        public virtual void OnErrorEvent(PipelineErrorEventArgs e)
         {
-            ErrorEvent?.Invoke(this, new PipelineErrorEventArgs(pipelineContext, exception));
+            ErrorEvent?.Invoke(this, e);
         }
 
-        public void OnRunProcessorEvent(object pipelineContext, object processorContext)
+        public virtual void OnProcessorRunEvent(PipelineProcessorEventArgs e)
         {
-            ProcessorRunEvent?.Invoke(this, new PipelineProcessorEventArgs(pipelineContext, processorContext));
+            ProcessorRunEvent?.Invoke(this, e);
         }
 
-        public void OnCompleteProcessorEvent(object pipelineContext, object processorContext)
+        public virtual void OnProcessorCompleteEvent(PipelineProcessorEventArgs e)
         {
-            ProcessorCompleteEvent?.Invoke(this, new PipelineProcessorEventArgs(pipelineContext, processorContext));
+            ProcessorCompleteEvent?.Invoke(this, e);
         }
 
-        public void OnProcessorErrorEvent(object pipelineContext, object processorContext, Exception exception)
+        public virtual void OnProcessorExceptionEvent(PipelineProcessorExceptionEventArgs e)
         {
-            ProcessorExceptionEvent?.Invoke(this, new PipelineProcessorExceptionEventArgs(pipelineContext, processorContext, exception));
+            ProcessorExceptionEvent?.Invoke(this, e);
         }
     }
 }

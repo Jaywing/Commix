@@ -6,8 +6,12 @@ namespace Commix.Diagnostics
     public class PipelineProcessorExceptionEventArgs : PipelineErrorEventArgs
     {
         public object ProcessorContext { get; }
+        public Type ProcessorType { get; }
 
-        public PipelineProcessorExceptionEventArgs(object context, object processorContext, Exception error) 
-            : base(context, error) => ProcessorContext = processorContext ?? throw new ArgumentNullException(nameof(processorContext));
+        public PipelineProcessorExceptionEventArgs(object context, Exception error, object processorContext, Type processorType) : base(context, error)
+        {
+            ProcessorContext = processorContext ?? throw new ArgumentNullException(nameof(processorContext));
+            ProcessorType = processorType ?? throw new ArgumentNullException(nameof(processorType));
+        }
     }
 }

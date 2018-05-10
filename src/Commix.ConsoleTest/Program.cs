@@ -47,17 +47,11 @@ namespace Commix.ConsoleTest
 
                     for (int xi = 0; xi < 1; xi++)
                     {
-                        try
-                        {
+                       
                             var output = input.As<TestOutput>();
 
                             results.Add(output);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                            throw;
-                        }
+                       
 
                     }
                     Console.WriteLine($"{id} complete");

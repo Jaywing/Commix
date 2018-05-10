@@ -38,17 +38,25 @@ namespace Commix.ConsoleTest
             switch (args.EventArgs.PipelineContext)
             {
                 case ModelContext modelContext:
-                    Console.WriteLine($"{ManagedThreadId}: Processor(Model) Run");
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Model:{args.EventArgs.ProcessorType}) Run");
                     break;
                 case PropertyContext propertyContext:
-                    Console.WriteLine($"{ManagedThreadId}: Processor(Property) Run");
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Prop:{args.EventArgs.ProcessorType}) Run");
                     break;
             }
         }
 
         protected override void OnProcessorComplete(EventPattern<PipelineProcessorEventArgs> args)
         {
-            Console.WriteLine($"{ManagedThreadId}: Processor Complete");
+            switch (args.EventArgs.PipelineContext)
+            {
+                case ModelContext modelContext:
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Model:{args.EventArgs.ProcessorType}) Complete");
+                    break;
+                case PropertyContext propertyContext:
+                    Console.WriteLine($"{ManagedThreadId}: Processor(Prop:{args.EventArgs.ProcessorType}) Complete");
+                    break;
+            }
         }
 
         protected override void OnProcessorError(EventPattern<PipelineProcessorExceptionEventArgs> args)

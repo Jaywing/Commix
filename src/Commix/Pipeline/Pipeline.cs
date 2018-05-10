@@ -24,15 +24,15 @@ namespace Commix.Pipeline
             {
                 try
                 {
-                    Monitor?.OnRunProcessorEvent(context, metaProcessor.Context);
+                    Monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
 
                     metaProcessor.Processor.Run(context, metaProcessor.Context);
 
-                    Monitor?.OnCompleteProcessorEvent(context, metaProcessor.Context);
+                    Monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
                 }
                 catch (Exception exception)
                 {
-                    Monitor?.OnProcessorErrorEvent(context, metaProcessor.Context, exception);
+                    Monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, metaProcessor.Context, metaProcessor.Processor.GetType()));
 
                     throw;
                 }
@@ -57,15 +57,15 @@ namespace Commix.Pipeline
 
             try
             {
-                Monitor?.OnRunEvent(context);
+                Monitor?.OnRunEvent(new PipelineEventArgs(context));
 
                 RunProcessor(_processors[0]);
 
-                Monitor?.OnCompleteEvent(context);
+                Monitor?.OnCompleteEvent(new PipelineEventArgs(context));
             }
             catch (Exception exception)
             {
-                Monitor?.OnErrorEvent(context, exception);
+                Monitor?.OnErrorEvent(new PipelineErrorEventArgs(context, exception));
 
                 throw;
             }

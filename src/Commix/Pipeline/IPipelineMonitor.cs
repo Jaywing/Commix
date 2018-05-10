@@ -1,14 +1,16 @@
 ﻿using System;
 
+using Commix.Diagnostics;
+
 namespace Commix.Pipeline
 {
     public interface IPipelineMonitor
     {
-        void OnCompleteEvent(object pipelineContext);
-        void OnRunEvent(object pipelineContext);
-        void OnErrorEvent(object pipelineContext, Exception exception);
-        void OnRunProcessorEvent(object pipelineContext, object processorContext);
-        void OnCompleteProcessorEvent(object pipelineContext, object processorContext);
-        void OnProcessorErrorEvent(object pipelineContext, object processorContext, Exception exception);
+        void OnCompleteEvent(PipelineEventArgs e);
+        void OnRunEvent(PipelineEventArgs e);
+        void OnErrorEvent(PipelineErrorEventArgs e);
+        void OnProcessorRunEvent(PipelineProcessorEventArgs e);
+        void OnProcessorCompleteEvent(PipelineProcessorEventArgs e);
+        void OnProcessorExceptionEvent(PipelineProcessorExceptionEventArgs e);
     }
 }
