@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <AssemblyName>Commix.Diagnostics.Reactive</AssemblyName>
+    <RootNamespace>Commix.Diagnostics.Reactive</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

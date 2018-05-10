@@ -4,7 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 
-namespace Commix.Diagnostics
+namespace Commix.Diagnostics.Reactive
 {
     public abstract class ThreadedPipelineTrace : IDisposable
     {
