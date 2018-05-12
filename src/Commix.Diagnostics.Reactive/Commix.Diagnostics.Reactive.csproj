@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
     <AssemblyName>Commix.Diagnostics.Reactive</AssemblyName>
     <RootNamespace>Commix.Diagnostics.Reactive</RootNamespace>
   </PropertyGroup>

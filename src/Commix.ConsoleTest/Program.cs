@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commix;
 using Commix.ConsoleTest.Models;
+using Commix.Core;
 using Commix.Pipeline;
+using Commix.Pipeline.Model;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,20 +34,25 @@ namespace Commix.ConsoleTest
             var x = typeof(IEnumerable<object>).IsAssignableFrom(typeof(TestInput[]));
             
             ServiceLocator.ServiceProvider = new ServiceCollection()
-                .Commix()
+                .AddCommix(c => c
+                    .ModelPipelineFactory<ConsoleTestModelPiplineFactory>()
+                    .PropertyPipelineFactory<ConsoleTestPropertyPipelineFactory>())
                 .BuildServiceProvider();
+
+            CommixExtensions.PipelineFactory =
+                ServiceLocator.ServiceProvider.GetRequiredService<IModelPipelineFactory>();
 
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
                 {
                     var input = new TestInput();
 
-                    for (int xi = 0; xi < 1; xi++)
+                    for (int xi = 0; xi < 100; xi++)
                     {
                        
                             var output = input.As<TestOutput>();
