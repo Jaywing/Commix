@@ -31,6 +31,5 @@ namespace Commix.Pipeline.Property.Processors
             
             return context.ModelContext.Input.GetType().GetProperty(sourceProperty);;
         }
-
     }
 }

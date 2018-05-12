@@ -45,7 +45,7 @@ namespace Commix.ConsoleTest
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
@@ -54,13 +54,10 @@ namespace Commix.ConsoleTest
 
                     for (int xi = 0; xi < 100; xi++)
                     {
-                       
-                            var output = input.As<TestOutput>();
-
-                            results.Add(output);
-                       
-
+                       var output = input.As<TestOutput>();
+                       results.Add(output);
                     }
+
                     Console.WriteLine($"{id} complete");
                 });
                 threads.Add(thread);

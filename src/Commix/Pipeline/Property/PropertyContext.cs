@@ -8,9 +8,11 @@ namespace Commix.Pipeline.Property
 {
     public class PropertyContext
     {
+        public Guid InstanceId { get; } = Guid.NewGuid();
+
         public ModelContext ModelContext { get; }
         public PropertyInfo PropertyInfo { get; }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="PropertyMappingPipeline"/> is faulted.
         /// A faulted pipline will continue to Run whilst Next is called, but once the Pipeline complete if the 
