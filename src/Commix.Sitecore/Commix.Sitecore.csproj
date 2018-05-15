@@ -23,7 +23,6 @@
     <PackageReference Include="Sitecore.Kernel.NoReferences" Version="9.0.171219" />
     <PackageReference Include="Sitecore.MediaFramework.Mvc.NoReferences" Version="2.2.160927" />
     <PackageReference Include="Sitecore.Mvc.NoReferences" Version="9.0.171219" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
