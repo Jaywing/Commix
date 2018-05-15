@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 
-using Commix.Core.Diagnostics;
 using Commix.Diagnostics;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Model.Processors;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Commix.Core.Diagnostics;
+using Commix.Diagnostics;
 
 namespace Commix.Pipeline
 {

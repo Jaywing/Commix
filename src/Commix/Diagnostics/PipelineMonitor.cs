@@ -3,7 +3,7 @@ using System.Linq;
 
 using Commix.Pipeline;
 
-namespace Commix.Core.Diagnostics
+namespace Commix.Diagnostics
 {
     public class PipelineMonitor : IPipelineMonitor
     {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reactive;
 using System.Threading;
 
-using Commix.Core.Diagnostics;
 using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
 using Commix.Pipeline;

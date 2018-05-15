@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Commix.Core.Diagnostics
+namespace Commix.Diagnostics
 {
     public class PipelineEventArgs
     {

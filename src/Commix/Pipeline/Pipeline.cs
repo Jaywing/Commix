@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Commix.Core.Diagnostics;
+using Commix.Diagnostics;
 using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline
