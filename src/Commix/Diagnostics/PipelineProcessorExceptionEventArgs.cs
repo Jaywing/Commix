@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Commix.Diagnostics
+namespace Commix.Core.Diagnostics
 {
     public class PipelineProcessorExceptionEventArgs : PipelineErrorEventArgs
     {

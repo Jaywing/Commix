@@ -9,6 +9,12 @@
     <Company>Jaywing</Company>
     <Version>1.0.0</Version>
     <IncludeSymbols>true</IncludeSymbols>
+     <Description>Commix Model Mapper - Sitecore extensions</Description>
+    <Copyright>Jaywing</Copyright>
+    <RepositoryUrl>https://jaywing.visualstudio.com/Internal%20Projects/_git/Commix</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags>mapping strongly-typed</PackageTags>
+    <PackageProjectUrl>https://jaywing.visualstudio.com/Internal%20Projects</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

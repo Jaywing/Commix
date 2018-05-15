@@ -32,7 +32,7 @@ namespace Commix.ConsoleTest
             }
             
             var x = typeof(IEnumerable<object>).IsAssignableFrom(typeof(TestInput[]));
-            
+
             ServiceLocator.ServiceProvider = new ServiceCollection()
                 .AddCommix(c => c
                     .ModelPipelineFactory<ConsoleTestModelPiplineFactory>()

@@ -24,5 +24,11 @@ namespace Commix.Core
             config.SetPropertyProcessorFactory<T>();
             return config;
         }
+
+        public static CommixConfiguration PropertyProcessors(this CommixConfiguration config, string assemblyPrefix)
+        {
+            config.RegisterProcessors(assemblyPrefix);
+            return config;
+        }
     }
 }

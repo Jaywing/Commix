@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Commix.Core;
+using Commix.Core.Diagnostics;
 using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
 using Commix.Pipeline.Model;
