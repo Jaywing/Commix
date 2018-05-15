@@ -12,26 +12,29 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.ConsoleTest
 {
-    public class CommixFactories : IModelPipelineFactory, IPropertyProcessorFactory, IPropertyPipelineFactory
+    public class ConsoleTestModelPiplineFactory : IModelPipelineFactory
     {
+        private readonly IServiceProvider _serviceProvider;
+
         private readonly PipelineMonitor _pipelineMonitor;
         private readonly ThreadAwareLogger _tracing;
-
-        public CommixFactories()
+        
+        public ConsoleTestModelPiplineFactory(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _pipelineMonitor = new PipelineMonitor();
             _tracing = new ThreadAwareLogger();
         }
 
         public ModelMappingPipeline GetModelPipeline()
         {
-            var pipeline = ServiceLocator.ServiceProvider.GetRequiredService<ModelMappingPipeline>();
-            
-            var schemaGenerator = ServiceLocator.ServiceProvider.GetRequiredService<SchemaGeneratorProcessor>();
-            var modelMapperProcessor = ServiceLocator.ServiceProvider.GetRequiredService<IModelMapperProcessor>();
+            var pipeline = _serviceProvider.GetRequiredService<ModelMappingPipeline>();
+
+            var schemaGenerator = _serviceProvider.GetRequiredService<ISchemeGenerator>();
+            var modelMapperProcessor = _serviceProvider.GetRequiredService<IModelMapperProcessor>();
 
             pipeline.Monitor = _pipelineMonitor;
-            
+
             _tracing.Attach(_pipelineMonitor);
 
             pipeline.Add(schemaGenerator, new ModelProcessorContext());
@@ -39,20 +42,30 @@ namespace Commix.ConsoleTest
 
             return pipeline;
         }
+    }
 
-        public IPropertyProcesser GetProcessor(Type processorType)
+    public class ConsoleTestPropertyPipelineFactory : IPropertyPipelineFactory
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        private readonly PipelineMonitor _pipelineMonitor;
+        private readonly ThreadAwareLogger _tracing;
+
+        public ConsoleTestPropertyPipelineFactory(IServiceProvider serviceProvider)
         {
-            return (IPropertyProcesser) ServiceLocator.ServiceProvider.GetRequiredService(processorType);
+            _serviceProvider = serviceProvider;
+            _pipelineMonitor = new PipelineMonitor();
+            _tracing = new ThreadAwareLogger();
         }
 
         public PropertyMappingPipeline GetPropertyPipeline()
         {
-            var pipeline = ServiceLocator.ServiceProvider.GetRequiredService<PropertyMappingPipeline>();
-            
+            var pipeline = _serviceProvider.GetRequiredService<PropertyMappingPipeline>();
+
             pipeline.Monitor = _pipelineMonitor;
 
             _tracing.Attach(_pipelineMonitor);
-            
+
             return pipeline;
         }
     }

@@ -12,9 +12,7 @@ namespace Commix.Pipeline.Property.Processors
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
             if (processorContext.TryGetOption(ConstantValueOption, out T constantValue))
-            {
                 pipelineContext.Context = constantValue;
-            }
 
             Next();
         }

@@ -1,18 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
     <AssemblyName>Commix</AssemblyName>  
     <RootNamespace>Commix</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>  
     <Authors>Jamie Gould</Authors>  
     <Company>Jaywing</Company>  
-    <Version>1.0.0</Version>  
+    <Version>1.0.0</Version>
+    <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
+
+  <!--<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
+  </ItemGroup>-->
 
 
 </Project>

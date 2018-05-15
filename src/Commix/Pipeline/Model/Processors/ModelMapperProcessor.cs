@@ -4,11 +4,6 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Model.Processors
 {
-    public interface IModelMapperProcessor : IProcessor<ModelContext, ModelProcessorContext>
-    {
-        
-    }
-
     public class ModelMapperProcessor : IModelMapperProcessor
     {
         private readonly IPropertyProcessorFactory _processorFactory;
@@ -43,15 +38,10 @@ namespace Commix.Pipeline.Model.Processors
             {
                 var processor = _processorFactory.GetProcessor(propertyProcessorSchema.Type);
                 if (processor is IPropertyProcesser syncProcessor)
-                {
                     propertyPipeline.Add(syncProcessor, propertyProcessorSchema);
-                }
             }
 
-            propertyPipeline.Run(CreatePropertyContext(context, propertySchema));
+            propertyPipeline.Run(new PropertyContext(context, propertySchema.PropertyInfo, context.Input));
         }
-
-        private PropertyContext CreatePropertyContext(ModelContext context, PropertySchema propertySchema)
-            => new PropertyContext(context, propertySchema.PropertyInfo, context.Input);
     }
 }
