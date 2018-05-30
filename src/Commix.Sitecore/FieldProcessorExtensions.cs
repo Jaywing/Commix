@@ -3,6 +3,7 @@ using System.Linq;
 
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
+using Commix.Schema.Extensions;
 using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore
@@ -10,13 +11,24 @@ namespace Commix.Sitecore
     public static class FieldProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId = default(string))
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
         {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
                 .Add(Processor.Use<StringFieldProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Ensure(typeof(string), string.Empty);
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
+        {
+            return builder
+                .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
+                .Add(Processor.Use<StringFieldProcessor>())
+                .Ensure(typeof(string), defaultValue);
+
         }
 
         /// <summary>
@@ -30,8 +42,7 @@ namespace Commix.Sitecore
             this SchemaPropertyBuilder<TModel, TProp> builder)
         {
             return builder
-                .Add(Processor.Use<ItemNameProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<ItemNameProcessor>());
         }
 
         /// <summary>
@@ -57,8 +68,7 @@ namespace Commix.Sitecore
             this SchemaPropertyBuilder<TModel, TProp> builder)
         {
             return builder
-                .Add(Processor.Use<ItemInternalUrlProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<ItemInternalUrlProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> CheckboxField<TModel, TProp>(
@@ -67,8 +77,7 @@ namespace Commix.Sitecore
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<CheckboxFieldProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<CheckboxFieldProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
