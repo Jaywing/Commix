@@ -100,9 +100,6 @@ namespace Commix.Sitecore.Processors
                     case var _ when string.Equals(field.Type, "Droplink", StringComparison.InvariantCultureIgnoreCase):
                         pipelineContext.Context = new LookupField(field);
                         break;
-                    case var _ when string.Equals(field.Type, "Droplink", StringComparison.InvariantCultureIgnoreCase):
-                        pipelineContext.Context = new LookupField(field);
-                        break;
                     case var _ when string.Equals(field.Type, "General Link", StringComparison.InvariantCultureIgnoreCase):
                     case var _ when string.Equals(field.Type, "General Link with Search", StringComparison.InvariantCultureIgnoreCase):
                         pipelineContext.Context = new LinkField(field);
