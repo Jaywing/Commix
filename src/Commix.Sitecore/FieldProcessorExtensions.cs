@@ -13,22 +13,24 @@ namespace Commix.Sitecore
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
         {
-            return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
-                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>())
-                .Ensure(typeof(string), string.Empty);
+            return StringField(builder, fieldId, string.Empty, false);
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
         {
+            return StringField(builder, fieldId, defaultValue, false);
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
+        {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>())
+                .Add(Processor.Use<StringFieldProcessor>(c => c
+                    .Option(StringFieldProcessor.DisableWebEditing, disableWebEditing)))
                 .Ensure(typeof(string), defaultValue);
-
         }
 
         /// <summary>
