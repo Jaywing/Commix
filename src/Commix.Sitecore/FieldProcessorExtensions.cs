@@ -8,31 +8,8 @@ using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore
 {
-    public static class FieldProcessorExtensions
+    public static partial class FieldProcessorExtensions
     {
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
-        {
-            return StringField(builder, fieldId, string.Empty, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
-        {
-            return StringField(builder, fieldId, defaultValue, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
-        {
-            return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
-                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>(c => c
-                    .Option(StringFieldProcessor.DisableWebEditing, disableWebEditing)))
-                .Ensure(typeof(string), defaultValue);
-        }
-
         /// <summary>
         /// Maps an Item's name
         /// </summary>
