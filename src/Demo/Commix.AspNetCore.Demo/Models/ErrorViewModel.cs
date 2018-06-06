@@ -18,7 +18,8 @@ namespace Commix.AspNetCore.Demo.Models
         public SchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Heading, p => p
-                    .ConstantValue("Welcome to Commix!").Set()
+                    .Constant("Welcome to Commix!")
+                    .Set()
                 )
             );
     }

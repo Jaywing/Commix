@@ -10,7 +10,9 @@ using Commix.ConsoleTest.Models;
 using Commix.Core;
 using Commix.Pipeline;
 using Commix.Pipeline.Model;
-
+using Commix.Pipeline.Property;
+using Commix.Schema;
+using Commix.Schema.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.ConsoleTest

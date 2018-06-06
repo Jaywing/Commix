@@ -6,6 +6,11 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
 {
+    /// <summary>
+    /// Map from one Enumerable to another.
+    /// </summary>
+    /// <typeparam name="TSource">Source Type</typeparam>
+    /// <typeparam name="TTarget">Target Type</typeparam>
     public class PropertyCollectionProcessor<TSource, TTarget> : IPropertyProcesser
     {
         public Action Next { get; set; }

@@ -40,7 +40,7 @@ namespace Commix.Sitecore
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
                 .Add(Processor.Use<NestedClassProcessor>(c => c
                     .Option(NestedClassProcessor.OutputTypeOption, typeof(TProp))))
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> ItemUrl<TModel, TProp>(
@@ -59,13 +59,7 @@ namespace Commix.Sitecore
                 .Add(Processor.Use<CheckboxFieldProcessor>());
         }
 
-        public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId)
-        {
-            return builder
-                .Add(Processor.Use<ExplicitItemSwitchProcessor>(c => c
-                    .Option(ExplicitItemSwitchProcessor.Path, pathOrId)));
-        }
+        
 
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)

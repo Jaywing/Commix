@@ -8,7 +8,7 @@ using Commix.Pipeline.Model;
 namespace Commix.Pipeline
 {
 
-    public class Pipeline<TPipelineContext, TProcessorContext> : IObservablePipeline
+    public class Pipeline<TPipelineContext, TProcessorContext>
         where TProcessorContext : class
     {
         public IPipelineMonitor Monitor { get; set; } 
@@ -20,19 +20,19 @@ namespace Commix.Pipeline
 
         public void Run(TPipelineContext context)
         {
-            void RunProcessor(ProcessorInstance metaProcessor)
+            void RunProcessor(ProcessorInstance instance)
             {
                 try
                 {
-                    Monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
+                    Monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
 
-                    metaProcessor.Processor.Run(context, metaProcessor.Context);
+                    instance.Processor.Run(context, instance.Context);
 
-                    Monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
+                    Monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
                 }
                 catch (Exception exception)
                 {
-                    Monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, metaProcessor.Context, metaProcessor.Processor.GetType()));
+                    Monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, instance.Context, instance.Processor.GetType()));
 
                     throw;
                 }

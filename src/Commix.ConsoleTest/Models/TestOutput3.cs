@@ -13,7 +13,7 @@ namespace Commix.ConsoleTest.Models
         public SchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Prop3, p => p
-                    .ConstantValue(9001)
+                    .Constant(9001)
                     .Set())
             );
     }
