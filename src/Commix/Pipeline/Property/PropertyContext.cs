@@ -24,7 +24,7 @@ namespace Commix.Pipeline.Property
         public bool Faulted { get; set; }
 
         /// <summary>
-        /// Pipline context, this value will be initialised populate, transformed by the Pipline and then ultimately 
+        /// Pipeline context, this value will be populated, transformed by the Pipline and then ultimately 
         /// if the Aborted flag is not set  used by a SetProcessor to set the target property.
         /// </summary>
         /// <value>

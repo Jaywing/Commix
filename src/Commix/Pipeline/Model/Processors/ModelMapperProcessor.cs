@@ -4,6 +4,9 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Model.Processors
 {
+    /// <summary>
+    /// Default model pipeline processor, uses the pipeline schema to map a model.
+    /// </summary>
     public class ModelMapperProcessor : IModelMapperProcessor
     {
         private readonly IPropertyProcessorFactory _processorFactory;
@@ -30,6 +33,11 @@ namespace Commix.Pipeline.Model.Processors
             Next();
         }
 
+        /// <summary>
+        /// Builds and runs a property pipeline using a property schema, presets the property pipeline context to the the model pipeline source.
+        /// </summary>
+        /// <param name="context">Model pipeline context</param>
+        /// <param name="propertySchema">Property pipeline context</param>
         private void RunPropertyPipeline(ModelContext context, PropertySchema propertySchema)
         {
             var propertyPipeline = _propertyPipelineFactory.GetPropertyPipeline();

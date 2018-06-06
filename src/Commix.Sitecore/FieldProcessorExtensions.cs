@@ -7,7 +7,7 @@ using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore
 {
-    public static class FieldProcessorExtensions
+    public static partial class FieldProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId = default(string))
@@ -16,7 +16,7 @@ namespace Commix.Sitecore
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
                 .Add(Processor.Use<StringFieldProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Commix.Sitecore
         {
             return builder
                 .Add(Processor.Use<ItemNameProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Commix.Sitecore
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
                 .Add(Processor.Use<NestedClassProcessor>(c => c
                     .Option(NestedClassProcessor.OutputTypeOption, typeof(TProp))))
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> ItemUrl<TModel, TProp>(
@@ -58,7 +58,7 @@ namespace Commix.Sitecore
         {
             return builder
                 .Add(Processor.Use<ItemInternalUrlProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> CheckboxField<TModel, TProp>(
@@ -68,16 +68,10 @@ namespace Commix.Sitecore
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
                 .Add(Processor.Use<CheckboxFieldProcessor>())
-                .Add(Processor.Use<PropertySetterProcessor>());
+                .Add(Processor.Use<PropertySetProcessor>());
         }
 
-        public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId)
-        {
-            return builder
-                .Add(Processor.Use<ExplicitItemSwitchProcessor>(c => c
-                    .Option(ExplicitItemSwitchProcessor.Path, pathOrId)));
-        }
+        
 
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)

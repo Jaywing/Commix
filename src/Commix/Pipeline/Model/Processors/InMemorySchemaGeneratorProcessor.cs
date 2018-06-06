@@ -5,6 +5,9 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Model.Processors
 {
+    /// <summary>
+    /// Caching schema generator, thread safe.
+    /// </summary>
     public class InMemorySchemaGeneratorProcessor : SchemaGeneratorProcessor
     {
         private static readonly ConcurrentDictionary<(int ThreadId, Type TypeId), ModelSchema> SchemaCache = new ConcurrentDictionary<(int ThreadId, Type TypeId), ModelSchema>();
