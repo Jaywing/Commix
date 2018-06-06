@@ -3,22 +3,13 @@ using System.Linq;
 
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
+using Commix.Schema.Extensions;
 using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore
 {
     public static partial class FieldProcessorExtensions
     {
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId = default(string))
-        {
-            return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
-                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>())
-                .Add(Processor.Use<PropertySetProcessor>());
-        }
-
         /// <summary>
         /// Maps an Item's name
         /// </summary>
@@ -30,8 +21,7 @@ namespace Commix.Sitecore
             this SchemaPropertyBuilder<TModel, TProp> builder)
         {
             return builder
-                .Add(Processor.Use<ItemNameProcessor>())
-                .Add(Processor.Use<PropertySetProcessor>());
+                .Add(Processor.Use<ItemNameProcessor>());
         }
 
         /// <summary>
@@ -57,8 +47,7 @@ namespace Commix.Sitecore
             this SchemaPropertyBuilder<TModel, TProp> builder)
         {
             return builder
-                .Add(Processor.Use<ItemInternalUrlProcessor>())
-                .Add(Processor.Use<PropertySetProcessor>());
+                .Add(Processor.Use<ItemInternalUrlProcessor>());
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> CheckboxField<TModel, TProp>(
@@ -67,8 +56,7 @@ namespace Commix.Sitecore
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<CheckboxFieldProcessor>())
-                .Add(Processor.Use<PropertySetProcessor>());
+                .Add(Processor.Use<CheckboxFieldProcessor>());
         }
 
         

@@ -8,7 +8,7 @@ using Commix.Pipeline.Property;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Commix.Core
+namespace Commix.Sitecore
 {
     public class CommixConfiguration
     {

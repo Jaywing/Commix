@@ -34,15 +34,15 @@ namespace Commix.ConsoleTest
             }
             
             var x = typeof(IEnumerable<object>).IsAssignableFrom(typeof(TestInput[]));
-            
+
             ServiceLocator.ServiceProvider = new ServiceCollection()
                 .AddCommix(c => c
                     .ModelPipelineFactory<ConsoleTestModelPiplineFactory>()
                     .PropertyPipelineFactory<ConsoleTestPropertyPipelineFactory>())
                 .BuildServiceProvider();
 
-            CommixExtensions.PipelineFactory =
-                ServiceLocator.ServiceProvider.GetRequiredService<IModelPipelineFactory>();
+            CommixExtensions.PipelineFactory = new Lazy<IModelPipelineFactory>(
+                () => ServiceLocator.ServiceProvider.GetRequiredService<IModelPipelineFactory>());
 
             var results = new ConcurrentBag<TestOutput>();
 

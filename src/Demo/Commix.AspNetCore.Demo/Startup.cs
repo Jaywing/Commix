@@ -39,7 +39,7 @@ namespace Commix.AspNetCore.Demo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            CommixExtensions.PipelineFactory = app.ApplicationServices.GetRequiredService<IModelPipelineFactory>();
+            CommixExtensions.PipelineFactory = new Lazy<IModelPipelineFactory>(() => app.ApplicationServices.GetRequiredService<IModelPipelineFactory>());
 
             if (env.IsDevelopment())
             {

@@ -7,7 +7,7 @@ using Commix.Pipeline.Model.Processors;
 using Commix.Pipeline.Property;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Commix.Core
+namespace Commix.Sitecore
 {
     public static class CommixRegistrar
     {

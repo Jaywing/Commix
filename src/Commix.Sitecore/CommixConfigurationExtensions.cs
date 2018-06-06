@@ -1,6 +1,6 @@
 ﻿using Commix.Pipeline.Model;
 
-namespace Commix.Core
+namespace Commix.Sitecore
 {
     public static class CommixConfigurationExtensions
     {
