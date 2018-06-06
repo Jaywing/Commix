@@ -19,11 +19,14 @@ namespace Commix.ConsoleTest.Models
 
         public SchemaBuilder Map()
             => this.Schema(s => s
-                .Property(m => m.Nested, c => c.NestedFrom())
+                .Property(m => m.Nested, c => c.NestedFrom().Set())
                 .Property(m => m.SomeDerivedString, c => c
                     .Get("Name")
-                    .Add(Processor.Use<Processor1>()))
-                .Property(m => m.Name, c => c.Get())
+                    .Add(Processor.Use<Processor1>())
+                    .Set())
+                .Property(m => m.Name, c => c
+                    .Get()
+                    .Set())
                 .Property(m => m.Col, c => c
                     .Constant(new List<TestInput>{new TestInput(), new TestInput()})
                     .Collection(x => x.Define<TestInput, TestInput2>())

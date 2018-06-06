@@ -54,7 +54,7 @@ namespace Commix.ConsoleTest
                 {
                     var input = new TestInput();
 
-                    for (int xi = 0; xi < 100; xi++)
+                    for (int xi = 0; xi < 10; xi++)
                     {
                        var output = input.As<TestOutput>();
                        results.Add(output);
