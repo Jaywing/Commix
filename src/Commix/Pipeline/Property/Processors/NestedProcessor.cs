@@ -10,16 +10,16 @@ namespace Commix.Pipeline.Property.Processors
     /// Map a property to a target model type specififed by a processor option
     /// </summary>
     /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
-    public class NestedClassProcessor : IPropertyProcesser
+    public class NestedProcessor : IPropertyProcesser
     {
         private readonly IModelPipelineFactory _pipelineFactory;
 
-        public NestedClassProcessor(IModelPipelineFactory pipelineFactory)
+        public NestedProcessor(IModelPipelineFactory pipelineFactory)
         {
             _pipelineFactory = pipelineFactory ?? throw new ArgumentNullException(nameof(pipelineFactory));
         }
 
-        public static string OutputTypeOption = $"{typeof(NestedClassProcessor).Name}.OutputType"; 
+        public static string OutputTypeOption = $"{typeof(NestedProcessor).Name}.OutputType"; 
         
         public Action Next { get; set; }
        

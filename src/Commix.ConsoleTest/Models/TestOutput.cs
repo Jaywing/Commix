@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Commix.ConsoleTest.Processors;
+using Commix.Pipeline.Property.Processors;
+
 using Commix.Schema;
-using Commix.Schema.Extensions;
 
 namespace Commix.ConsoleTest.Models
 {
@@ -19,7 +20,9 @@ namespace Commix.ConsoleTest.Models
 
         public SchemaBuilder Map()
             => this.Schema(s => s
-                .Property(m => m.Nested, c => c.NestedFrom().Set())
+                .Property(m => m.Nested, c => c
+                    .NestedFrom()
+                    .Set())
                 .Property(m => m.SomeDerivedString, c => c
                     .Get("Name")
                     .Add(Processor.Use<Processor1>())

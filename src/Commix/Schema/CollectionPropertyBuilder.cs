@@ -14,7 +14,7 @@ namespace Commix.Schema
 
         public void Define<TSource, TTarget>()
         {
-            _schemaBuilder.Add(Processor.Use<PropertyCollectionProcessor<TSource, TTarget>>());
+            _schemaBuilder.Add(Processor.Use<CollectionProcessor<TSource, TTarget>>());
         }
     }
 }

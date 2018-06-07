@@ -28,15 +28,4 @@ namespace Commix.Sitecore.Processors
             Next();
         }
     }
-
-    public static partial class FieldProcessorExtensions
-    {
-        public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId)
-        {
-            return builder
-                .Add(Processor.Use<ExplicitItemSwitchProcessor>(c => c
-                    .Option(ExplicitItemSwitchProcessor.Path, pathOrId)));
-        }
-    }
 }

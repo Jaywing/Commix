@@ -7,10 +7,10 @@ namespace Commix.Pipeline.Property.Processors
     /// <summary>
     /// Ensure a context value based on current value or type, prevents casting errors before setting a property with the current context.
     /// </summary>
-    public class PropertyEnsureProcessor : IPropertyProcesser
+    public class EnsureProcessor : IPropertyProcesser
     {
-        public static string EnsureType = $"{typeof(PropertyEnsureProcessor).Name}EnsureType";
-        public static string EnsureReplacement = $"{typeof(PropertyEnsureProcessor).Name}EnsureReplacement";
+        public static string EnsureType = $"{typeof(EnsureProcessor).Name}EnsureType";
+        public static string EnsureReplacement = $"{typeof(EnsureProcessor).Name}EnsureReplacement";
         
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
@@ -28,7 +28,7 @@ namespace Commix.Pipeline.Property.Processors
                     pipelineContext.Context = replacement;
                     break;
                 case null:
-                    // There is no replacement safest to just stall the pipline.
+                    // There is no replacement safest to just stall the pipeline.
                     return;
             }
 

@@ -1,6 +1,7 @@
 using System;
+
+using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
-using Commix.Schema.Extensions;
 
 namespace Commix.AspNetCore.Demo.Models
 {

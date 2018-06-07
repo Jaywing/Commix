@@ -11,7 +11,7 @@ namespace Commix.Pipeline.Property.Processors
     /// </summary>
     /// <typeparam name="TSource">Source Type</typeparam>
     /// <typeparam name="TTarget">Target Type</typeparam>
-    public class PropertyCollectionProcessor<TSource, TTarget> : IPropertyProcesser
+    public class CollectionProcessor<TSource, TTarget> : IPropertyProcesser
     {
         public Action Next { get; set; }
 

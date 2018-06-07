@@ -9,7 +9,7 @@ namespace Commix.Pipeline.Property.Processors
     /// <summary>
     /// Set the model target property value using the current context, unless the property pipeline is flagged as faulted.
     /// </summary>
-    public class PropertySetProcessor : IPropertyProcesser
+    public class SetProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
         

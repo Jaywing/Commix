@@ -9,9 +9,9 @@ namespace Commix.Pipeline.Property.Processors
     /// <summary>
     /// Switch context to the value of a property on the model pipeline source.
     /// </summary>
-    public class PropertyGetProcessor : IPropertyProcesser
+    public class GetProcessor : IPropertyProcesser
     {
-        public static string SourcePropertyOptionKey = $"{typeof(PropertyGetProcessor).Name}.SourcePropertyOptionKey"; 
+        public static string SourcePropertyOptionKey = $"{typeof(GetProcessor).Name}.SourcePropertyOptionKey"; 
         
         public Action Next { get; set; }
         

@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 using Commix.Pipeline.Property;
 using Commix.Schema;
-using Commix.Schema.Extensions;
 
 using Sitecore;
 using Sitecore.Data.Fields;
@@ -33,32 +32,6 @@ namespace Commix.Sitecore.Processors
             }
 
             Next();
-        }
-    }
-
-    public static partial class FieldProcessorExtensions
-    {
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
-        {
-            return StringField(builder, fieldId, string.Empty, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
-        {
-            return StringField(builder, fieldId, defaultValue, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
-        {
-            return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
-                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>(c => c
-                    .Option(StringFieldProcessor.DisableWebEditingOptionKey, disableWebEditing)))
-                .Ensure(typeof(string), defaultValue);
         }
     }
 }
