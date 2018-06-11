@@ -6,6 +6,13 @@ namespace Commix.Pipeline
 {
     public interface IPipelineMonitor
     {
+        event EventHandler<PipelineEventArgs> RunEvent;
+        event EventHandler<PipelineEventArgs> CompleteEvent;
+        event EventHandler<PipelineErrorEventArgs> ErrorEvent;
+        event EventHandler<PipelineProcessorEventArgs> ProcessorRunEvent;
+        event EventHandler<PipelineProcessorEventArgs> ProcessorCompleteEvent;
+        event EventHandler<PipelineProcessorExceptionEventArgs> ProcessorExceptionEvent;
+
         void OnCompleteEvent(PipelineEventArgs e);
         void OnRunEvent(PipelineEventArgs e);
         void OnErrorEvent(PipelineErrorEventArgs e);

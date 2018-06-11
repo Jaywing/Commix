@@ -16,14 +16,9 @@ namespace Commix.ConsoleTest
     {
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly PipelineMonitor _pipelineMonitor;
-        private readonly ThreadAwareLogger _tracing;
-        
         public ConsoleTestModelPiplineFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _pipelineMonitor = new PipelineMonitor();
-            _tracing = new ThreadAwareLogger();
         }
 
         public ModelMappingPipeline GetModelPipeline()
@@ -32,10 +27,6 @@ namespace Commix.ConsoleTest
 
             var schemaGenerator = _serviceProvider.GetRequiredService<ISchemeGenerator>();
             var modelMapperProcessor = _serviceProvider.GetRequiredService<IModelMapperProcessor>();
-
-            pipeline.Monitor = _pipelineMonitor;
-
-            _tracing.Attach(_pipelineMonitor);
 
             pipeline.Add(schemaGenerator, new ModelProcessorContext());
             pipeline.Add(modelMapperProcessor, new ModelProcessorContext());
@@ -48,23 +39,14 @@ namespace Commix.ConsoleTest
     {
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly PipelineMonitor _pipelineMonitor;
-        private readonly ThreadAwareLogger _tracing;
-
         public ConsoleTestPropertyPipelineFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _pipelineMonitor = new PipelineMonitor();
-            _tracing = new ThreadAwareLogger();
         }
 
         public PropertyMappingPipeline GetPropertyPipeline()
         {
             var pipeline = _serviceProvider.GetRequiredService<PropertyMappingPipeline>();
-
-            pipeline.Monitor = _pipelineMonitor;
-
-            _tracing.Attach(_pipelineMonitor);
 
             return pipeline;
         }
@@ -78,7 +60,12 @@ namespace Commix.ConsoleTest
         public void Attach(PipelineMonitor monitor)
         {
             _threadTraces.GetOrAdd(Thread.CurrentThread.ManagedThreadId,
-                managedThreadId => new ConsolePipelineTrace(managedThreadId, monitor));
+                managedThreadId =>
+                {
+                    var trace = new ConsolePipelineTrace(managedThreadId);
+                    trace.Attach(monitor);
+                    return trace;
+                });
         }
     }
 }

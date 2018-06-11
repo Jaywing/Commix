@@ -9,6 +9,19 @@ using Commix.Schema;
 
 namespace Commix.ConsoleTest.Models
 {
+
+    public class SimpleTestOutput : IFluentSchema
+    {
+        public string Name { get; set; }
+
+        public SchemaBuilder Map()
+            => this.Schema(s => s
+                .Property(m => m.Name, p => p
+                    .Constant("Hello")
+                    .Set())
+            );
+    }
+
     public class TestOutput : IFluentSchema
     {
         public string Name { get; set; }

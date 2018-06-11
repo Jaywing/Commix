@@ -2,12 +2,16 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Commix;
 using Commix.ConsoleTest.Models;
 using Commix.Core;
+using Commix.Diagnostics;
+using Commix.Diagnostics.Reactive;
 using Commix.Pipeline;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
@@ -46,17 +50,29 @@ namespace Commix.ConsoleTest
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
                 {
                     var input = new TestInput();
 
-                    for (int xi = 0; xi < 10; xi++)
+                    for (int xi = 0; xi < 1; xi++)
                     {
-                       var output = input.As<TestOutput>();
-                       results.Add(output);
+                        var jsonTrace = new NestedPipelineTrace(Thread.CurrentThread.ManagedThreadId);
+
+                        var output = input.As<TestOutput>((pipeline, context) =>
+                        {
+                            var monitor = new PipelineMonitor();
+                            context.Monitor = monitor;
+                            jsonTrace.Attach(monitor);
+                        });
+
+                        string json = jsonTrace.ToJson();
+
+                        File.WriteAllText("Trace.json", json, Encoding.UTF8);
+
+                        results.Add(output);
                     }
 
                     Console.WriteLine($"{id} complete");

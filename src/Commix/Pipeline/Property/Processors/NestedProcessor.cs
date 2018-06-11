@@ -29,7 +29,7 @@ namespace Commix.Pipeline.Property.Processors
             {
                 if (processorContext.Options.ContainsKey(OutputTypeOption) && processorContext.Options[OutputTypeOption] is Type outputType)
                 {
-                    var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType));
+                    var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType)) {Monitor = pipelineContext.Monitor};
 
                     ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
 

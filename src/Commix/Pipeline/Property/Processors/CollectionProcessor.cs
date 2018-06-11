@@ -18,9 +18,15 @@ namespace Commix.Pipeline.Property.Processors
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
             if (pipelineContext.Context is IEnumerable<TSource> sourceEnumerable)
-                pipelineContext.Context = sourceEnumerable.Select(i => i.As<TTarget>()).ToList();
-            
-            Next();
+            {
+                pipelineContext.Context = sourceEnumerable.Select(i =>
+                {
+                    return i.As<TTarget>(
+                        (pipeline, context) => context.Monitor = pipelineContext.Monitor);
+                });
+
+                Next();
+            }
         }
     }
 }

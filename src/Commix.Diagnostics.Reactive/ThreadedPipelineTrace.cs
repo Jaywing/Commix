@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
+using Commix.Pipeline;
 
 namespace Commix.Diagnostics.Reactive
 {
@@ -10,17 +11,20 @@ namespace Commix.Diagnostics.Reactive
     {
         public int ManagedThreadId { get; }
 
-        private readonly IDisposable _onRun;
-        private readonly IDisposable _onComplete;
-        private readonly IDisposable _onError;
-        private readonly IDisposable _onProcessorRun;
-        private readonly IDisposable _onProcessorComplete;
-        private readonly IDisposable _onProcessorError;
+        private IDisposable _onRun;
+        private IDisposable _onComplete;
+        private IDisposable _onError;
+        private IDisposable _onProcessorRun;
+        private IDisposable _onProcessorComplete;
+        private IDisposable _onProcessorError;
 
-        protected ThreadedPipelineTrace(int managedThreadId, PipelineMonitor monitor)
+        protected ThreadedPipelineTrace(int managedThreadId)
         {
             ManagedThreadId = managedThreadId;
+        }
 
+        public void Attach(IPipelineMonitor monitor)
+        {
             var onRun = Observable.FromEventPattern<PipelineEventArgs>(
                 h => monitor.RunEvent += h,
                 h => monitor.RunEvent -= h);

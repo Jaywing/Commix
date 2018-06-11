@@ -8,7 +8,7 @@ namespace Commix.Pipeline.Model
     /// <summary>
     /// Context used by the model mapping pipeline.
     /// </summary>
-    public class ModelContext
+    public class ModelContext : IMonitoredContext
     {
         /// <summary>
         /// Mapping source
@@ -30,5 +30,7 @@ namespace Commix.Pipeline.Model
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Output = output ?? throw new ArgumentNullException(nameof(output));
         }
+
+        public IPipelineMonitor Monitor { get; set; }
     }
 }

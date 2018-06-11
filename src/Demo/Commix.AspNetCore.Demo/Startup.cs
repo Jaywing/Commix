@@ -72,14 +72,19 @@ namespace Commix.AspNetCore.Demo
         public void Attach(PipelineMonitor monitor)
         {
             _threadTraces.GetOrAdd(Thread.CurrentThread.ManagedThreadId,
-                managedThreadId => new ConsolePipelineTrace(managedThreadId, monitor));
+                managedThreadId =>
+                {
+                    var trace = new ConsolePipelineTrace(managedThreadId);
+                    trace.Attach(monitor);
+                    return trace;
+                });
         }
     }
 
     public class ConsolePipelineTrace : ThreadedPipelineTrace
     {
-        public ConsolePipelineTrace(int managedThreadId, PipelineMonitor monitor)
-            : base(managedThreadId, monitor)
+        public ConsolePipelineTrace(int managedThreadId)
+            : base(managedThreadId)
         { }
 
         protected override void OnRun(EventPattern<PipelineEventArgs> args)

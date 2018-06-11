@@ -49,7 +49,7 @@ namespace Commix.Pipeline.Model.Processors
                     propertyPipeline.Add(syncProcessor, propertyProcessorSchema);
             }
 
-            propertyPipeline.Run(new PropertyContext(context, propertySchema.PropertyInfo, context.Input));
+            propertyPipeline.Run(new PropertyContext(context, propertySchema.PropertyInfo, context.Input) {Monitor = context.Monitor});
         }
     }
 }

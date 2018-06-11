@@ -6,7 +6,7 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyContext
+    public class PropertyContext : IMonitoredContext
     {
         public Guid InstanceId { get; } = Guid.NewGuid();
 
@@ -43,5 +43,7 @@ namespace Commix.Pipeline.Property
         {
             Context = initialContext;
         }
+
+        public IPipelineMonitor Monitor { get; set; }
     }
 }
