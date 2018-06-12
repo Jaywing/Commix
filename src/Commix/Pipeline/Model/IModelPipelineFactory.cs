@@ -8,5 +8,12 @@ namespace Commix.Pipeline.Model
     public interface IModelPipelineFactory
     {
         ModelMappingPipeline GetModelPipeline();
+
+        /// <summary>
+        /// Gets the output model.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        T GetOutputModel<T>();
     }
 }

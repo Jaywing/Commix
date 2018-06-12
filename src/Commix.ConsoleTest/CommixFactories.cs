@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
 using Commix.Diagnostics;
+using Commix.Pipeline;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Model.Processors;
 using Commix.Pipeline.Property;
@@ -33,6 +35,14 @@ namespace Commix.ConsoleTest
 
             return pipeline;
         }
+
+        public T GetOutputModel<T>()
+        {
+            var model = _serviceProvider.GetService<T>();
+            if (EqualityComparer<T>.Default.Equals(model, default(T)))
+                model = Activator.CreateInstance<T>();
+            return model;
+        }
     }
 
     public class ConsoleTestPropertyPipelineFactory : IPropertyPipelineFactory
@@ -57,7 +67,7 @@ namespace Commix.ConsoleTest
         private readonly ConcurrentDictionary<int, ConsolePipelineTrace> _threadTraces =
             new ConcurrentDictionary<int, ConsolePipelineTrace>();
 
-        public void Attach(PipelineMonitor monitor)
+        public void Attach(IPipelineMonitor monitor)
         {
             _threadTraces.GetOrAdd(Thread.CurrentThread.ManagedThreadId,
                 managedThreadId =>

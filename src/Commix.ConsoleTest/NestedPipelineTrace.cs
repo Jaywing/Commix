@@ -74,7 +74,7 @@ namespace Commix.ConsoleTest
                         break;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // Best effort
             }

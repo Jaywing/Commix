@@ -47,10 +47,20 @@ namespace Commix.ConsoleTest
             CommixExtensions.PipelineFactory = new Lazy<IModelPipelineFactory>(
                 () => ServiceLocator.ServiceProvider.GetRequiredService<IModelPipelineFactory>());
 
+            var monitor = new PipelineMonitor();
+            var consoleTrace = new ThreadAwareLogger();
+
+            CommixExtensions.GlobalPipelineConfig = (pipeline, context) =>
+            {
+                context.Monitor = monitor;
+
+                consoleTrace.Attach(context.Monitor);
+            };
+
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
@@ -63,14 +73,12 @@ namespace Commix.ConsoleTest
 
                         var output = input.As<TestOutput>((pipeline, context) =>
                         {
-                            var monitor = new PipelineMonitor();
-                            context.Monitor = monitor;
-                            jsonTrace.Attach(monitor);
+                            jsonTrace.Attach(context.Monitor);
                         });
 
                         string json = jsonTrace.ToJson();
 
-                        File.WriteAllText("Trace.json", json, Encoding.UTF8);
+                        File.WriteAllText($"Trace_{id}_{xi}.json", json, Encoding.UTF8);
 
                         results.Add(output);
                     }

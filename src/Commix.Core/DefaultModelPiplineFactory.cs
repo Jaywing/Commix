@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Commix.Pipeline.Model;
@@ -28,6 +29,14 @@ namespace Commix.Core
             pipeline.Add(modelMapperProcessor, new ModelProcessorContext());
 
             return pipeline;
+        }
+
+        public T GetOutputModel<T>()
+        {
+            var model = _serviceProvider.GetService<T>();
+            if (EqualityComparer<T>.Default.Equals(model, default(T)))
+                model = Activator.CreateInstance<T>();
+            return model;
         }
     }
 }
