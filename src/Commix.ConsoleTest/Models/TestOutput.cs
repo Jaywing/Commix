@@ -46,7 +46,7 @@ namespace Commix.ConsoleTest.Models
                 .Property(m => m.Col, c => c
                     .Constant(new List<TestInput>{new TestInput(), new TestInput()})
                     .Collection(x => x.Define<TestInput, TestInput2>())
-                    .Ensure(typeof(IEnumerable<TestInput2>), new List<TestInput2>{new TestInput2(){Name = "switched"}})
+                    .Ensure(new List<TestInput2>{new TestInput2(){Name = "switched"}})
                     .Set())
             );
 
