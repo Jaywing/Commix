@@ -8,11 +8,6 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline
 {
-    public interface IMonitoredContext
-    {
-        IPipelineMonitor Monitor { get; set; }
-    }
-
     public class Pipeline<TPipelineContext, TProcessorContext>
         where TProcessorContext : class
     {
@@ -38,18 +33,16 @@ namespace Commix.Pipeline
                     {
                         var metaProcessor = _processors[stepIndex + 1];
 
-                        RunProcessor(metaProcessor, monitor, context);
+                        WrapProcessor(metaProcessor, monitor, context);
                     }
                 };
             }
 
+            monitor?.OnRunEvent(new PipelineEventArgs(context));
+
             try
             {
-                monitor?.OnRunEvent(new PipelineEventArgs(context));
-
-                RunProcessor(_processors[0], monitor, context);
-
-                monitor?.OnCompleteEvent(new PipelineEventArgs(context));
+                WrapProcessor(_processors[0], monitor, context);
             }
             catch (Exception exception)
             {
@@ -57,16 +50,18 @@ namespace Commix.Pipeline
 
                 throw;
             }
+
+            monitor?.OnCompleteEvent(new PipelineEventArgs(context));
         }
 
         [DebuggerStepThrough]
-        void RunProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
+        private void WrapProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
         {
             try
             {
                 monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
 
-                instance.Processor.Run(context, instance.Context);
+                RunProcessor(instance, context);
 
                 monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
             }
@@ -76,12 +71,17 @@ namespace Commix.Pipeline
             }
         }
 
+        private void RunProcessor(ProcessorInstance instance, TPipelineContext context)
+        {
+            instance.Processor.Run(context, instance.Context);
+        }
+
+        [DebuggerStepThrough]
         private class ProcessorInstance
         {
             public IProcessor<TPipelineContext, TProcessorContext> Processor { get; }
             public TProcessorContext Context { get; }
 
-            [DebuggerStepThrough]
             public ProcessorInstance(IProcessor<TPipelineContext, TProcessorContext> processor, TProcessorContext context)
             {
                 Processor = processor ?? throw new ArgumentNullException(nameof(processor));
