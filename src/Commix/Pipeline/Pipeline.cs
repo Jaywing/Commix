@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Commix.Diagnostics;
@@ -20,25 +21,10 @@ namespace Commix.Pipeline
         public void Add(IProcessor<TPipelineContext, TProcessorContext> pipelineContext, TProcessorContext processorContext) 
             => _processors.Add(new ProcessorInstance(pipelineContext, processorContext));
 
+        [DebuggerStepThrough]
         public void Run(TPipelineContext context)
         {
             var monitor = (context as IMonitoredContext)?.Monitor;
-
-            void RunProcessor(ProcessorInstance instance)
-            {
-                try
-                {
-                    monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
-
-                    instance.Processor.Run(context, instance.Context);
-
-                    monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
-                }
-                catch (Exception exception)
-                {
-                    monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, instance.Context, instance.Processor.GetType()));
-                }
-            }
 
             if (_processors == null || _processors.Count == 0)
                 return;
@@ -52,7 +38,7 @@ namespace Commix.Pipeline
                     {
                         var metaProcessor = _processors[stepIndex + 1];
 
-                        RunProcessor(metaProcessor);
+                        RunProcessor(metaProcessor, monitor, context);
                     }
                 };
             }
@@ -61,7 +47,7 @@ namespace Commix.Pipeline
             {
                 monitor?.OnRunEvent(new PipelineEventArgs(context));
 
-                RunProcessor(_processors[0]);
+                RunProcessor(_processors[0], monitor, context);
 
                 monitor?.OnCompleteEvent(new PipelineEventArgs(context));
             }
@@ -73,11 +59,29 @@ namespace Commix.Pipeline
             }
         }
 
+        [DebuggerStepThrough]
+        void RunProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
+        {
+            try
+            {
+                monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
+
+                instance.Processor.Run(context, instance.Context);
+
+                monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
+            }
+            catch (Exception exception)
+            {
+                monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, instance.Context, instance.Processor.GetType()));
+            }
+        }
+
         private class ProcessorInstance
         {
             public IProcessor<TPipelineContext, TProcessorContext> Processor { get; }
             public TProcessorContext Context { get; }
 
+            [DebuggerStepThrough]
             public ProcessorInstance(IProcessor<TPipelineContext, TProcessorContext> processor, TProcessorContext context)
             {
                 Processor = processor ?? throw new ArgumentNullException(nameof(processor));
