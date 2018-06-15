@@ -21,6 +21,7 @@ namespace Commix.Schema
         {
             return builder
                 .Add(Processor.Use<EnsureProcessor>(c => c
+                    .Option(EnsureProcessor.EnsureType, typeof(TProp))
                     .Option(EnsureProcessor.EnsureReplacement, replacement)));
         }
     }
