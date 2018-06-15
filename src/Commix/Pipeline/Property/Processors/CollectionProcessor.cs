@@ -24,9 +24,9 @@ namespace Commix.Pipeline.Property.Processors
                     return i.As<TTarget>(
                         (pipeline, context) => context.Monitor = pipelineContext.Monitor);
                 });
-
-                Next();
             }
+
+            Next();
         }
     }
 }
