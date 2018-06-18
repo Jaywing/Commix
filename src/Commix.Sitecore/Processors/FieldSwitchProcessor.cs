@@ -47,14 +47,12 @@ namespace Commix.Sitecore.Processors
                         case CustomField customField:
                             contextField = customField.InnerField;
                             break;
-                        default:
-                            throw InvalidContextException.Create(pipelineContext);
                     }
 
                     switch (contextField)
                     {
                         case null:
-                            throw new ArgumentException(nameof(contextField));
+                            break;
                         case var _ when string.Equals(contextField.Type, "Checkbox", StringComparison.InvariantCultureIgnoreCase):
                             pipelineContext.Context = new CheckboxField(contextField);
                             break;
@@ -126,6 +124,7 @@ namespace Commix.Sitecore.Processors
             catch
             {
                 pipelineContext.Faulted = true;
+
                 throw;
             }
             finally

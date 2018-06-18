@@ -26,7 +26,8 @@ namespace Commix.Sitecore.Processors
                             pipelineContext.Context = item.Name;
                             break;
                         default:
-                            throw InvalidContextException.Create(pipelineContext);
+                            pipelineContext.Faulted = true;
+                            break;
                     }
                 }
             }

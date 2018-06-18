@@ -30,7 +30,8 @@ namespace Commix.Sitecore.Processors
                             pipelineContext.Context = LinkManager.GetItemUrl(contentItem);
                             break;
                         default:
-                            throw InvalidContextException.Create(pipelineContext);
+                            pipelineContext.Faulted = true;
+                            break;
                     }
                 }
             }

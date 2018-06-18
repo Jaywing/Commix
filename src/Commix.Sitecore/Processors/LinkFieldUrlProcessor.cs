@@ -42,7 +42,7 @@ namespace Commix.Sitecore.Processors
                     }
                     else
                     {
-                        throw InvalidContextException.Create(pipelineContext);
+                        pipelineContext.Faulted = true;
                     }
                 }
             }

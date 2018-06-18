@@ -25,6 +25,8 @@ namespace Commix.Sitecore.Processors
                 {
                     if (processorContext.TryGetOption(Path, out string path))
                         pipelineContext.Context = Context.Database.GetItem(path);
+                    else
+                        pipelineContext.Faulted = true;
                 }
             }
             catch

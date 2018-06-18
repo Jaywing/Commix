@@ -21,6 +21,8 @@ namespace Commix.Sitecore.Processors
                 {
                     if (processorContext.TryGetOption(DictionaryKeyOptionKey, out string dictionaryKey))
                         pipelineContext.Context = Translate.Text(dictionaryKey);
+                    else
+                        pipelineContext.Faulted = true;
                 }
             }
             catch

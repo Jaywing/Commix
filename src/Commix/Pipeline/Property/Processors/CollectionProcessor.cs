@@ -30,7 +30,7 @@ namespace Commix.Pipeline.Property.Processors
                     }
                     else
                     {
-                        throw InvalidContextException.Create(pipelineContext);
+                        pipelineContext.Faulted = true;
                     }
                 }
             }

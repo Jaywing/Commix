@@ -35,11 +35,8 @@ namespace Commix.Pipeline.Property.Processors
 
                         ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
 
-                        if (pipeline != null)
-                        {
-                            pipeline.Run(mappingContext);
-                            pipelineContext.Context = mappingContext.Output;
-                        }
+                        pipeline.Run(mappingContext);
+                        pipelineContext.Context = mappingContext.Output;
                     }
                 }
             }

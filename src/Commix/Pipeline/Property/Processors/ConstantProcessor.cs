@@ -21,6 +21,8 @@ namespace Commix.Pipeline.Property.Processors
                 {
                     if (processorContext.TryGetOption(ConstantOptionKey, out T constantValue))
                         pipelineContext.Context = constantValue;
+                    else
+                        pipelineContext.Faulted = true;
                 }
             }
             catch
