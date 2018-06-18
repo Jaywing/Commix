@@ -28,8 +28,10 @@ namespace Commix.Pipeline.Property.Processors
                 pipelineContext.Faulted = true;
                 throw;
             }
-
-            Next();
+            finally
+            {
+                Next();
+            }
         }
     }
 }

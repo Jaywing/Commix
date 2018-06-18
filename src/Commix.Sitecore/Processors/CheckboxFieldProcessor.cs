@@ -19,7 +19,7 @@ namespace Commix.Sitecore.Processors
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
             try
-            { 
+            {
                 if (!pipelineContext.Faulted)
                 {
                     switch (pipelineContext.Context)
@@ -38,8 +38,10 @@ namespace Commix.Sitecore.Processors
                 pipelineContext.Faulted = true;
                 throw;
             }
-
-            Next();
+            finally
+            {
+                Next();
+            }
         }
     }
 }

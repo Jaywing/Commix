@@ -29,8 +29,10 @@ namespace Commix.Pipeline.Property.Processors
                 pipelineContext.Faulted = true;
                 throw;
             }
-
-            Next();
+            finally
+            {
+                Next();
+            }
         }
 
         private bool GetPropertyInfo(PropertyContext context, PropertyProcessorSchema processorContext, out PropertyInfo sourcePropertyInfo)

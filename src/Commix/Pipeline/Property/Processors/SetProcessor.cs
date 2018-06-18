@@ -12,24 +12,23 @@ namespace Commix.Pipeline.Property.Processors
     public class SetProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
-        
+
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (!pipelineContext.Faulted)
+            try
             {
-                try
-                {
+                if (!pipelineContext.Faulted)
                     FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Context);
-                }
-                catch
-                {
-                    pipelineContext.Faulted = true;
-                    throw;
-                }
-               
             }
-
-            Next();
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
+            finally
+            {
+                Next();
+            }
         }
     }
 }

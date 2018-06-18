@@ -39,8 +39,6 @@ namespace Commix.Pipeline.Property.Processors
                         {
                             pipeline.Run(mappingContext);
                             pipelineContext.Context = mappingContext.Output;
-
-                            Next();
                         }
                     }
                 }
@@ -49,6 +47,10 @@ namespace Commix.Pipeline.Property.Processors
             {
                 pipelineContext.Faulted = true;
                 throw;
+            }
+            finally
+            {
+                Next();
             }
         }
     }

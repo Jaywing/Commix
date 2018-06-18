@@ -46,8 +46,10 @@ namespace Commix.Sitecore.Processors
                 pipelineContext.Faulted = true;
                 throw;
             }
-
-            Next();
+            finally
+            {
+                Next();
+            }
         }
     }
 }

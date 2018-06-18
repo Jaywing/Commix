@@ -29,7 +29,7 @@ namespace Commix.Sitecore.Processors
                 if (!pipelineContext.Faulted)
                 {
                     Field contextField = null;
-                    
+
                     switch (pipelineContext.Context)
                     {
                         case Item item:
@@ -50,7 +50,7 @@ namespace Commix.Sitecore.Processors
                         default:
                             throw InvalidContextException.Create(pipelineContext);
                     }
-                    
+
                     switch (contextField)
                     {
                         case null:
@@ -128,8 +128,10 @@ namespace Commix.Sitecore.Processors
                 pipelineContext.Faulted = true;
                 throw;
             }
-
-            Next();
+            finally
+            {
+                Next();
+            }
         }
     }
 }
