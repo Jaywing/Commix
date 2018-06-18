@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Commix.Exceptions;
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
@@ -17,13 +18,26 @@ namespace Commix.Pipeline.Property.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Context is IEnumerable<TSource> sourceEnumerable)
+            try
             {
-                pipelineContext.Context = sourceEnumerable.Select(i =>
+                if (!pipelineContext.Faulted)
                 {
-                    return i.As<TTarget>(
-                        (pipeline, context) => context.Monitor = pipelineContext.Monitor);
-                });
+                    if (pipelineContext.Context is IEnumerable<TSource> sourceEnumerable)
+                    {
+                        pipelineContext.Context = sourceEnumerable
+                            .Select(i => i.As<TTarget>((pipeline, context) => context.Monitor = pipelineContext.Monitor))
+                            .ToList();
+                    }
+                    else
+                    {
+                        throw InvalidContextException.Create(pipelineContext);
+                    }
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
 
             Next();

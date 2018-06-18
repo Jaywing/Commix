@@ -15,8 +15,19 @@ namespace Commix.Pipeline.Property.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (processorContext.TryGetOption(ConstantOptionKey, out T constantValue))
-                pipelineContext.Context = constantValue;
+            try
+            {
+                if (!pipelineContext.Faulted)
+                {
+                    if (processorContext.TryGetOption(ConstantOptionKey, out T constantValue))
+                        pipelineContext.Context = constantValue;
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
 
             Next();
         }

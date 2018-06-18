@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
+using Commix.Exceptions;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -21,14 +22,29 @@ namespace Commix.Sitecore.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Context is TextField field)
+            try
             {
-                var parameters = new StringBuilder();
+                if (!pipelineContext.Faulted)
+                {
+                    if (pipelineContext.Context is TextField field)
+                    {
+                        var parameters = new StringBuilder();
 
-                if (processorContext.TryGetOption(DisableWebEditingOptionKey, out bool disableWebEditing))
-                    parameters.Append($"disable-web-editing={disableWebEditing}");
+                        if (processorContext.TryGetOption(DisableWebEditingOptionKey, out bool disableWebEditing))
+                            parameters.Append($"disable-web-editing={disableWebEditing}");
 
-                pipelineContext.Context = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString(), parameters.ToString());
+                        pipelineContext.Context = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString(), parameters.ToString());
+                    }
+                    else
+                    {
+                        throw InvalidContextException.Create(pipelineContext);
+                    }
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
 
             Next();

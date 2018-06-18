@@ -14,17 +14,25 @@ namespace Commix.Pipeline.Property.Processors
         public static string SourcePropertyOptionKey = $"{typeof(GetProcessor).Name}.SourcePropertyOptionKey"; 
         
         public Action Next { get; set; }
-        
+
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (GetPropertyInfo(pipelineContext, processorContext, out PropertyInfo sourcePropertyInfo))
+            try
             {
-                pipelineContext.Context = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.ModelContext.Input);
+                if (!pipelineContext.Faulted && GetPropertyInfo(pipelineContext, processorContext, out PropertyInfo sourcePropertyInfo))
+                {
+                    pipelineContext.Context = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.ModelContext.Input);
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
 
             Next();
         }
-        
+
         private bool GetPropertyInfo(PropertyContext context, PropertyProcessorSchema processorContext, out PropertyInfo sourcePropertyInfo)
         {
             if (!processorContext.TryGetOption(SourcePropertyOptionKey, out string sourceProperty))

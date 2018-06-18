@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using Commix.Exceptions;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -16,27 +17,40 @@ namespace Commix.Sitecore.Processors
         public static string Height = $"{typeof(MediaUrlProcessor).Name}Height";
         
         public Action Next { get; set; }
-        
+
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            var mediaUrlOptions = new MediaUrlOptions();
-
-            if (processorContext.Options.ContainsKey(Width)
-                && int.TryParse(processorContext.Options[Width].ToString(), out int width))
-                mediaUrlOptions.Width = width;
-
-            if (processorContext.Options.ContainsKey(Height) 
-                && int.TryParse(processorContext.Options[Height].ToString(), out int height))
-                mediaUrlOptions.Height = height;
-            
-            switch (pipelineContext.Context)
+            try
             {
-                case ImageField imageField when imageField.MediaItem != null:
-                    pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(imageField.MediaItem, mediaUrlOptions));
-                    break;
-                case MediaItem mediaItem:
-                    pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem,mediaUrlOptions));
-                    break;
+                if (!pipelineContext.Faulted)
+                {
+                    var mediaUrlOptions = new MediaUrlOptions();
+
+                    if (processorContext.Options.ContainsKey(Width)
+                        && int.TryParse(processorContext.Options[Width].ToString(), out int width))
+                        mediaUrlOptions.Width = width;
+
+                    if (processorContext.Options.ContainsKey(Height)
+                        && int.TryParse(processorContext.Options[Height].ToString(), out int height))
+                        mediaUrlOptions.Height = height;
+
+                    switch (pipelineContext.Context)
+                    {
+                        case ImageField imageField when imageField.MediaItem != null:
+                            pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(imageField.MediaItem, mediaUrlOptions));
+                            break;
+                        case MediaItem mediaItem:
+                            pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem, mediaUrlOptions));
+                            break;
+                        default:
+                            throw InvalidContextException.Create(pipelineContext);
+                    }
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
 
             Next();

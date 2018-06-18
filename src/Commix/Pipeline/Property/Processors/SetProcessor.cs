@@ -13,14 +13,20 @@ namespace Commix.Pipeline.Property.Processors
     {
         public Action Next { get; set; }
         
-        public Func<Task> NextAsync { get; set; }
-
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
             if (!pipelineContext.Faulted)
             {
-                FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output,
-                    pipelineContext.Context);
+                try
+                {
+                    FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Context);
+                }
+                catch
+                {
+                    pipelineContext.Faulted = true;
+                    throw;
+                }
+               
             }
 
             Next();

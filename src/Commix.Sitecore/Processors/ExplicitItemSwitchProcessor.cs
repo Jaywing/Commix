@@ -3,6 +3,7 @@
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
+using Sitecore;
 using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
@@ -18,11 +19,18 @@ namespace Commix.Sitecore.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.ModelContext.Input)
+            try
             {
-                case Item item when processorContext.TryGetOption(Path, out string path):
-                    pipelineContext.Context = item.Database.GetItem(path);
-                    break;
+                if (!pipelineContext.Faulted)
+                {
+                    if (processorContext.TryGetOption(Path, out string path))
+                        pipelineContext.Context = Context.Database.GetItem(path);
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
 
             Next();

@@ -15,8 +15,19 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (processorContext.TryGetOption(DictionaryKeyOptionKey, out string dictionaryKey))
-                pipelineContext.Context = Translate.Text(dictionaryKey);
+            try
+            {
+                if (!pipelineContext.Faulted)
+                {
+                    if (processorContext.TryGetOption(DictionaryKeyOptionKey, out string dictionaryKey))
+                        pipelineContext.Context = Translate.Text(dictionaryKey);
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
 
             Next();
         }

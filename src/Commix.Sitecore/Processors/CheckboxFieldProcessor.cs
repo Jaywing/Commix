@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using Commix.Exceptions;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -17,14 +18,27 @@ namespace Commix.Sitecore.Processors
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.Context)
-            {
-                case Field field when field.Type == "checkbox":
-                    CheckboxField checkBoxField = field;
-                    pipelineContext.Context = checkBoxField.Checked;
-                    break;
+            try
+            { 
+                if (!pipelineContext.Faulted)
+                {
+                    switch (pipelineContext.Context)
+                    {
+                        case Field field when field.Type == "checkbox":
+                            CheckboxField checkBoxField = field;
+                            pipelineContext.Context = checkBoxField.Checked;
+                            break;
+                        default:
+                            throw InvalidContextException.Create(pipelineContext);
+                    }
+                }
             }
-            
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
+
             Next();
         }
     }

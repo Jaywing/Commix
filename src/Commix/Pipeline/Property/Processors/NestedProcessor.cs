@@ -22,25 +22,33 @@ namespace Commix.Pipeline.Property.Processors
         public static string OutputTypeOption = $"{typeof(NestedProcessor).Name}.OutputType"; 
         
         public Action Next { get; set; }
-       
+
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (pipelineContext.Context != null)
+            try
             {
-                if (processorContext.Options.ContainsKey(OutputTypeOption) && processorContext.Options[OutputTypeOption] is Type outputType)
+                if (!pipelineContext.Faulted && pipelineContext.Context != null)
                 {
-                    var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType)) {Monitor = pipelineContext.Monitor};
-
-                    ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
-
-                    if (pipeline != null)
+                    if (processorContext.Options.ContainsKey(OutputTypeOption) && processorContext.Options[OutputTypeOption] is Type outputType)
                     {
-                        pipeline.Run(mappingContext);
-                        pipelineContext.Context = mappingContext.Output;
+                        var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType)) {Monitor = pipelineContext.Monitor};
 
-                        Next();
+                        ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
+
+                        if (pipeline != null)
+                        {
+                            pipeline.Run(mappingContext);
+                            pipelineContext.Context = mappingContext.Output;
+
+                            Next();
+                        }
                     }
                 }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
             }
         }
     }
