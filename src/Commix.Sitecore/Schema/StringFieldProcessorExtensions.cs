@@ -9,20 +9,20 @@ namespace Commix.Sitecore.Schema
 {
     public static class StringFieldProcessorExtensions
     {
-        public static SchemaPropertyBuilder<TModel, string> StringField<TModel>(
-            this SchemaPropertyBuilder<TModel, string> builder, string fieldId)
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
         {
             return StringField(builder, fieldId, string.Empty, false);
         }
 
-        public static SchemaPropertyBuilder<TModel, string> StringField<TModel>(
-            this SchemaPropertyBuilder<TModel, string> builder, string fieldId, string defaultValue)
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
         {
             return StringField(builder, fieldId, defaultValue, false);
         }
 
-        public static SchemaPropertyBuilder<TModel, string> StringField<TModel>(
-            this SchemaPropertyBuilder<TModel, string> builder, string fieldId, string defaultValue, bool disableWebEditing)
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
         {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
