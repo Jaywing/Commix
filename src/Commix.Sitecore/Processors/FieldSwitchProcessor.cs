@@ -44,6 +44,9 @@ namespace Commix.Sitecore.Processors
                         case Field field:
                             contextField = field;
                             break;
+                        case CustomField customField:
+                            contextField = customField.InnerField;
+                            break;
                         default:
                             throw InvalidContextException.Create(pipelineContext);
                     }
@@ -51,7 +54,7 @@ namespace Commix.Sitecore.Processors
                     switch (contextField)
                     {
                         case null:
-                            throw InvalidContextException.Create(pipelineContext);
+                            throw new ArgumentException(nameof(contextField));
                         case var _ when string.Equals(contextField.Type, "Checkbox", StringComparison.InvariantCultureIgnoreCase):
                             pipelineContext.Context = new CheckboxField(contextField);
                             break;
