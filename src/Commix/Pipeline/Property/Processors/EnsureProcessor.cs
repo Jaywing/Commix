@@ -28,6 +28,7 @@ namespace Commix.Pipeline.Property.Processors
                     case string stringValue when string.IsNullOrEmpty(stringValue) && 
                                                  processorContext.TryGetOption(EnsureReplacement, out string replacement):
                         pipelineContext.Context = replacement;
+                        pipelineContext.Faulted = false;
                         break;
                 }
 
@@ -41,6 +42,7 @@ namespace Commix.Pipeline.Property.Processors
                                         typeToEnsure.IsInstanceOfType(replacement) &&
                                         !typeToEnsure.IsInstanceOfType(pipelineContext.Context):
                             pipelineContext.Context = replacement;
+                            pipelineContext.Faulted = false;
                             break;
                     }
                 }
