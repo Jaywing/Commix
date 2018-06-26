@@ -54,7 +54,6 @@ namespace Commix.Pipeline
             monitor?.OnCompleteEvent(new PipelineEventArgs(context));
         }
 
-        [DebuggerStepThrough]
         private void WrapProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
         {
             try
@@ -76,7 +75,6 @@ namespace Commix.Pipeline
             instance.Processor.Run(context, instance.Context);
         }
 
-        [DebuggerStepThrough]
         private class ProcessorInstance
         {
             public IProcessor<TPipelineContext, TProcessorContext> Processor { get; }

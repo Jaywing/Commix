@@ -25,6 +25,10 @@ namespace Commix.Sitecore
         internal void SetPropertyProcessorFactory<T>() where T : class, IPropertyProcessorFactory
             => _serviceCollection.AddSingleton<IPropertyProcessorFactory, T>();
 
+        /// <summary>
+        /// Scans all loaded assemblies with matchin assemble name prefix, registering processors that implement <see cref="IPropertyProcesser"/>
+        /// </summary>
+        /// <param name="assemblyPrefix">The assembly prefix.</param>
         internal void RegisterProcessors(string assemblyPrefix)
         {
             IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies()
@@ -34,6 +38,10 @@ namespace Commix.Sitecore
                 RegisterProcessors(loadedAssembly);
         }
 
+        /// <summary>
+        /// Registers the processors.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
         internal void RegisterProcessors(Assembly assembly)
         {
             foreach (Type processorType in assembly.GetTypes())

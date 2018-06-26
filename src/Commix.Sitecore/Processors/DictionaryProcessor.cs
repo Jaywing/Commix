@@ -10,7 +10,8 @@ namespace Commix.Sitecore.Processors
 {
     public class DictionaryProcessor : IPropertyProcesser
     {
-        public static string DictionaryKeyOptionKey = $"{typeof(DictionaryProcessor).Name}DictionaryKey";
+        public static string DictionaryKey = $"{typeof(DictionaryProcessor).Name}Dictionary";
+        public static string DefaultValue = $"{typeof(DictionaryProcessor).Name}DefaultValue";
         
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
@@ -19,10 +20,18 @@ namespace Commix.Sitecore.Processors
             {
                 if (!pipelineContext.Faulted)
                 {
-                    if (processorContext.TryGetOption(DictionaryKeyOptionKey, out string dictionaryKey))
-                        pipelineContext.Context = Translate.Text(dictionaryKey);
+                    if (processorContext.TryGetOption(DictionaryKey, out string dictionaryKey))
+                    {
+                        if (processorContext.TryGetOption(DefaultValue, out string defaultValue) && defaultValue != default(string))
+                            pipelineContext.Context = Translate.TextByLanguage(dictionaryKey, Language.Current, defaultValue);
+                        else
+                            pipelineContext.Context = Translate.Text(dictionaryKey);
+
+                    }
                     else
+                    {
                         pipelineContext.Faulted = true;
+                    }
                 }
             }
             catch

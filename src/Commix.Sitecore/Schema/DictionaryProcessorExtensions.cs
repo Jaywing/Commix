@@ -10,11 +10,12 @@ namespace Commix.Sitecore.Schema
     public static class DictionaryProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Dictionary<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string dictionaryKey, TProp defaultValue)
+            this SchemaPropertyBuilder<TModel, TProp> builder, string dictionaryKey, string defaultValue = default(string))
         {
             return builder
                 .Add(Processor.Use<DictionaryProcessor>(c => c
-                    .Option(DictionaryProcessor.DictionaryKeyOptionKey, dictionaryKey)))
+                    .Option(DictionaryProcessor.DictionaryKey, dictionaryKey)
+                    .Option(DictionaryProcessor.DefaultValue, defaultValue)))
                 .Ensure(defaultValue);
         }
     }
