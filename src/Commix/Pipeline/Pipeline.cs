@@ -29,11 +29,14 @@ namespace Commix.Pipeline
                 var stepIndex = i;
                 _processors[i].Processor.Next = () =>
                 {
-                    if (stepIndex + 1 < _processors.Count)
+                    while (stepIndex + 1 < _processors.Count)
                     {
                         var metaProcessor = _processors[stepIndex + 1];
 
-                        WrapProcessor(metaProcessor, monitor, context);
+                        if (RunProcessor(metaProcessor, monitor, context))
+                            break;
+
+                        stepIndex++;
                     }
                 };
             }
@@ -42,7 +45,7 @@ namespace Commix.Pipeline
 
             try
             {
-                WrapProcessor(_processors[0], monitor, context);
+                RunProcessor(_processors[0], monitor, context);
             }
             catch (Exception exception)
             {
@@ -54,13 +57,13 @@ namespace Commix.Pipeline
             monitor?.OnCompleteEvent(new PipelineEventArgs(context));
         }
 
-        private void WrapProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
+        protected virtual bool RunProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
         {
             try
             {
                 monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
 
-                RunProcessor(instance, context);
+                instance.Processor.Run(context, instance.Context);
 
                 monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
             }
@@ -68,14 +71,11 @@ namespace Commix.Pipeline
             {
                 monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, instance.Context, instance.Processor.GetType()));
             }
+
+            return true;
         }
 
-        private void RunProcessor(ProcessorInstance instance, TPipelineContext context)
-        {
-            instance.Processor.Run(context, instance.Context);
-        }
-
-        private class ProcessorInstance
+        protected class ProcessorInstance
         {
             public IProcessor<TPipelineContext, TProcessorContext> Processor { get; }
             public TProcessorContext Context { get; }

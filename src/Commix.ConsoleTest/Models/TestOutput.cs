@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Commix.ConsoleTest.Processors;
+using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 using Commix.Schema;
@@ -55,13 +56,18 @@ namespace Commix.ConsoleTest.Models
         {
             public string Name { get; set; }
 
-            public TestOutput3 Test3 { get; set; }
+            public string StageResult { get; set; }
 
             public SchemaBuilder Map()
                 => this.Schema(s => s
                     .Property(m => m.Name, c => c.Get())
-                    .Property(m => m.Test3, p => p
-                        .Add(Processor.Use<Processor2>())
+                    .Property(m => m.StageResult, p => p
+                        .Add(Processor.Use<Processor3>(o => o
+                            .SetStageOnCompletion(PropertyStageMarker.Finalised)
+                        ))
+                        .Add(Processor.Use<Processor4>(o => o
+                            .AllowedStages(PropertyStageMarker.Populating)
+                        ))
                         .Set())
                 );
         }

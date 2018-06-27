@@ -60,7 +60,7 @@ namespace Commix.ConsoleTest
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>

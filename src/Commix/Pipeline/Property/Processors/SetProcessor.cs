@@ -30,5 +30,7 @@ namespace Commix.Pipeline.Property.Processors
                 Next();
             }
         }
+
+        public PropertyStageMarker AllowedStages { get; } = PropertyStageMarker.All;
     }
 }

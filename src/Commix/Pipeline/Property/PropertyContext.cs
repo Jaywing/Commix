@@ -25,12 +25,14 @@ namespace Commix.Pipeline.Property
 
         /// <summary>
         /// Pipeline context, this value will be populated, transformed by the Pipline and then ultimately 
-        /// if the Aborted flag is not set  used by a SetProcessor to set the target property.
+        /// if the Aborted flag is not set used by a SetProcessor to set the target property.
         /// </summary>
         /// <value>
         /// Pipline context.
         /// </value>
         public object Context { get; set; }
+
+        public PropertyStageMarker Stage { get; set; }
 
         public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo)
         {
