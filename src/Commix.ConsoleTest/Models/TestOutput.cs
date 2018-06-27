@@ -35,7 +35,8 @@ namespace Commix.ConsoleTest.Models
         public SchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Nested, c => c
-                    .NestedFrom()
+                    .Get()
+                    .Nested()
                     .Set())
                 .Property(m => m.SomeDerivedString, c => c
                     .Get("Name")

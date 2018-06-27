@@ -1,4 +1,6 @@
-﻿using Commix.Pipeline.Property.Processors;
+﻿using System;
+
+using Commix.Pipeline.Property.Processors;
 
 // ReSharper disable once CheckNamespace
 namespace Commix.Schema
@@ -11,12 +13,14 @@ namespace Commix.Schema
         /// <typeparam name="TModel">The target model.</typeparam>
         /// <typeparam name="TProp">The target property.</typeparam>
         /// <param name="builder">The builder.</param>
+        /// <param name="configure"></param>
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Get<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder)
+            this SchemaPropertyBuilder<TModel, TProp> builder, 
+            Action<SchemaPropertyProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<GetProcessor>());
+                .Add(Processor.Use<GetProcessor>(configure));
         }
 
         /// <summary>
@@ -26,13 +30,18 @@ namespace Commix.Schema
         /// <typeparam name="TProp">The target property.</typeparam>
         /// <param name="builder">The builder.</param>
         /// <param name="sourceProperty">The name of property on the source.</param>
+        /// <param name="configure"></param>
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Get<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string sourceProperty)
+            this SchemaPropertyBuilder<TModel, TProp> builder, string sourceProperty, 
+            Action<SchemaPropertyProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<GetProcessor>(c => c
-                    .Option(GetProcessor.SourcePropertyOptionKey, sourceProperty)));
+                .Add(Processor.Use<GetProcessor>(c =>
+                {
+                    c.Option(GetProcessor.SourcePropertyOptionKey, sourceProperty);
+                    configure?.Invoke(c);
+                }));
         }
     }
 }

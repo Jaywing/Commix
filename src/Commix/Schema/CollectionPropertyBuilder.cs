@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 namespace Commix.Schema
@@ -12,9 +13,13 @@ namespace Commix.Schema
         public CollectionPropertyBuilder(SchemaPropertyBuilder<TModel, TProp> schemaBuilder)
             => _schemaBuilder = schemaBuilder ?? throw new ArgumentNullException(nameof(schemaBuilder));
 
-        public void Define<TSource, TTarget>()
+        public void Define<TSource, TTarget>(Action<SchemaPropertyProcessorBuilder> configure = null)
         {
-            _schemaBuilder.Add(Processor.Use<CollectionProcessor<TSource, TTarget>>());
+            _schemaBuilder.Add(Processor.Use<CollectionProcessor<TSource, TTarget>>(c =>
+            {
+                c.AllowedStages(PropertyStageMarker.Populating);
+                configure?.Invoke(c);
+            }));
         }
     }
 }

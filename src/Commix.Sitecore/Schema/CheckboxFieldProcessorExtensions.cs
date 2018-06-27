@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using Commix.Pipeline.Property;
 using Commix.Schema;
 using Commix.Sitecore.Processors;
 
@@ -13,8 +14,11 @@ namespace Commix.Sitecore.Schema
         {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                    .AllowedStages(PropertyStageMarker.Populating)
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<CheckboxFieldProcessor>());
+                .Add(Processor.Use<CheckboxFieldProcessor>(o => o
+                    .AllowedStages(PropertyStageMarker.Populating)
+                ));
         }
     }
 }
