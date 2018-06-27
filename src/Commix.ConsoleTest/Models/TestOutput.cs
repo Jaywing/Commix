@@ -61,11 +61,10 @@ namespace Commix.ConsoleTest.Models
 
             public SchemaBuilder Map()
                 => this.Schema(s => s
-                    .Property(m => m.Name, c => c.Get())
+                    .Property(m => m.Name, c => c.Get().Set())
                     .Property(m => m.StageResult, p => p
-                        .Add(Processor.Use<Processor3>(o => o
-                            .SetStageOnCompletion(PropertyStageMarker.Finalised)
-                        ))
+                        .Add(Processor.Use<Processor3>())
+                        .SetStage(PropertyStageMarker.Finalised, c => c.Option(SetStageProcessor.TypeCheck, typeof(string)))
                         .Add(Processor.Use<Processor4>(o => o
                             .AllowedStages(PropertyStageMarker.Populating)
                         ))

@@ -42,7 +42,7 @@ namespace Commix.Pipeline.Property.Processors
                 sourceProperty = context.PropertyInfo.Name;
             }
 
-            sourcePropertyInfo = context.ModelContext.Input.GetType().GetProperty(sourceProperty);;
+            sourcePropertyInfo = context.ModelContext.Input.GetType().GetProperty(sourceProperty);
 
             return sourcePropertyInfo != null;
         }

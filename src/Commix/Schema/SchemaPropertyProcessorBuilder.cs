@@ -11,7 +11,6 @@ namespace Commix.Schema
         private readonly Type _processorType;
         private readonly Dictionary<string, object> _options = new Dictionary<string, object>();
         private PropertyStageMarker _allowedStages = PropertyStageMarker.All;
-        private PropertyStageMarker _stageOnCompletion = PropertyStageMarker.Populating;
 
         public SchemaPropertyProcessorBuilder(Type processorType)
         {
@@ -31,18 +30,12 @@ namespace Commix.Schema
             return  new PropertyProcessorSchema(Guid.NewGuid(), _processorType, _options)
             {
                 AllowedStages = _allowedStages,
-                StageOnCompletion = _stageOnCompletion
             };
         }
 
         public void AddAllowedStages(PropertyStageMarker stages)
         {
             _allowedStages = stages;
-        }
-
-        public void SetStageOnCompletion(PropertyStageMarker stage)
-        {
-            _stageOnCompletion = stage;
         }
     }
 
@@ -57,12 +50,6 @@ namespace Commix.Schema
         public static SchemaPropertyProcessorBuilder AllowedStages(this SchemaPropertyProcessorBuilder builder, PropertyStageMarker stages)
         {
             builder.AddAllowedStages(stages);
-            return builder;
-        }
-
-        public static SchemaPropertyProcessorBuilder StageOnCompletion(this SchemaPropertyProcessorBuilder builder, PropertyStageMarker stage)
-        {
-            builder.SetStageOnCompletion(stage);
             return builder;
         }
     }

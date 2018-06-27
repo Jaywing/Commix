@@ -12,8 +12,7 @@ namespace Commix.Schema
         public Type Type { get; }
         public Dictionary<string, object> Options { get; }
         public PropertyStageMarker AllowedStages { get; internal set; } = PropertyStageMarker.All;
-        public PropertyStageMarker StageOnCompletion { get; internal set; } = PropertyStageMarker.Populating;
-
+        
         public PropertyProcessorSchema(Guid instanceId, Type type, Dictionary<string, object> options)
         {
             InstanceId = instanceId;

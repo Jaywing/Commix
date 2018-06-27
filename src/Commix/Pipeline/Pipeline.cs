@@ -37,6 +37,7 @@ namespace Commix.Pipeline
                             break;
 
                         stepIndex++;
+
                     }
                 };
             }
