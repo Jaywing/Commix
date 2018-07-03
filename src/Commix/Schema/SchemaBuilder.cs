@@ -9,7 +9,7 @@ namespace Commix.Schema
 {
     public abstract class SchemaBuilder
     {
-        protected List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
+        public List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
 
         protected Type ModelType { get; set; }
         
@@ -18,11 +18,7 @@ namespace Commix.Schema
             var modelSchema = new ModelSchema(ModelType);
 
             foreach (Func<PropertySchema> propertyBuilder in PropertyBuilders)
-            {
-                var propertySchema = propertyBuilder();
-
-                modelSchema.Properties.Add(propertySchema);
-            }
+                modelSchema.Properties.Add(propertyBuilder());
 
             return modelSchema;
         }
