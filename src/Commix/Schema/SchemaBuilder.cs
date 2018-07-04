@@ -43,6 +43,13 @@ namespace Commix.Schema
 
             return this;
         }
+
+        public SchemaBuilder<TModel> Merge(IEnumerable<Func<PropertySchema>> properties)
+        {
+            PropertyBuilders.AddRange(properties);
+
+            return this;
+        }
     }
 
     public static class FluentSchemaExtensions
