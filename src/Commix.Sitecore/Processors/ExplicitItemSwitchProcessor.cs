@@ -2,25 +2,42 @@
 
 using Commix.Pipeline.Property;
 using Commix.Schema;
+
+using Sitecore;
 using Sitecore.Data.Items;
-using Sitecore.Mvc.Presentation;
 
 namespace Commix.Sitecore.Processors
 {
+    /// <summary>
+    /// Switches the pipeline context using a provided path, expects the model pipeline source to be a Sitecore item for context.
+    /// </summary>
     public class ExplicitItemSwitchProcessor : IPropertyProcesser
     {
         public static string Path = $"{typeof(ExplicitItemSwitchProcessor).Name}Path";
-        
+
         public Action Next { get; set; }
+
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (!(pipelineContext.ModelContext.Input is Item item))
-                throw new InvalidOperationException($"{typeof(FieldSwitchProcessor)} expects source of {typeof(Item)}");
-            
-            if (processorContext.Options.ContainsKey(Path))
-                pipelineContext.Context = item.Database.GetItem(processorContext.Options[Path].ToString());
-
-            Next();
+            try
+            {
+                if (!pipelineContext.Faulted)
+                {
+                    if (processorContext.TryGetOption(Path, out string path))
+                        pipelineContext.Context = Context.Database.GetItem(path);
+                    else
+                        pipelineContext.Faulted = true;
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
+            finally
+            {
+                Next();
+            }
         }
     }
 }

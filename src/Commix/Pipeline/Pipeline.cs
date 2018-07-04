@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Commix.Diagnostics;
@@ -7,36 +8,18 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline
 {
-
-    public class Pipeline<TPipelineContext, TProcessorContext> : IObservablePipeline
+    public class Pipeline<TPipelineContext, TProcessorContext>
         where TProcessorContext : class
     {
-        public IPipelineMonitor Monitor { get; set; } 
-        
         private readonly List<ProcessorInstance> _processors = new List<ProcessorInstance>();
-        
+
         public void Add(IProcessor<TPipelineContext, TProcessorContext> pipelineContext, TProcessorContext processorContext) 
             => _processors.Add(new ProcessorInstance(pipelineContext, processorContext));
 
+        [DebuggerStepThrough]
         public void Run(TPipelineContext context)
         {
-            void RunProcessor(ProcessorInstance metaProcessor)
-            {
-                try
-                {
-                    Monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
-
-                    metaProcessor.Processor.Run(context, metaProcessor.Context);
-
-                    Monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, metaProcessor.Context, metaProcessor.Processor.GetType()));
-                }
-                catch (Exception exception)
-                {
-                    Monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, metaProcessor.Context, metaProcessor.Processor.GetType()));
-
-                    throw;
-                }
-            }
+            var monitor = (context as IMonitoredContext)?.Monitor;
 
             if (_processors == null || _processors.Count == 0)
                 return;
@@ -46,32 +29,54 @@ namespace Commix.Pipeline
                 var stepIndex = i;
                 _processors[i].Processor.Next = () =>
                 {
-                    if (stepIndex + 1 < _processors.Count)
+                    while (stepIndex + 1 < _processors.Count)
                     {
                         var metaProcessor = _processors[stepIndex + 1];
 
-                        RunProcessor(metaProcessor);
+                        if (RunProcessor(metaProcessor, monitor, context))
+                            break;
+
+                        stepIndex++;
+
                     }
                 };
             }
 
+            monitor?.OnRunEvent(new PipelineEventArgs(context));
+
             try
             {
-                Monitor?.OnRunEvent(new PipelineEventArgs(context));
-
-                RunProcessor(_processors[0]);
-
-                Monitor?.OnCompleteEvent(new PipelineEventArgs(context));
+                RunProcessor(_processors[0], monitor, context);
             }
             catch (Exception exception)
             {
-                Monitor?.OnErrorEvent(new PipelineErrorEventArgs(context, exception));
+                monitor?.OnErrorEvent(new PipelineErrorEventArgs(context, exception));
 
                 throw;
             }
+
+            monitor?.OnCompleteEvent(new PipelineEventArgs(context));
         }
 
-        private class ProcessorInstance
+        protected virtual bool RunProcessor(ProcessorInstance instance, IPipelineMonitor monitor, TPipelineContext context)
+        {
+            try
+            {
+                monitor?.OnProcessorRunEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
+
+                instance.Processor.Run(context, instance.Context);
+
+                monitor?.OnProcessorCompleteEvent(new PipelineProcessorEventArgs(context, instance.Context, instance.Processor.GetType()));
+            }
+            catch (Exception exception)
+            {
+                monitor?.OnProcessorExceptionEvent(new PipelineProcessorExceptionEventArgs(context, exception, instance.Context, instance.Processor.GetType()));
+            }
+
+            return true;
+        }
+
+        protected class ProcessorInstance
         {
             public IProcessor<TPipelineContext, TProcessorContext> Processor { get; }
             public TProcessorContext Context { get; }

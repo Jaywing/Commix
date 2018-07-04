@@ -4,7 +4,7 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Model.Processors
 {
-    public class SchemaGeneratorProcessor : IProcessor<ModelContext, ModelProcessorContext>
+    public class SchemaGeneratorProcessor : ISchemeGenerator
     {
         public Action Next { get; set; }
 

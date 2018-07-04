@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Commix.Diagnostics
 {
+    [DebuggerStepThrough]
     public class PipelineProcessorEventArgs : PipelineEventArgs
     {
         public object ProcessorContext { get; }

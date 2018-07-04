@@ -6,11 +6,13 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyContext
+    public class PropertyContext : IMonitoredContext
     {
+        public Guid InstanceId { get; } = Guid.NewGuid();
+
         public ModelContext ModelContext { get; }
         public PropertyInfo PropertyInfo { get; }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="PropertyMappingPipeline"/> is faulted.
         /// A faulted pipline will continue to Run whilst Next is called, but once the Pipeline complete if the 
@@ -22,13 +24,15 @@ namespace Commix.Pipeline.Property
         public bool Faulted { get; set; }
 
         /// <summary>
-        /// Pipline context, this value will be initialised populate, transformed by the Pipline and then ultimately 
-        /// if the Aborted flag is not set  used by a SetProcessor to set the target property.
+        /// Pipeline context, this value will be populated, transformed by the Pipline and then ultimately 
+        /// if the Aborted flag is not set used by a SetProcessor to set the target property.
         /// </summary>
         /// <value>
         /// Pipline context.
         /// </value>
         public object Context { get; set; }
+
+        public PropertyStageMarker Stage { get; set; }
 
         public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo)
         {
@@ -41,5 +45,7 @@ namespace Commix.Pipeline.Property
         {
             Context = initialContext;
         }
+
+        public IPipelineMonitor Monitor { get; set; }
     }
 }

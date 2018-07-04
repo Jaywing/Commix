@@ -2,12 +2,19 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Commix;
 using Commix.ConsoleTest.Models;
+using Commix.Core;
+using Commix.Diagnostics;
+using Commix.Diagnostics.Reactive;
 using Commix.Pipeline;
+using Commix.Pipeline.Model;
+using Commix.Pipeline.Property;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,10 +37,25 @@ namespace Commix.ConsoleTest
             }
             
             var x = typeof(IEnumerable<object>).IsAssignableFrom(typeof(TestInput[]));
-            
+
             ServiceLocator.ServiceProvider = new ServiceCollection()
-                .Commix()
+                .AddCommix(c => c
+                    .ModelPipelineFactory<ConsoleTestModelPiplineFactory>()
+                    .PropertyPipelineFactory<ConsoleTestPropertyPipelineFactory>())
                 .BuildServiceProvider();
+
+            CommixExtensions.PipelineFactory = new Lazy<IModelPipelineFactory>(
+                () => ServiceLocator.ServiceProvider.GetRequiredService<IModelPipelineFactory>());
+
+            var monitor = new PipelineMonitor();
+            var consoleTrace = new ThreadAwareLogger();
+
+            CommixExtensions.GlobalPipelineConfig = (pipeline, context) =>
+            {
+                context.Monitor = monitor;
+
+                consoleTrace.Attach(context.Monitor);
+            };
 
             var results = new ConcurrentBag<TestOutput>();
 
@@ -47,13 +69,20 @@ namespace Commix.ConsoleTest
 
                     for (int xi = 0; xi < 1; xi++)
                     {
-                       
-                            var output = input.As<TestOutput>();
+                        var jsonTrace = new NestedPipelineTrace(Thread.CurrentThread.ManagedThreadId);
 
-                            results.Add(output);
-                       
+                        var output = input.As<TestOutput>((pipeline, context) =>
+                        {
+                            jsonTrace.Attach(context.Monitor);
+                        });
 
+                        string json = jsonTrace.ToJson();
+
+                        File.WriteAllText($"Trace_{id}_{xi}.json", json, Encoding.UTF8);
+
+                        results.Add(output);
                     }
+
                     Console.WriteLine($"{id} complete");
                 });
                 threads.Add(thread);

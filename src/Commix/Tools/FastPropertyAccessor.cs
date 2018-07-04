@@ -66,6 +66,7 @@ namespace Commix.Tools
             Type type = method.DeclaringType;
             DynamicMethod dmethod = new DynamicMethod("Getter", typeof(object), new[] { typeof(object) }, type, true);
             ILGenerator il = dmethod.GetILGenerator();
+
             il.Emit(OpCodes.Ldarg_0); // Load our value to the stack.
             il.Emit(OpCodes.Castclass, type);// Cast to the value type.
 

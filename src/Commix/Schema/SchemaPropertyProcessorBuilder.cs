@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Commix.Pipeline.Property;
+
 namespace Commix.Schema
 {
     public class SchemaPropertyProcessorBuilder
     {
         private readonly Type _processorType;
         private readonly Dictionary<string, object> _options = new Dictionary<string, object>();
+        private PropertyStageMarker _allowedStages = PropertyStageMarker.All;
 
         public SchemaPropertyProcessorBuilder(Type processorType)
         {
@@ -24,7 +27,15 @@ namespace Commix.Schema
         
         public PropertyProcessorSchema Build()
         {
-            return new PropertyProcessorSchema(Guid.NewGuid(), _processorType, _options);
+            return  new PropertyProcessorSchema(Guid.NewGuid(), _processorType, _options)
+            {
+                AllowedStages = _allowedStages,
+            };
+        }
+
+        public void AddAllowedStages(PropertyStageMarker stages)
+        {
+            _allowedStages = stages;
         }
     }
 
@@ -34,6 +45,12 @@ namespace Commix.Schema
         {
             builder.AddProcessorOption(key, value);
             return builder;
-        } 
+        }
+
+        public static SchemaPropertyProcessorBuilder AllowedStages(this SchemaPropertyProcessorBuilder builder, PropertyStageMarker stages)
+        {
+            builder.AddAllowedStages(stages);
+            return builder;
+        }
     }
 }

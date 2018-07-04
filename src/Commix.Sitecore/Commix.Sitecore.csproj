@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
@@ -7,15 +7,22 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jamie Gould</Authors>
     <Company>Jaywing</Company>
-    <Version>1.0.0</Version>  
+    <Version>1.0.0</Version>
+    <IncludeSymbols>true</IncludeSymbols>
+     <Description>Commix Model Mapper - Sitecore extensions</Description>
+    <Copyright>Jaywing</Copyright>
+    <RepositoryUrl>https://jaywing.visualstudio.com/Internal%20Projects/_git/Commix</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags>mapping strongly-typed</PackageTags>
+    <PackageProjectUrl>https://jaywing.visualstudio.com/Internal%20Projects</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
     <PackageReference Include="Sitecore.Kernel.NoReferences" Version="9.0.171219" />
     <PackageReference Include="Sitecore.MediaFramework.Mvc.NoReferences" Version="2.2.160927" />
     <PackageReference Include="Sitecore.Mvc.NoReferences" Version="9.0.171219" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

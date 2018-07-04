@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Commix.Exceptions;
 using Commix.Pipeline.Property;
 using Commix.Schema;
+
 using Sitecore.Data.Items;
 using Sitecore.Mvc.Presentation;
 
@@ -12,14 +14,32 @@ namespace Commix.Sitecore.Processors
     public class ItemNameProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(PropertyContext context, PropertyProcessorSchema meta)
+        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            if (!(context.Context is Item item))
-                throw new InvalidOperationException();
-
-            context.Context = item.Name;
-
-            Next();
+            try
+            {
+                if (!pipelineContext.Faulted)
+                {
+                    switch (pipelineContext.Context)
+                    {
+                        case Item item:
+                            pipelineContext.Context = item.Name;
+                            break;
+                        default:
+                            pipelineContext.Faulted = true;
+                            break;
+                    }
+                }
+            }
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
+            finally
+            {
+                Next();
+            }
         }
     }
 }

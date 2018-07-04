@@ -1,18 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
     <AssemblyName>Commix</AssemblyName>  
     <RootNamespace>Commix</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>  
     <Authors>Jamie Gould</Authors>  
     <Company>Jaywing</Company>  
-    <Version>1.0.0</Version>  
+    <Version>1.0.0</Version>
+    <IncludeSymbols>true</IncludeSymbols>
+    <Description>Commix Model Mapper</Description>
+    <Copyright>Jaywing</Copyright>
+    <RepositoryUrl>https://jaywing.visualstudio.com/Internal%20Projects/_git/Commix</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageTags>mapping strongly-typed</PackageTags>
+    <PackageProjectUrl>https://jaywing.visualstudio.com/Internal%20Projects</PackageProjectUrl>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
-
 
 </Project>

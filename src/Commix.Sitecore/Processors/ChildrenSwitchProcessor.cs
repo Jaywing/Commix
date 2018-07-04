@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using Commix.Exceptions;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -14,14 +15,30 @@ namespace Commix.Sitecore.Processors
 
         public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
         {
-            switch (pipelineContext.Context)
+            try
             {
-                case Item parent:
-                    pipelineContext.Context = parent.GetChildren();
-                    break;
+                if (!pipelineContext.Faulted)
+                {
+                    switch (pipelineContext.Context)
+                    {
+                        case Item parent:
+                            pipelineContext.Context = parent.GetChildren();
+                            break;
+                        default:
+                            pipelineContext.Faulted = true;
+                            break;
+                    }
+                }
             }
-
-            Next();
+            catch
+            {
+                pipelineContext.Faulted = true;
+                throw;
+            }
+            finally
+            {
+                Next();
+            }
         }
     }
 }
