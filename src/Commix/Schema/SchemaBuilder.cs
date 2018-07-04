@@ -9,7 +9,7 @@ namespace Commix.Schema
 {
     public abstract class SchemaBuilder
     {
-        public List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
+        internal List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
 
         protected Type ModelType { get; set; }
         
@@ -44,9 +44,9 @@ namespace Commix.Schema
             return this;
         }
 
-        public SchemaBuilder<TModel> Merge(IEnumerable<Func<PropertySchema>> properties)
+        public SchemaBuilder<TModel> Merge(SchemaBuilder builder)
         {
-            PropertyBuilders.AddRange(properties);
+            PropertyBuilders.AddRange(builder.PropertyBuilders);
 
             return this;
         }
