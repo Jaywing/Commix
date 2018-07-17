@@ -24,20 +24,25 @@ namespace Commix.Sitecore.Processors
         {
             try
             {
+                var parameters = new StringBuilder();
+                
                 if (!pipelineContext.Faulted)
                 {
-                    if (pipelineContext.Context is TextField field)
+                    switch (pipelineContext.Context)
                     {
-                        var parameters = new StringBuilder();
+                        case TextField field:
+                            if (processorContext.TryGetOption(DisableWebEditingOptionKey, out bool disableWebEditing))
+                                parameters.Append($"disable-web-editing={disableWebEditing}");
 
-                        if (processorContext.TryGetOption(DisableWebEditingOptionKey, out bool disableWebEditing))
-                            parameters.Append($"disable-web-editing={disableWebEditing}");
-
-                        pipelineContext.Context = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString(), parameters.ToString());
-                    }
-                    else
-                    {
-                        pipelineContext.Faulted = true;
+                            pipelineContext.Context = FieldRenderer.Render(field.InnerField.Item, field.InnerField.ID.ToString(), parameters.ToString());
+                            break;
+                        case ValueLookupField valueLookupField:
+                            // Used for Unbound Droplist
+                            pipelineContext.Context = valueLookupField.Value;
+                            break;
+                        default:
+                            pipelineContext.Faulted = true;
+                            break;
                     }
                 }
             }
