@@ -70,7 +70,7 @@ namespace Commix.Pipeline.Model.Processors
                     modelPipeline.Add(contextProcessor, schema);
             }
 
-            var nestedContext = new NestedContext(context.Input);
+            var nestedContext = new NestedContext(context, context.Input);
 
             modelPipeline.Run(nestedContext);
 

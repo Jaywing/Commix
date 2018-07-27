@@ -6,12 +6,24 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyContext : IMonitoredContext
+    public class PropertyContext : NestedContext
     {
-        public Guid InstanceId { get; } = Guid.NewGuid();
-
-        public ModelContext ModelContext { get; }
         public PropertyInfo PropertyInfo { get; }
+
+        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialContext)
+        : base(modelContext, initialContext )
+        {
+            PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
+        }
+    }
+
+    public class NestedContext : IMonitoredContext
+    {
+        public PropertyStageMarker Stage { get; set; }
+        
+        public Guid InstanceId { get; } = Guid.NewGuid();
+        
+        public ModelContext ModelContext { get; }
         
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="PropertyMappingPipeline"/> is faulted.
@@ -32,40 +44,11 @@ namespace Commix.Pipeline.Property
         /// </value>
         public object Context { get; set; }
 
-        public PropertyStageMarker Stage { get; set; }
-
-        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo)
-        {
-            ModelContext = modelContext ?? throw new ArgumentNullException(nameof(modelContext));
-            PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
-        }
-
-        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialContext)
-            : this(modelContext, propertyInfo)
-        {
-            Context = initialContext;
-        }
-
-        public IPipelineMonitor Monitor { get; set; }
-    }
-
-    public class NestedContext : IMonitoredContext
-    {
-        public bool Faulted { get; set; }
-
-        /// <summary>
-        /// Pipeline context, this value will be populated, transformed by the Pipline and then ultimately 
-        /// if the Aborted flag is not set used by a SetProcessor to set the target property.
-        /// </summary>
-        /// <value>
-        /// Pipline context.
-        /// </value>
-        public object Context { get; set; }
-
         public IPipelineMonitor Monitor { get; set; }
 
-        public NestedContext(object initialContext)
+        public NestedContext(ModelContext modelContext, object initialContext)
         {
+            ModelContext = modelContext;
             Context = initialContext;
         }
     }

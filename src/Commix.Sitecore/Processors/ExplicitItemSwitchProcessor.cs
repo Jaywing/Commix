@@ -9,15 +9,20 @@ using Sitecore.Data.Items;
 namespace Commix.Sitecore.Processors
 {
     /// <summary>
-    /// Switches the pipeline context using a provided path, expects the model pipeline source to be a Sitecore item for context.
+    /// Switches the pipeline context using a provided path.
     /// </summary>
-    public class ExplicitItemSwitchProcessor : IPropertyProcesser
+    public class ExplicitItemSwitchProcessor : INestedProcessor, IPropertyProcesser
     {
         public static string Path = $"{typeof(ExplicitItemSwitchProcessor).Name}Path";
 
         public Action Next { get; set; }
 
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
+        {
+            Run((NestedContext)pipelineContext, processorContext);
+        }
+        
+        public void Run(NestedContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {
