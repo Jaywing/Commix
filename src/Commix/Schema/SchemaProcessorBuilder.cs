@@ -6,13 +6,13 @@ using Commix.Pipeline.Property;
 
 namespace Commix.Schema
 {
-    public class SchemaPropertyProcessorBuilder
+    public class SchemaProcessorBuilder
     {
         private readonly Type _processorType;
         private readonly Dictionary<string, object> _options = new Dictionary<string, object>();
         private PropertyStageMarker _allowedStages = PropertyStageMarker.All;
 
-        public SchemaPropertyProcessorBuilder(Type processorType)
+        public SchemaProcessorBuilder(Type processorType)
         {
             _processorType = processorType ?? throw new ArgumentNullException(nameof(processorType));
         }
@@ -25,9 +25,9 @@ namespace Commix.Schema
                 _options.Add(key, value);
         }
         
-        public PropertyProcessorSchema Build()
+        public ProcessorSchema Build()
         {
-            return  new PropertyProcessorSchema(Guid.NewGuid(), _processorType, _options)
+            return  new ProcessorSchema(Guid.NewGuid(), _processorType, _options)
             {
                 AllowedStages = _allowedStages,
             };
@@ -41,13 +41,13 @@ namespace Commix.Schema
 
     public static class SchemaPropertyProcessorBuilderExtensions
     {
-        public static SchemaPropertyProcessorBuilder Option<T>(this SchemaPropertyProcessorBuilder builder, string key, T value)
+        public static SchemaProcessorBuilder Option<T>(this SchemaProcessorBuilder builder, string key, T value)
         {
             builder.AddProcessorOption(key, value);
             return builder;
         }
 
-        public static SchemaPropertyProcessorBuilder AllowedStages(this SchemaPropertyProcessorBuilder builder, PropertyStageMarker stages)
+        public static SchemaProcessorBuilder AllowedStages(this SchemaProcessorBuilder builder, PropertyStageMarker stages)
         {
             builder.AddAllowedStages(stages);
             return builder;

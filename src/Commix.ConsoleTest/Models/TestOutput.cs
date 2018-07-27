@@ -34,6 +34,7 @@ namespace Commix.ConsoleTest.Models
 
         public SchemaBuilder Map()
             => this.Schema(s => s
+                .Context(c => c.Add(Processor.Use<TestNestedProcessor>()))
                 .Property(m => m.Nested, c => c
                     .Get()
                     .Nested()

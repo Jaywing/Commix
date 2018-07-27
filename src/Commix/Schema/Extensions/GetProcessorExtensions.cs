@@ -17,7 +17,7 @@ namespace Commix.Schema
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Get<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, 
-            Action<SchemaPropertyProcessorBuilder> configure = null)
+            Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<GetProcessor>(configure));
@@ -34,7 +34,7 @@ namespace Commix.Schema
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Get<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string sourceProperty, 
-            Action<SchemaPropertyProcessorBuilder> configure = null)
+            Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<GetProcessor>(c =>

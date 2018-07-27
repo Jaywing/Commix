@@ -14,7 +14,7 @@ namespace Commix.Sitecore.Processors
     public class ItemNameProcessor : IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

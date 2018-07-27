@@ -10,7 +10,7 @@ namespace Commix.ConsoleTest.Processors
     public class Processor2 : IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             pipelineContext.Context = new TestOutput3().As<TestOutput3>();
 

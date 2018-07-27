@@ -5,7 +5,7 @@ using Commix.Schema;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyMappingPipeline : Pipeline<PropertyContext, PropertyProcessorSchema>
+    public class PropertyMappingPipeline : Pipeline<PropertyContext, ProcessorSchema>
     {
         protected override bool RunProcessor(ProcessorInstance instance, IPipelineMonitor monitor, PropertyContext context)
         {
@@ -17,5 +17,10 @@ namespace Commix.Pipeline.Property
 
             return false;
         }
+    }
+
+    public class NestedMappingPipeline : Pipeline<NestedContext, ProcessorSchema>
+    {
+       
     }
 }

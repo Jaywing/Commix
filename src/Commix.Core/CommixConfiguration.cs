@@ -22,8 +22,8 @@ namespace Commix.Core
         internal void SetPropertyPipelineFactory<T>() where T : class, IPropertyPipelineFactory
             => _serviceCollection.AddSingleton<IPropertyPipelineFactory, T>();
 
-        internal void SetPropertyProcessorFactory<T>() where T : class, IPropertyProcessorFactory
-            => _serviceCollection.AddSingleton<IPropertyProcessorFactory, T>();
+        internal void SetProcessorFactory<T>() where T : class, IProcessorFactory
+            => _serviceCollection.AddSingleton<IProcessorFactory, T>();
 
         internal void RegisterProcessors(string assemblyPrefix)
         {
@@ -42,7 +42,10 @@ namespace Commix.Core
                 {
                     case var type when type.IsAbstract || type.IsInterface:
                         continue;
-                    case var type when typeof(IPropertyProcesser).IsAssignableFrom((Type) type):
+                    case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
+                        _serviceCollection.AddTransient(type);
+                        break;
+                    case var type when typeof(INestedProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                 }

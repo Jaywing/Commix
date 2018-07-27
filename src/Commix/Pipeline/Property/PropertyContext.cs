@@ -48,4 +48,25 @@ namespace Commix.Pipeline.Property
 
         public IPipelineMonitor Monitor { get; set; }
     }
+
+    public class NestedContext : IMonitoredContext
+    {
+        public bool Faulted { get; set; }
+
+        /// <summary>
+        /// Pipeline context, this value will be populated, transformed by the Pipline and then ultimately 
+        /// if the Aborted flag is not set used by a SetProcessor to set the target property.
+        /// </summary>
+        /// <value>
+        /// Pipline context.
+        /// </value>
+        public object Context { get; set; }
+
+        public IPipelineMonitor Monitor { get; set; }
+
+        public NestedContext(object initialContext)
+        {
+            Context = initialContext;
+        }
+    }
 }

@@ -9,7 +9,7 @@ namespace Commix.Schema
     public static class ConstantProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Constant<TModel, TProp, TValue>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, TValue value, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, TValue value, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<ConstantProcessor<TValue>>(c =>

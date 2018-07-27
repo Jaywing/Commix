@@ -2,9 +2,9 @@
 
 namespace Commix.Schema
 {
-    public static class PropertyProcessorSchemaExtensions
+    public static class ProcessorSchemaExtensions
     {
-        public static bool TryGetOption<T>(this PropertyProcessorSchema schema, string key, out T value)
+        public static bool TryGetOption<T>(this ProcessorSchema schema, string key, out T value)
         {
             if (schema.Options == null || !schema.Options.ContainsKey(key))
             {

@@ -6,14 +6,14 @@ using Commix.Pipeline.Property;
 
 namespace Commix.Schema
 {
-    public class PropertyProcessorSchema
+    public class ProcessorSchema
     {
         public Guid InstanceId { get; }
         public Type Type { get; }
         public Dictionary<string, object> Options { get; }
         public PropertyStageMarker AllowedStages { get; internal set; } = PropertyStageMarker.All;
         
-        public PropertyProcessorSchema(Guid instanceId, Type type, Dictionary<string, object> options)
+        public ProcessorSchema(Guid instanceId, Type type, Dictionary<string, object> options)
         {
             InstanceId = instanceId;
             Type = type ?? throw new ArgumentNullException(nameof(type));

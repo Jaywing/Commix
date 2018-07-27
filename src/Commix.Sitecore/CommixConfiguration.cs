@@ -22,8 +22,8 @@ namespace Commix.Sitecore
         internal void SetPropertyPipelineFactory<T>() where T : class, IPropertyPipelineFactory
             => _serviceCollection.AddSingleton<IPropertyPipelineFactory, T>();
 
-        internal void SetPropertyProcessorFactory<T>() where T : class, IPropertyProcessorFactory
-            => _serviceCollection.AddSingleton<IPropertyProcessorFactory, T>();
+        internal void SetProcessorFactory<T>() where T : class, IProcessorFactory
+            => _serviceCollection.AddSingleton<IProcessorFactory, T>();
 
         /// <summary>
         /// Scans all loaded assemblies with matchin assemble name prefix, registering processors that implement <see cref="IPropertyProcesser"/>
@@ -50,7 +50,10 @@ namespace Commix.Sitecore
                 {
                     case var type when type.IsAbstract || type.IsInterface:
                         continue;
-                    case var type when typeof(IPropertyProcesser).IsAssignableFrom((Type) type):
+                    case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
+                        _serviceCollection.AddTransient(type);
+                        break;
+                    case var type when typeof(INestedProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                 }

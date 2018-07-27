@@ -10,7 +10,7 @@ namespace Commix.Sitecore.Schema
     public static class ExplicitItemSwitchProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<ExplicitItemSwitchProcessor>(c =>

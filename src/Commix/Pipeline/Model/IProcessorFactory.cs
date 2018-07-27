@@ -6,8 +6,8 @@ namespace Commix.Pipeline.Model
     /// <summary>
     /// Get a processor by type.
     /// </summary>
-    public interface IPropertyProcessorFactory
+    public interface IProcessorFactory
     {
-        IPropertyProcesser GetProcessor(Type processorType);
+        bool TryGetProcessor<T>(Type processorType, out T propertyProcessor);
     }
 }

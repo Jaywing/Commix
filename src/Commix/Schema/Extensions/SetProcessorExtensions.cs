@@ -10,7 +10,7 @@ namespace Commix.Schema
     {
         public static SchemaPropertyBuilder<TModel, TProp> SetStage<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, PropertyStageMarker marker, 
-            Action<SchemaPropertyProcessorBuilder> configure = null)
+            Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<SetStageProcessor>(c =>

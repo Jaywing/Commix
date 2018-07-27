@@ -9,7 +9,7 @@ namespace Commix.Schema
 {
     public abstract class SchemaBuilder
     {
-        internal List<Func<PropertySchema>> PropertyBuilders { get; } = new List<Func<PropertySchema>>();
+        internal List<Func<PipelineSchema>> SchemaBuilders { get; } = new List<Func<PipelineSchema>>();
 
         protected Type ModelType { get; set; }
         
@@ -17,8 +17,10 @@ namespace Commix.Schema
         {
             var modelSchema = new ModelSchema(ModelType);
 
-            foreach (Func<PropertySchema> propertyBuilder in PropertyBuilders)
-                modelSchema.Properties.Add(propertyBuilder());
+            foreach (Func<PipelineSchema> schemaBuilder in SchemaBuilders)
+            {
+                modelSchema.Schemas.Add(schemaBuilder());
+            }
 
             return modelSchema;
         }
@@ -39,14 +41,25 @@ namespace Commix.Schema
 
             configure(propertyBuilder);
 
-            PropertyBuilders.Add(propertyBuilder.Build);
+            SchemaBuilders.Add(propertyBuilder.Build);
+
+            return this;
+        }
+
+        public SchemaBuilder<TModel> Context(Action<SchemaContextBuilder<TModel>> configure)
+        {
+            var propertyBuilder = new SchemaContextBuilder<TModel>();
+
+            configure(propertyBuilder);
+
+            SchemaBuilders.Add(propertyBuilder.Build);
 
             return this;
         }
 
         public SchemaBuilder<TModel> Merge(SchemaBuilder builder)
         {
-            PropertyBuilders.AddRange(builder.PropertyBuilders);
+            SchemaBuilders.AddRange(builder.SchemaBuilders);
 
             return this;
         }

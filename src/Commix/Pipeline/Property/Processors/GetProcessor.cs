@@ -15,7 +15,7 @@ namespace Commix.Pipeline.Property.Processors
         
         public Action Next { get; set; }
 
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Commix.Pipeline.Property.Processors
             }
         }
 
-        private bool GetPropertyInfo(PropertyContext context, PropertyProcessorSchema processorContext, out PropertyInfo sourcePropertyInfo)
+        private bool GetPropertyInfo(PropertyContext context, ProcessorSchema processorContext, out PropertyInfo sourcePropertyInfo)
         {
             if (!processorContext.TryGetOption(SourcePropertyOptionKey, out string sourceProperty))
             {

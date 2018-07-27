@@ -18,7 +18,7 @@ namespace Commix.Sitecore.Schema
         /// <param name="configure"></param>
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> ItemName<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<ItemNameProcessor>(c =>

@@ -18,7 +18,7 @@ namespace Commix.Schema
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Nested<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, 
-            Action<SchemaPropertyProcessorBuilder> configure = null)
+            Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<NestedProcessor>(c =>

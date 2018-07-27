@@ -26,8 +26,8 @@ namespace Commix.Core
             config?.Invoke(configurator);
 
             // Default Processor factory
-            if (serviceCollection.All(x => x.ServiceType != typeof(IPropertyProcessorFactory)))
-                configurator.SetPropertyProcessorFactory<DefaultPropertyProcessorFactory>();
+            if (serviceCollection.All(x => x.ServiceType != typeof(IProcessorFactory)))
+                configurator.SetProcessorFactory<DefaultProcessorFactory>();
 
             // Default Pipeline factories
             if (serviceCollection.All(x => x.ServiceType != typeof(IModelPipelineFactory)))

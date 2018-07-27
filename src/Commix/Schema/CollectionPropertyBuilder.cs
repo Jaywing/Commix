@@ -13,7 +13,7 @@ namespace Commix.Schema
         public CollectionPropertyBuilder(SchemaPropertyBuilder<TModel, TProp> schemaBuilder)
             => _schemaBuilder = schemaBuilder ?? throw new ArgumentNullException(nameof(schemaBuilder));
 
-        public void Define<TSource, TTarget>(Action<SchemaPropertyProcessorBuilder> configure = null)
+        public void Define<TSource, TTarget>(Action<SchemaProcessorBuilder> configure = null)
         {
             _schemaBuilder.Add(Processor.Use<CollectionProcessor<TSource, TTarget>>(c =>
             {

@@ -10,7 +10,7 @@ namespace Commix.Sitecore.Schema
     public static class PickerProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Picker<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<PickerProcessor>(c =>

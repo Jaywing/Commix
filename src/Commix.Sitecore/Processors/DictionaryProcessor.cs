@@ -14,7 +14,7 @@ namespace Commix.Sitecore.Processors
         public static string DefaultValue = $"{typeof(DictionaryProcessor).Name}DefaultValue";
         
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

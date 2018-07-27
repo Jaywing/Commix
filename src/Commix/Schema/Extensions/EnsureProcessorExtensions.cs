@@ -8,7 +8,7 @@ namespace Commix.Schema
     public static class EnsureProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Ensure<TModel, TProp, TReplacement>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, TReplacement replacement, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, TReplacement replacement, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<EnsureProcessor>(c =>

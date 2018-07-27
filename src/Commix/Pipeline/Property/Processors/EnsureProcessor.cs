@@ -13,7 +13,7 @@ namespace Commix.Pipeline.Property.Processors
         public static string EnsureReplacement = $"{typeof(EnsureProcessor).Name}EnsureReplacement";
         
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             { 

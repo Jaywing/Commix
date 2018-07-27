@@ -11,7 +11,7 @@ namespace Commix.Pipeline.Property.Processors
         public static string Marker = $"{nameof(SetStageProcessor)}.Marker"; 
         
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, PropertyProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             if (processorContext.TryGetOption(Marker, out PropertyStageMarker marker))
             {

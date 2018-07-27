@@ -6,6 +6,8 @@ using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
+using Commix.Schema;
+
 using Newtonsoft.Json;
 
 namespace Commix.ConsoleTest
@@ -57,7 +59,9 @@ namespace Commix.ConsoleTest
                                 Schema = new
                                 {
                                     modelContext.Schema?.ModelType,
-                                    Properties = modelContext.Schema?.Properties?.Select(property => new
+                                    Properties = modelContext.Schema?.Schemas?
+                                        .OfType<PropertyPipelineSchema>()
+                                        .Select(property => new
                                     {
                                         Processors = property?.Processors?.Select(processor => new
                                         {

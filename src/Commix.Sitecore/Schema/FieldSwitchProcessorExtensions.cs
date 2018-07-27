@@ -11,7 +11,7 @@ namespace Commix.Sitecore.Schema
     public static class FieldSwitchProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c =>
@@ -23,7 +23,7 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaPropertyProcessorBuilder> configure = null)
+            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<FieldSwitchProcessor>(c =>

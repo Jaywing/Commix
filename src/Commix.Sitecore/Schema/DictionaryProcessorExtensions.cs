@@ -12,7 +12,7 @@ namespace Commix.Sitecore.Schema
     {
         public static SchemaPropertyBuilder<TModel, TProp> Dictionary<TModel, TProp>(
             this SchemaPropertyBuilder<TModel, TProp> builder, string dictionaryKey, 
-            string defaultValue = default(string), Action<SchemaPropertyProcessorBuilder> configure = null)
+            string defaultValue = default(string), Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
                 .Add(Processor.Use<DictionaryProcessor>(c =>

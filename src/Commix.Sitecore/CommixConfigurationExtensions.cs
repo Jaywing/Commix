@@ -18,14 +18,14 @@ namespace Commix.Sitecore
             return config;
         }
 
-        public static CommixConfiguration PropertyProcessorFactory<T>(this CommixConfiguration config)
-            where T : class, IPropertyProcessorFactory
+        public static CommixConfiguration ProcessorFactory<T>(this CommixConfiguration config)
+            where T : class, IProcessorFactory
         {
-            config.SetPropertyProcessorFactory<T>();
+            config.SetProcessorFactory<T>();
             return config;
         }
 
-        public static CommixConfiguration PropertyProcessors(this CommixConfiguration config, string assemblyPrefix)
+        public static CommixConfiguration Processors(this CommixConfiguration config, string assemblyPrefix)
         {
             config.RegisterProcessors(assemblyPrefix);
             return config;

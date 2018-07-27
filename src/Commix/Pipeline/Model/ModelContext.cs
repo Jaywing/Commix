@@ -13,7 +13,7 @@ namespace Commix.Pipeline.Model
         /// <summary>
         /// Mapping source
         /// </summary>
-        public object Input { get; }
+        public object Input { get; set; }
 
         /// <summary>
         /// Mapping target

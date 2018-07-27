@@ -8,7 +8,7 @@ namespace Commix.Schema
     {
         public Type ModelType { get; }
 
-        public List<PropertySchema> Properties { get; } = new List<PropertySchema>();
+        public List<PipelineSchema> Schemas { get; } = new List<PipelineSchema>();
 
         public ModelSchema(Type modelType)
         {
