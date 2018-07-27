@@ -20,5 +20,17 @@ namespace Commix.Sitecore.Schema
                     configure?.Invoke(c);
                 }));
         }
+
+        public static SchemaContextBuilder<TModel> ExplicitItemSwitch<TModel>(
+            this SchemaContextBuilder<TModel> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
+        {
+            return builder
+                .Add(Processor.Use<ExplicitItemSwitchProcessor>(c =>
+                {
+                    c.AllowedStages(PropertyStageMarker.Populating);
+                    c.Option(ExplicitItemSwitchProcessor.Path, pathOrId);
+                    configure?.Invoke(c);
+                }));
+        }
     }
 }
