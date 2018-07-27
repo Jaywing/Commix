@@ -11,18 +11,13 @@ namespace Commix.Sitecore.Processors
     /// <summary>
     /// Switches the pipeline context using a provided path.
     /// </summary>
-    public class ExplicitItemSwitchProcessor : INestedProcessor, IPropertyProcesser
+    public class ExplicitItemSwitchProcessor : IBasicProcessor
     {
         public static string Path = $"{typeof(ExplicitItemSwitchProcessor).Name}Path";
 
         public Action Next { get; set; }
 
-        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
-        {
-            Run((NestedContext)pipelineContext, processorContext);
-        }
-        
-        public void Run(NestedContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

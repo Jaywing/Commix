@@ -7,10 +7,10 @@ using Commix.Schema;
 
 namespace Commix.ConsoleTest.Processors
 {
-    public class Processor1 : IPropertyProcesser
+    public class Processor1 : IBasicProcessor
     {
         public Action Next { get; set; }
-        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
         {
             pipelineContext.Context = $"Source was: '{pipelineContext.Context}'";
 
@@ -40,11 +40,11 @@ namespace Commix.ConsoleTest.Processors
         }
     }
 
-    public class TestNestedProcessor : INestedProcessor
+    public class TestBasicProcessor : IBasicProcessor
     {
         public Action Next { get; set; }
 
-        public void Run(NestedContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
         {
             Next();
         }

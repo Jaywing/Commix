@@ -6,7 +6,7 @@ using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyContext : NestedContext
+    public class PropertyContext : BasicContext
     {
         public PropertyInfo PropertyInfo { get; }
 
@@ -17,7 +17,7 @@ namespace Commix.Pipeline.Property
         }
     }
 
-    public class NestedContext : IMonitoredContext
+    public class BasicContext : IMonitoredContext
     {
         public PropertyStageMarker Stage { get; set; }
         
@@ -46,7 +46,7 @@ namespace Commix.Pipeline.Property
 
         public IPipelineMonitor Monitor { get; set; }
 
-        public NestedContext(ModelContext modelContext, object initialContext)
+        public BasicContext(ModelContext modelContext, object initialContext)
         {
             ModelContext = modelContext;
             Context = initialContext;

@@ -55,6 +55,8 @@ namespace Commix.Pipeline.Model.Processors
             {
                 if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IPropertyProcesser propertyProcesser))
                     propertyPipeline.Add(propertyProcesser, propertyProcessorSchema);
+                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IBasicProcessor basicProcessor))
+                    propertyPipeline.Add(basicProcessor, propertyProcessorSchema);
             }
 
             propertyPipeline.Run(new PropertyContext(context, propertyPipelineSchema.PropertyInfo, context.Input) {Monitor = context.Monitor});
@@ -66,11 +68,11 @@ namespace Commix.Pipeline.Model.Processors
 
             foreach (ProcessorSchema schema in contextProcessorSchema.Processors)
             {
-                if (_processorFactory.TryGetProcessor(schema.Type, out INestedProcessor contextProcessor))
+                if (_processorFactory.TryGetProcessor(schema.Type, out IBasicProcessor contextProcessor))
                     modelPipeline.Add(contextProcessor, schema);
             }
 
-            var nestedContext = new NestedContext(context, context.Input);
+            var nestedContext = new BasicContext(context, context.Input);
 
             modelPipeline.Run(nestedContext);
 

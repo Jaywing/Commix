@@ -16,13 +16,13 @@ namespace Commix.Sitecore.Processors
     /// Switch the context to a field on a <see cref="Item"/>, expects the context to be a <see cref="Item"/>.
     /// </summary>
     /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
-    public class FieldSwitchProcessor : IPropertyProcesser
+    public class FieldSwitchProcessor : IBasicProcessor
     {
         public static string FieldId = $"{typeof(FieldSwitchProcessor).Name}FieldId";
 
         public Action Next { get; set; }
 
-        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {
@@ -33,13 +33,10 @@ namespace Commix.Sitecore.Processors
                     switch (pipelineContext.Context)
                     {
                         case Item item:
-                            string fieldId;
                             if (processorContext.Options.ContainsKey(FieldId))
-                                fieldId = processorContext.Options[FieldId].ToString();
-                            else
-                                fieldId = pipelineContext.PropertyInfo.Name;
-
-                            contextField = item.Fields[fieldId];
+                                contextField = item.Fields[processorContext.Options[FieldId].ToString()];
+                            else if (pipelineContext is PropertyContext propertyContext)
+                                contextField = item.Fields[propertyContext.PropertyInfo.Name];
                             break;
                         case Field field:
                             contextField = field;

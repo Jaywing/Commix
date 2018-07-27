@@ -11,7 +11,7 @@ namespace Commix.Pipeline.Property
 
     }
 
-    public interface INestedProcessor : IProcessor<NestedContext, ProcessorSchema>
+    public interface IBasicProcessor : IProcessor<BasicContext, ProcessorSchema>
     {
 
     }

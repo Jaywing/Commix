@@ -17,9 +17,9 @@ namespace Commix.Core
             _serviceProvider = serviceProvider;
         }
 
-        public bool TryGetProcessor<T>(Type processorType, out T propertyProcessor)
+        public bool TryGetProcessor<T>(Type processorType, out T propertyProcessor) where T : class
         {
-            propertyProcessor = (T)_serviceProvider.GetService(processorType);
+            propertyProcessor = _serviceProvider.GetService(processorType) as T;
             return propertyProcessor != null;
         }
     }

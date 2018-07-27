@@ -53,7 +53,7 @@ namespace Commix.Sitecore
                     case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
-                    case var type when typeof(INestedProcessor).IsAssignableFrom(type):
+                    case var type when typeof(IBasicProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                 }
