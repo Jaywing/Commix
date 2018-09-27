@@ -3,8 +3,9 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Collections.Concurrent;
 
-namespace Commix.Tools
+namespace Commix.Core.Tools
 {
     /// <summary>
     /// Provides a way to set a properties value using a combination of dynamic methods and IL generation.
@@ -101,7 +102,7 @@ namespace Commix.Tools
             il.Emit(OpCodes.Castclass, type); // Cast to the instance type.
             il.Emit(OpCodes.Ldarg_1); // Load our value to the stack.
 
-           // without the later you can set a reference type property to anything you want!
+            // without the later you can set a reference type property to anything you want!
             if (propertyType.IsValueType)
                 // Cast if a value type to set the correct type
                 il.Emit(OpCodes.Unbox_Any, propertyType);

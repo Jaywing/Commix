@@ -38,5 +38,11 @@ namespace Commix.Core
                 model = Activator.CreateInstance<T>();
             return model;
         }
+
+        public object GetOutputModel(Type modelType)
+        {
+            return _serviceProvider.GetService(modelType) 
+                   ?? Activator.CreateInstance(modelType);
+        }
     }
 }

@@ -18,9 +18,4 @@ namespace Commix.Pipeline.Property
             return false;
         }
     }
-
-    public class NestedMappingPipeline : Pipeline<BasicContext, ProcessorSchema>
-    {
-       
-    }
 }

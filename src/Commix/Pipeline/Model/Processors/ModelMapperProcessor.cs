@@ -54,9 +54,15 @@ namespace Commix.Pipeline.Model.Processors
             foreach (ProcessorSchema propertyProcessorSchema in propertyPipelineSchema.Processors)
             {
                 if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IPropertyProcesser propertyProcesser))
+                {
+                    // Property processors run on indiviual properties within a Model
                     propertyPipeline.Add(propertyProcesser, propertyProcessorSchema);
-                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IBasicProcessor basicProcessor))
+                }
+                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IContextProcessor basicProcessor))
+                {
+                    // Basic processors run on the model itself
                     propertyPipeline.Add(basicProcessor, propertyProcessorSchema);
+                }
             }
 
             propertyPipeline.Run(new PropertyContext(context, propertyPipelineSchema.PropertyInfo, context.Input) {Monitor = context.Monitor});
@@ -68,7 +74,7 @@ namespace Commix.Pipeline.Model.Processors
 
             foreach (ProcessorSchema schema in contextProcessorSchema.Processors)
             {
-                if (_processorFactory.TryGetProcessor(schema.Type, out IBasicProcessor contextProcessor))
+                if (_processorFactory.TryGetProcessor(schema.Type, out IContextProcessor contextProcessor))
                     modelPipeline.Add(contextProcessor, schema);
             }
 

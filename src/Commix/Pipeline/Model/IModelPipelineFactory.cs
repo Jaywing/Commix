@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Commix.Pipeline.Model
 {
@@ -15,5 +16,7 @@ namespace Commix.Pipeline.Model
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         T GetOutputModel<T>();
+
+        object GetOutputModel(Type modelType);
     }
 }

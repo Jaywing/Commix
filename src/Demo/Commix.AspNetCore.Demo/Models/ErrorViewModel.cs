@@ -1,5 +1,6 @@
 using System;
 
+using Commix.Core.Schema;
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
 

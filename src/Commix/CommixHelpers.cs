@@ -32,7 +32,22 @@ namespace Commix
 
             return output;
         }
-    }
 
-    
+        public static object As(this object source, Type modelType, Action<ModelMappingPipeline, ModelContext> pipelineConfig = null)
+        {
+            if (PipelineFactory?.Value == null)
+                throw new InvalidOperationException("CommixExtensions.PipelineFactory must be set to use static extensions");
+
+            var pipeline = PipelineFactory.Value.GetModelPipeline();
+            var output = PipelineFactory.Value.GetOutputModel(modelType);
+            var context = new ModelContext(source, output);
+
+            GlobalPipelineConfig?.Invoke(pipeline, context);
+            pipelineConfig?.Invoke(pipeline, context);
+
+            pipeline.Run(context);
+
+            return output;
+        }
+    }
 }

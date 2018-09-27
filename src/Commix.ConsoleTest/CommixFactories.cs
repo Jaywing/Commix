@@ -43,6 +43,12 @@ namespace Commix.ConsoleTest
                 model = Activator.CreateInstance<T>();
             return model;
         }
+
+        public object GetOutputModel(Type modelType)
+        {
+            return _serviceProvider.GetService(modelType) 
+                   ?? Activator.CreateInstance(modelType);
+        }
     }
 
     public class ConsoleTestPropertyPipelineFactory : IPropertyPipelineFactory

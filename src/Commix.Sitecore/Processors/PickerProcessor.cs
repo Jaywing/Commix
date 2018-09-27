@@ -13,7 +13,7 @@ using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class PickerProcessor : IBasicProcessor
+    public class PickerProcessor : IContextProcessor
     {
         public Action Next { get; set; }
         public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)

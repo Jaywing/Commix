@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Commix.Tools
+namespace Commix.Core.Tools
 {
     /// <summary>
     /// A single method base cache item for identifying methods.

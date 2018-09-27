@@ -10,17 +10,4 @@ namespace Commix.Pipeline.Property
     {
 
     }
-
-    public interface IBasicProcessor : IProcessor<BasicContext, ProcessorSchema>
-    {
-
-    }
-
-    [Flags]
-    public enum PropertyStageMarker : uint
-    {
-        Populating = 0,
-        Finalised = 1,
-        All = ~0u
-    }
 }

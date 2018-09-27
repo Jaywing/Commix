@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Commix.ConsoleTest.Processors;
+using Commix.Core.Schema;
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
@@ -34,7 +35,7 @@ namespace Commix.ConsoleTest.Models
 
         public SchemaBuilder Map()
             => this.Schema(s => s
-                .Context(c => c.Add(Processor.Use<TestBasicProcessor>()))
+                .Context(c => c.Add(Processor.Use<TestContextProcessor>()))
                 .Property(m => m.Nested, c => c
                     .Get()
                     .Nested()

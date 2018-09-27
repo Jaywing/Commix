@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Commix.Tools
+namespace Commix.Sitecore.Tools
 {
     /// <summary>
     /// Internal methods for cached invocations.

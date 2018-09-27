@@ -7,7 +7,7 @@ using Commix.Schema;
 
 namespace Commix.ConsoleTest.Processors
 {
-    public class Processor1 : IBasicProcessor
+    public class Processor1 : IContextProcessor
     {
         public Action Next { get; set; }
         public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
@@ -40,7 +40,7 @@ namespace Commix.ConsoleTest.Processors
         }
     }
 
-    public class TestBasicProcessor : IBasicProcessor
+    public class TestContextProcessor : IContextProcessor
     {
         public Action Next { get; set; }
 
