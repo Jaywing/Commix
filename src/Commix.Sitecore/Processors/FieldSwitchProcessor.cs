@@ -7,6 +7,7 @@ using Commix.Pipeline;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
+using Sitecore.Data;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 
@@ -33,8 +34,10 @@ namespace Commix.Sitecore.Processors
                     switch (pipelineContext.Context)
                     {
                         case Item item:
-                            if (processorContext.Options.ContainsKey(FieldId))
-                                contextField = item.Fields[processorContext.Options[FieldId].ToString()];
+                            if (processorContext.TryGetOption(FieldId, out ID fieldId))
+                                contextField = item.Fields[fieldId];
+                            else if (processorContext.TryGetOption(FieldId, out string fieldValue))
+                                contextField = item.Fields[fieldValue];
                             else if (pipelineContext is PropertyContext propertyContext)
                                 contextField = item.Fields[propertyContext.PropertyInfo.Name];
                             break;
