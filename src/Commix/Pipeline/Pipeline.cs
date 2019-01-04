@@ -25,7 +25,7 @@ namespace Commix.Pipeline
                 return;
 
             // Each Processor contains a Next lambda which is an action to execute the next processor in the chain, we simply
-            // loop over the processors wiring one to the other sequentialy.
+            // loop over the processors wiring one to the other sequentially.
             for (int i = 0; i < _processors.Count; i++)
             {
                 var stepIndex = i;

@@ -34,5 +34,18 @@ namespace Commix.Sitecore.Schema
                     .Option(StringFieldProcessor.DisableWebEditingOptionKey, disableWebEditing)))
                 .Ensure(defaultValue);
         }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringFieldRaw<TModel, TProp>(
+            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
+        {
+            return builder
+                .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                    .AllowedStages(PropertyStageMarker.Populating)
+                    .Option(FieldSwitchProcessor.FieldId, fieldId)))
+                .Add(Processor.Use<StringFieldProcessor>(c => c
+                    .AllowedStages(PropertyStageMarker.Populating)
+                    .Option(StringFieldProcessor.RawFieldValue, true)))
+                .Ensure(defaultValue);
+        }
     }
 }
