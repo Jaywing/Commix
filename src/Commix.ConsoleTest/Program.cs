@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Commix;
 using Commix.ConsoleTest.Models;
-using Commix.Core;
+using Commix.ConsoleTest.Tools;
 using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
 using Commix.Pipeline;

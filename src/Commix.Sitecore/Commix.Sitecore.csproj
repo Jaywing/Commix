@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFrameworks>net462;net471</TargetFrameworks>
     <AssemblyName>Commix.Sitecore</AssemblyName>  
     <RootNamespace>Commix.Sitecore</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,12 +18,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.0" />
     <PackageReference Include="Sitecore.Kernel.NoReferences" Version="9.0.171219" />
     <PackageReference Include="Sitecore.MediaFramework.Mvc.NoReferences" Version="2.2.160927" />
     <PackageReference Include="Sitecore.Mvc.NoReferences" Version="9.0.171219" />
   </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Sitecore.Kernel" Version="12.0.0" />
+    <PackageReference Include="Sitecore.MediaFramework.Mvc.NoReferences" Version="2.2.160927" />
+    <PackageReference Include="Sitecore.Mvc" Version="3.0.0" />
+  </ItemGroup>
+  
+
 
   <ItemGroup>
     <ProjectReference Include="..\Commix\Commix.csproj" />
