@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Commix.ConsoleTest.Processors;
-using Commix.Core.Schema;
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 

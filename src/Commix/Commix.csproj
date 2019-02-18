@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
+    <TargetFrameworks>net471;net462</TargetFrameworks>
     <AssemblyName>Commix</AssemblyName>  
     <RootNamespace>Commix</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>  
@@ -18,6 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
