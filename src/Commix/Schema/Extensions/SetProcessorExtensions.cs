@@ -1,10 +1,9 @@
 ﻿using System;
-
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 // ReSharper disable once CheckNamespace
-namespace Commix.Schema
+namespace Commix.Schema.Extensions
 {
     public static class SetProcessorExtensions
     {
@@ -13,7 +12,7 @@ namespace Commix.Schema
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<SetStageProcessor>(c =>
+                .Add(Processor.Property<SetStageProcessor>(c =>
                 {
                     c.Option(SetStageProcessor.Marker, marker);
                     configure?.Invoke(c);

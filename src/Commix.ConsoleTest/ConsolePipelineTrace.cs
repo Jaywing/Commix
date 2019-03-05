@@ -8,8 +8,7 @@ using System.Threading;
 using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
 using Commix.Pipeline;
-using Commix.Pipeline.Model;
-using Commix.Pipeline.Model.Processors;
+using Commix.Pipeline.Mapping;
 using Commix.Pipeline.Property;
 
 namespace Commix.ConsoleTest
@@ -53,10 +52,10 @@ namespace Commix.ConsoleTest
 
             switch (args.EventArgs.PipelineContext)
             {
-                case ModelContext modelContext:
+                case MappingContext _:
                     Console.WriteLine($"{ManagedThreadId}: Model Processor(Model:{args.EventArgs.ProcessorType}) Run");
                     break;
-                case PropertyContext propertyContext:
+                case PropertyContext _:
                     Console.WriteLine($"{ManagedThreadId}: Property Processor(Prop:{args.EventArgs.ProcessorType}) Run");
                     break;
             }
@@ -68,10 +67,10 @@ namespace Commix.ConsoleTest
 
             switch (args.EventArgs.PipelineContext)
             {
-                case ModelContext modelContext:
+                case MappingContext _:
                     Console.WriteLine($"{ManagedThreadId}: Model Processor(Model:{args.EventArgs.ProcessorType}) Complete {_processorTimer.Elapsed.TotalMilliseconds}ms");
                     break;
-                case PropertyContext propertyContext:
+                case PropertyContext _:
                     Console.WriteLine($"{ManagedThreadId}: Property Processor(Prop:{args.EventArgs.ProcessorType}) Complete {_processorTimer.Elapsed.TotalMilliseconds}ms");
                     break;
             }

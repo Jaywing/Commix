@@ -1,7 +1,7 @@
 ﻿using System;
 
 // ReSharper disable once CheckNamespace
-namespace Commix.Schema
+namespace Commix.Schema.Extensions
 {
     public static class CollectionProcessorExtensions
     {

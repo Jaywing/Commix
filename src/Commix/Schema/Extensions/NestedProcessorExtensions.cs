@@ -1,10 +1,9 @@
 ﻿using System;
-
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 // ReSharper disable once CheckNamespace
-namespace Commix.Schema
+namespace Commix.Schema.Extensions
 {
     public static class NestedProcessorExtensions
     {
@@ -21,7 +20,7 @@ namespace Commix.Schema
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<NestedProcessor>(c =>
+                .Add(Processor.Property<NestedProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(NestedProcessor.OutputTypeOption, typeof(TProp));

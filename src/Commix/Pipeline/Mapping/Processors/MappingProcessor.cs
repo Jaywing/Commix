@@ -1,26 +1,27 @@
 ﻿using System;
+using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
-namespace Commix.Pipeline.Model.Processors
+namespace Commix.Pipeline.Mapping.Processors
 {
     /// <summary>
     /// Default model pipeline processor, uses the pipeline schema to map a model.
     /// </summary>
-    public class ModelMapperProcessor : IModelMapperProcessor
+    public class MappingProcessor : IMappingProcessor
     {
         private readonly IProcessorFactory _processorFactory;
         private readonly IPropertyPipelineFactory _propertyPipelineFactory;
 
         public Action Next { get; set; }
 
-        public ModelMapperProcessor(IProcessorFactory processorFactory, IPropertyPipelineFactory propertyPipelineFactory)
+        public MappingProcessor(IProcessorFactory processorFactory, IPropertyPipelineFactory propertyPipelineFactory)
         {
             _processorFactory = processorFactory ?? throw new ArgumentNullException(nameof(processorFactory));
             _propertyPipelineFactory = propertyPipelineFactory ?? throw new ArgumentNullException(nameof(propertyPipelineFactory));
         }
 
-        public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
+        public void Run(MappingContext pipelineContext, MappingProcessorContext processorContext)
         {
             if (pipelineContext.Schema != null)
             {
@@ -31,8 +32,8 @@ namespace Commix.Pipeline.Model.Processors
                         case PropertyPipelineSchema propertySchema:
                             RunPropertyPipeline(pipelineContext, propertySchema);
                             break;
-                        case ContextProcessorSchema singleProcessorSchema:
-                            RunContextPipeline(pipelineContext, singleProcessorSchema);
+                        case ModelProcessorSchema mappingSchema:
+                            RunModelPipeline(pipelineContext, mappingSchema);
                             break;
                         
                     }
@@ -47,9 +48,9 @@ namespace Commix.Pipeline.Model.Processors
         /// </summary>
         /// <param name="context">Model pipeline context</param>
         /// <param name="propertyPipelineSchema">Property pipeline context</param>
-        private void RunPropertyPipeline(ModelContext context, PropertyPipelineSchema propertyPipelineSchema)
+        private void RunPropertyPipeline(MappingContext context, PropertyPipelineSchema propertyPipelineSchema)
         {
-            PropertyMappingPipeline propertyPipeline = _propertyPipelineFactory.GetPropertyPipeline();
+            PropertyPipeline propertyPipeline = _propertyPipelineFactory.GetPropertyPipeline();
 
             foreach (ProcessorSchema propertyProcessorSchema in propertyPipelineSchema.Processors)
             {
@@ -58,32 +59,32 @@ namespace Commix.Pipeline.Model.Processors
                     // Property processors run on indiviual properties within a Model
                     propertyPipeline.Add(propertyProcesser, propertyProcessorSchema);
                 }
-                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IContextProcessor basicProcessor))
+                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IModelProcessor modelProcessor))
                 {
-                    // Basic processors run on the model itself
-                    propertyPipeline.Add(basicProcessor, propertyProcessorSchema);
+                    // Model processors run on the model itself
+                    propertyPipeline.Add(modelProcessor, propertyProcessorSchema);
                 }
             }
 
             propertyPipeline.Run(new PropertyContext(context, propertyPipelineSchema.PropertyInfo, context.Input) {Monitor = context.Monitor});
         }
 
-        private void RunContextPipeline(ModelContext context, ContextProcessorSchema contextProcessorSchema)
+        private void RunModelPipeline(MappingContext context, ModelProcessorSchema modelProcessorSchema)
         {
-            var modelPipeline = new NestedMappingPipeline();
+            var modelPipeline = new ModelPipeline();
 
-            foreach (ProcessorSchema schema in contextProcessorSchema.Processors)
+            foreach (ProcessorSchema schema in modelProcessorSchema.Processors)
             {
-                if (_processorFactory.TryGetProcessor(schema.Type, out IContextProcessor contextProcessor))
+                if (_processorFactory.TryGetProcessor(schema.Type, out IModelProcessor contextProcessor))
                     modelPipeline.Add(contextProcessor, schema);
             }
 
-            var nestedContext = new BasicContext(context, context.Input);
+            var modelContext = new ModelContext(context, context.Input);
 
-            modelPipeline.Run(nestedContext);
+            modelPipeline.Run(modelContext);
 
-            if (!nestedContext.Faulted)
-                context.Input = nestedContext.Context;
+            if (!modelContext.Faulted)
+                context.Input = modelContext.Context;
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
-
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 // ReSharper disable once CheckNamespace
-namespace Commix.Schema
+namespace Commix.Schema.Extensions
 {
     public static class ConstantProcessorExtensions
     {
@@ -12,7 +11,7 @@ namespace Commix.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, TValue value, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<ConstantProcessor<TValue>>(c =>
+                .Add(Processor.Property<ConstantProcessor<TValue>>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(ConstantProcessor<TValue>.ConstantOptionKey, value);

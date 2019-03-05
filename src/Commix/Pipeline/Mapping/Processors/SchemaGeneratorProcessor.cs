@@ -1,21 +1,20 @@
 ﻿using System;
-
 using Commix.Schema;
 
-namespace Commix.Pipeline.Model.Processors
+namespace Commix.Pipeline.Mapping.Processors
 {
     public class SchemaGeneratorProcessor : ISchemeGenerator
     {
         public Action Next { get; set; }
 
-        public void Run(ModelContext pipelineContext, ModelProcessorContext processorContext)
+        public void Run(MappingContext pipelineContext, MappingProcessorContext processorContext)
         {
             pipelineContext.Schema = BuildSchema(pipelineContext);
 
             Next();
         }
 
-        protected virtual ModelSchema BuildSchema(ModelContext context)
+        protected virtual ModelSchema BuildSchema(MappingContext context)
         {
             switch (context.Output)
             {

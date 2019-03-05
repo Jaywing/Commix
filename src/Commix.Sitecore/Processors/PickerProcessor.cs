@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Commix.Exceptions;
+using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -13,10 +14,15 @@ using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class PickerProcessor : IContextProcessor
+    public class PickerProcessor : IModelProcessor, IPropertyProcesser
     {
         public Action Next { get; set; }
-        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
+        {
+            Run((ModelContext)pipelineContext, processorContext);
+        }
+
+        public void Run(ModelContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

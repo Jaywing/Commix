@@ -1,7 +1,6 @@
 ﻿using System;
-using Commix.Pipeline.Property;
 
-namespace Commix.Pipeline.Model
+namespace Commix.Pipeline
 {
     /// <summary>
     /// Get a processor by type.

@@ -7,6 +7,7 @@ using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 
 using Commix.Schema;
+using Commix.Schema.Extensions;
 
 namespace Commix.ConsoleTest.Models
 {
@@ -34,14 +35,14 @@ namespace Commix.ConsoleTest.Models
 
         public SchemaBuilder Map()
             => this.Schema(s => s
-                .Context(c => c.Add(Processor.Use<TestContextProcessor>()))
+                .Model(c => c.Add(Processor.Model<TestModelProcessor>()))
                 .Property(m => m.Nested, c => c
                     .Get()
                     .Nested()
                     .Set())
                 .Property(m => m.SomeDerivedString, c => c
                     .Get("Name")
-                    .Add(Processor.Use<Processor1>())
+                    .Add(Processor.Model<Processor1>())
                     .Set())
                 .Property(m => m.Name, c => c
                     .Get()
@@ -64,9 +65,9 @@ namespace Commix.ConsoleTest.Models
                 => this.Schema(s => s
                     .Property(m => m.Name, c => c.Get().Set())
                     .Property(m => m.StageResult, p => p
-                        .Add(Processor.Use<Processor3>())
+                        .Add(Processor.Property<Processor3>())
                         .SetStage(PropertyStageMarker.Finalised, c => c.Option(SetStageProcessor.TypeCheck, typeof(string)))
-                        .Add(Processor.Use<Processor4>(o => o
+                        .Add(Processor.Property<Processor4>(o => o
                             .AllowedStages(PropertyStageMarker.Populating)
                         ))
                         .Set())

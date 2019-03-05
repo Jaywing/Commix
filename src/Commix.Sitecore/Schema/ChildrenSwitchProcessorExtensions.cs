@@ -13,7 +13,7 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<ChildrenSwitchProcessor>(c =>
+                .Add(Processor.Property<ChildrenSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);

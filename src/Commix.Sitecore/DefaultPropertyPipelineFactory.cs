@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-
-using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +15,9 @@ namespace Commix.Sitecore
             _serviceProvider = serviceProvider;
         }
 
-        public PropertyMappingPipeline GetPropertyPipeline()
+        public PropertyPipeline GetPropertyPipeline()
         {
-            var pipeline = _serviceProvider.GetRequiredService<PropertyMappingPipeline>();
+            var pipeline = _serviceProvider.GetRequiredService<PropertyPipeline>();
 
             return pipeline;
         }

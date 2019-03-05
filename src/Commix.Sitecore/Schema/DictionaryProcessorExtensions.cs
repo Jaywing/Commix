@@ -4,6 +4,7 @@ using System.Linq;
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
+using Commix.Schema.Extensions;
 using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore.Schema
@@ -15,7 +16,7 @@ namespace Commix.Sitecore.Schema
             string defaultValue = default(string), Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<DictionaryProcessor>(c =>
+                .Add(Processor.Property<DictionaryProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(DictionaryProcessor.DictionaryKey, dictionaryKey);

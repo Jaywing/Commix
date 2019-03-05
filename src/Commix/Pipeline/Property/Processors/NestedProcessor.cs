@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-
-using Commix.Pipeline.Model;
+using Commix.Pipeline.Mapping;
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
@@ -12,9 +11,9 @@ namespace Commix.Pipeline.Property.Processors
     /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
     public class NestedProcessor : IPropertyProcesser
     {
-        private readonly IModelPipelineFactory _pipelineFactory;
+        private readonly IMappingPipelineFactory _pipelineFactory;
 
-        public NestedProcessor(IModelPipelineFactory pipelineFactory)
+        public NestedProcessor(IMappingPipelineFactory pipelineFactory)
         {
             _pipelineFactory = pipelineFactory ?? throw new ArgumentNullException(nameof(pipelineFactory));
         }
@@ -31,9 +30,9 @@ namespace Commix.Pipeline.Property.Processors
                 {
                     if (processorContext.Options.ContainsKey(OutputTypeOption) && processorContext.Options[OutputTypeOption] is Type outputType)
                     {
-                        var mappingContext = new ModelContext(pipelineContext.Context, Activator.CreateInstance(outputType)) {Monitor = pipelineContext.Monitor};
+                        var mappingContext = new MappingContext(pipelineContext.Context, Activator.CreateInstance(outputType)) {Monitor = pipelineContext.Monitor};
 
-                        ModelMappingPipeline pipeline = _pipelineFactory.GetModelPipeline();
+                        MappingPipeline pipeline = _pipelineFactory.GetMappingPipeline();
 
                         pipeline.Run(mappingContext);
                         pipelineContext.Context = mappingContext.Output;

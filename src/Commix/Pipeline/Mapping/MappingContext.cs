@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
-
 using Commix.Schema;
 
-namespace Commix.Pipeline.Model
+namespace Commix.Pipeline.Mapping
 {
     /// <summary>
     /// Context used by the model mapping pipeline.
     /// </summary>
-    public class ModelContext : IMonitoredContext
+    public class MappingContext : IMonitoredContext
     {
         /// <summary>
         /// Mapping source
@@ -25,7 +23,7 @@ namespace Commix.Pipeline.Model
         /// </summary>
         public ModelSchema Schema { get; set; }
         
-        public ModelContext(object input, object output)
+        public MappingContext(object input, object output)
         {
             Input = input ?? throw new ArgumentNullException(nameof(input));
             Output = output ?? throw new ArgumentNullException(nameof(output));

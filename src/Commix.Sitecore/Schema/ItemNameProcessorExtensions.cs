@@ -21,7 +21,7 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<ItemNameProcessor>(c =>
+                .Add(Processor.Property<ItemNameProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);

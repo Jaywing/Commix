@@ -13,10 +13,10 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                .Add(Processor.Model<FieldSwitchProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<CheckboxFieldProcessor>(o => o
+                .Add(Processor.Property<CheckboxFieldProcessor>(o => o
                     .AllowedStages(PropertyStageMarker.Populating)
                 ));
         }

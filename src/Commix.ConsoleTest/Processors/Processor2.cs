@@ -32,7 +32,7 @@ namespace Commix.ConsoleTest.Processors
             try
             {
                 if (!pipelineContext.Faulted)
-                    FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.ModelContext.Output, pipelineContext.Context);
+                    FastPropertyAccessor.SetValue(pipelineContext.PropertyInfo, pipelineContext.MappingContext.Output, pipelineContext.Context);
             }
             catch
             {
@@ -65,7 +65,7 @@ namespace Commix.ConsoleTest.Processors
             {
                 if (!pipelineContext.Faulted && GetPropertyInfo(pipelineContext, processorContext, out PropertyInfo sourcePropertyInfo))
                 {
-                    pipelineContext.Context = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.ModelContext.Input);
+                    pipelineContext.Context = FastPropertyAccessor.GetValue(sourcePropertyInfo, pipelineContext.MappingContext.Input);
                 }
             }
             catch
@@ -86,7 +86,7 @@ namespace Commix.ConsoleTest.Processors
                 sourceProperty = context.PropertyInfo.Name;
             }
 
-            sourcePropertyInfo = context.ModelContext.Input.GetType().GetProperty(sourceProperty);
+            sourcePropertyInfo = context.MappingContext.Input.GetType().GetProperty(sourceProperty);
 
             return sourcePropertyInfo != null;
         }
@@ -102,7 +102,7 @@ namespace Commix.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<SetProcessor>(configure));
+                .Add(Processor.Property<SetProcessor>(configure));
         }
     }
 
@@ -121,7 +121,7 @@ namespace Commix.Schema
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<GetProcessor>(configure));
+                .Add(Processor.Property<GetProcessor>(configure));
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Commix.Schema
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<GetProcessor>(c =>
+                .Add(Processor.Property<GetProcessor>(c =>
                 {
                     c.Option(GetProcessor.SourcePropertyOptionKey, sourceProperty);
                     configure?.Invoke(c);

@@ -42,7 +42,7 @@ namespace Commix.Pipeline.Property.Processors
             this SchemaPropertyBuilder<TModel, TProp> builder)
         {
             return builder
-                .Add(Processor.Use<IntProcessor>());
+                .Add(Processor.Property<IntProcessor>());
         }
     }
 }

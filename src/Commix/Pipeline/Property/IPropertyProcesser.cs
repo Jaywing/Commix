@@ -1,7 +1,5 @@
 ﻿
 using System;
-
-using Commix.Pipeline.Model;
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Commix.Pipeline.Model
+namespace Commix.Pipeline.Mapping
 {
-    public class ModelProcessorContext
+    public class MappingProcessorContext
     {
         public Guid InstanceId { get; } = Guid.NewGuid();
     }

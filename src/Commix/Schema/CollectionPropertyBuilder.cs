@@ -15,7 +15,7 @@ namespace Commix.Schema
 
         public void Define<TSource, TTarget>(Action<SchemaProcessorBuilder> configure = null)
         {
-            _schemaBuilder.Add(Processor.Use<CollectionProcessor<TSource, TTarget>>(c =>
+            _schemaBuilder.Add(Processor.Property<CollectionProcessor<TSource, TTarget>>(c =>
             {
                 c.AllowedStages(PropertyStageMarker.Populating);
                 configure?.Invoke(c);

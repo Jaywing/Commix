@@ -4,6 +4,7 @@ using System.Linq;
 using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
+using Commix.Schema.Extensions;
 using Commix.Sitecore.Processors;
 
 namespace Commix.Sitecore.Schema
@@ -26,10 +27,10 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                .Add(Processor.Model<FieldSwitchProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>(c => c
+                .Add(Processor.Property<StringFieldProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(StringFieldProcessor.DisableWebEditingOptionKey, disableWebEditing)))
                 .Ensure(defaultValue);
@@ -39,10 +40,10 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, string defaultValue)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c => c
+                .Add(Processor.Model<FieldSwitchProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))
-                .Add(Processor.Use<StringFieldProcessor>(c => c
+                .Add(Processor.Property<StringFieldProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(StringFieldProcessor.RawFieldValue, true)))
                 .Ensure(defaultValue);

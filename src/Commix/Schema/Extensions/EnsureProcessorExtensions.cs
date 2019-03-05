@@ -1,9 +1,8 @@
 ﻿using System;
-
 using Commix.Pipeline.Property.Processors;
 
 // ReSharper disable once CheckNamespace
-namespace Commix.Schema
+namespace Commix.Schema.Extensions
 {
     public static class EnsureProcessorExtensions
     {
@@ -11,7 +10,7 @@ namespace Commix.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, TReplacement replacement, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<EnsureProcessor>(c =>
+                .Add(Processor.Property<EnsureProcessor>(c =>
                 {
                     c.Option(EnsureProcessor.EnsureType, typeof(TReplacement));
                     c.Option(EnsureProcessor.EnsureReplacement, replacement);

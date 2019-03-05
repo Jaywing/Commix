@@ -1,32 +1,37 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-
-using Commix.Pipeline.Model;
+using Commix.Pipeline.Mapping;
 
 namespace Commix.Pipeline.Property
 {
-    public class PropertyContext : BasicContext
+    /// <summary>
+    /// Property contexts are passed to IPropertyProcessors, used to build up a context with the aim to set a property on the MappingContext output.
+    /// </summary>
+    public class PropertyContext : ModelContext
     {
         public PropertyInfo PropertyInfo { get; }
 
-        public PropertyContext(ModelContext modelContext, PropertyInfo propertyInfo, object initialContext)
-        : base(modelContext, initialContext )
+        public PropertyContext(MappingContext mappingContext, PropertyInfo propertyInfo, object initialContext)
+        : base(mappingContext, initialContext )
         {
             PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         }
     }
 
-    public class BasicContext : IMonitoredContext
+    /// <summary>
+    /// Model contexts are passed to IModelProcessors, used to change the value of MappingContext input as part of an on-going mapping operation.
+    /// </summary>
+    public class ModelContext : IMonitoredContext
     {
         public PropertyStageMarker Stage { get; set; }
         
         public Guid InstanceId { get; } = Guid.NewGuid();
         
-        public ModelContext ModelContext { get; }
+        public MappingContext MappingContext { get; }
         
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PropertyMappingPipeline"/> is faulted.
+        /// Gets or sets a value indicating whether this <see cref="PropertyPipeline"/> is faulted.
         /// A faulted pipline will continue to Run whilst Next is called, but once the Pipeline complete if the 
         /// faulted flag is still set the value will not used to set the target property.
         /// </summary>
@@ -46,9 +51,9 @@ namespace Commix.Pipeline.Property
 
         public IPipelineMonitor Monitor { get; set; }
 
-        public BasicContext(ModelContext modelContext, object initialContext)
+        public ModelContext(MappingContext mappingContext, object initialContext)
         {
-            ModelContext = modelContext;
+            MappingContext = mappingContext;
             Context = initialContext;
         }
     }

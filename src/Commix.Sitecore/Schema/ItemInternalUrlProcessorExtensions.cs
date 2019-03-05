@@ -13,7 +13,7 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<ItemInternalUrlProcessor>(c =>
+                .Add(Processor.Property<ItemInternalUrlProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);

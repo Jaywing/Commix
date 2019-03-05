@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reactive;
 using Commix.Diagnostics;
 using Commix.Diagnostics.Reactive;
-using Commix.Pipeline.Model;
+using Commix.Pipeline.Mapping;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -48,18 +48,18 @@ namespace Commix.ConsoleTest
             {
                 switch (args.EventArgs.PipelineContext)
                 {
-                    case ModelContext modelContext:
+                    case MappingContext mappingContext:
                         PipelineTrace pipelineTrace = _traceStack.Peek();
                         if (pipelineTrace != null)
                         {
                             pipelineTrace.PipelineContext = new
                             {
-                                modelContext.Input,
-                                modelContext.Output,
+                                mappingContext.Input,
+                                mappingContext.Output,
                                 Schema = new
                                 {
-                                    modelContext.Schema?.ModelType,
-                                    Properties = modelContext.Schema?.Schemas?
+                                    mappingContext.Schema?.ModelType,
+                                    Properties = mappingContext.Schema?.Schemas?
                                         .OfType<PropertyPipelineSchema>()
                                         .Select(property => new
                                     {

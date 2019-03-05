@@ -4,6 +4,7 @@ using System.Linq;
 
 using Commix.Exceptions;
 using Commix.Pipeline;
+using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -17,13 +18,13 @@ namespace Commix.Sitecore.Processors
     /// Switch the context to a field on a <see cref="Item"/>, expects the context to be a <see cref="Item"/>.
     /// </summary>
     /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
-    public class FieldSwitchProcessor : IContextProcessor
+    public class FieldSwitchProcessor : IModelProcessor
     {
         public static string FieldId = $"{typeof(FieldSwitchProcessor).Name}FieldId";
 
         public Action Next { get; set; }
 
-        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(ModelContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

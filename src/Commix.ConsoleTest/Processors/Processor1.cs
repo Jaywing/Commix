@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
 namespace Commix.ConsoleTest.Processors
 {
-    public class Processor1 : IContextProcessor
+    public class Processor1 : IModelProcessor
     {
         public Action Next { get; set; }
-        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(ModelContext pipelineContext, ProcessorSchema processorContext)
         {
             pipelineContext.Context = $"Source was: '{pipelineContext.Context}'";
 
@@ -40,11 +39,11 @@ namespace Commix.ConsoleTest.Processors
         }
     }
 
-    public class TestContextProcessor : IContextProcessor
+    public class TestModelProcessor : IModelProcessor
     {
         public Action Next { get; set; }
 
-        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(ModelContext pipelineContext, ProcessorSchema processorContext)
         {
             Next();
         }

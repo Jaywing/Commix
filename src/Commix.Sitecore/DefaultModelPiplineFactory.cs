@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Commix.Pipeline.Model;
-using Commix.Pipeline.Model.Processors;
-
+using Commix.Pipeline.Mapping;
+using Commix.Pipeline.Mapping.Processors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.Sitecore
 {
-    public class DefaultModelPiplineFactory : IModelPipelineFactory
+    public class DefaultModelPiplineFactory : IMappingPipelineFactory
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -18,15 +16,15 @@ namespace Commix.Sitecore
             _serviceProvider = serviceProvider;
         }
 
-        public ModelMappingPipeline GetModelPipeline()
+        public MappingPipeline GetMappingPipeline()
         {
-            var pipeline = _serviceProvider.GetRequiredService<ModelMappingPipeline>();
+            var pipeline = _serviceProvider.GetRequiredService<MappingPipeline>();
 
             var schemaGenerator = _serviceProvider.GetRequiredService<ISchemeGenerator>();
-            var modelMapperProcessor = _serviceProvider.GetRequiredService<IModelMapperProcessor>();
+            var modelMapperProcessor = _serviceProvider.GetRequiredService<IMappingProcessor>();
 
-            pipeline.Add(schemaGenerator, new ModelProcessorContext());
-            pipeline.Add(modelMapperProcessor, new ModelProcessorContext());
+            pipeline.Add(schemaGenerator, new MappingProcessorContext());
+            pipeline.Add(modelMapperProcessor, new MappingProcessorContext());
 
             return pipeline;
         }

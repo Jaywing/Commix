@@ -13,18 +13,18 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<PickerProcessor>(c =>
+                .Add(Processor.Property<PickerProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);
                 }));
         }
 
-        public static SchemaContextBuilder<TModel> Picker<TModel>(
-            this SchemaContextBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+        public static SchemaModelBuilder<TModel> Picker<TModel>(
+            this SchemaModelBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<PickerProcessor>(c =>
+                .Add(Processor.Model<PickerProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 
 using Commix.Diagnostics;
-using Commix.Pipeline.Model;
 
 namespace Commix.Pipeline
 {

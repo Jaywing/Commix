@@ -16,7 +16,7 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(FieldSwitchProcessor.FieldId, fieldId);
@@ -27,7 +27,7 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(FieldSwitchProcessor.FieldId, fieldId);
@@ -39,30 +39,18 @@ namespace Commix.Sitecore.Schema
             this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);
                 }));
         }
 
-        public static SchemaContextBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaContextBuilder<TModel> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
+        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
+            this SchemaModelBuilder<TModel> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
-                {
-                    c.AllowedStages(PropertyStageMarker.Populating);
-                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
-                    configure?.Invoke(c);
-                }));
-        }
-
-        public static SchemaContextBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaContextBuilder<TModel> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
-        {
-            return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     c.Option(FieldSwitchProcessor.FieldId, fieldId);
@@ -70,11 +58,23 @@ namespace Commix.Sitecore.Schema
                 }));
         }
 
-        public static SchemaContextBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaContextBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
+            this SchemaModelBuilder<TModel> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Use<FieldSwitchProcessor>(c =>
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
+                {
+                    c.AllowedStages(PropertyStageMarker.Populating);
+                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
+                    configure?.Invoke(c);
+                }));
+        }
+
+        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
+            this SchemaModelBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+        {
+            return builder
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
                     configure?.Invoke(c);

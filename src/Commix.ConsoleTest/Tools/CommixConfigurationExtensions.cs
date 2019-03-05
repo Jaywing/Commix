@@ -1,13 +1,15 @@
-using Commix.Pipeline.Model;
+using Commix.Pipeline;
+using Commix.Pipeline.Mapping;
+using Commix.Pipeline.Property;
 
 namespace Commix.ConsoleTest.Tools
 {
     public static class CommixConfigurationExtensions
     {
         public static CommixConfiguration ModelPipelineFactory<T>(this CommixConfiguration config)
-            where T : class, IModelPipelineFactory
+            where T : class, IMappingPipelineFactory
         {
-            config.SetModelPipelineFactory<T>();
+            config.SetMappingPipelineFactory<T>();
             return config;
         }
 

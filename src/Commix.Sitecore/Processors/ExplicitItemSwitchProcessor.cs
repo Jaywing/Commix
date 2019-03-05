@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 using Commix.Schema;
 
@@ -11,13 +11,13 @@ namespace Commix.Sitecore.Processors
     /// <summary>
     /// Switches the pipeline context using a provided path.
     /// </summary>
-    public class ExplicitItemSwitchProcessor : IContextProcessor
+    public class ExplicitItemSwitchProcessor : IModelProcessor
     {
         public static string Path = $"{typeof(ExplicitItemSwitchProcessor).Name}Path";
 
         public Action Next { get; set; }
 
-        public void Run(BasicContext pipelineContext, ProcessorSchema processorContext)
+        public void Run(ModelContext pipelineContext, ProcessorSchema processorContext)
         {
             try
             {

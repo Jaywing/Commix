@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Commix.Pipeline.Model;
-using Commix.Pipeline.Model.Processors;
+using Commix.Pipeline;
+using Commix.Pipeline.Mapping;
+using Commix.Pipeline.Mapping.Processors;
 using Commix.Pipeline.Property;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,8 +31,8 @@ namespace Commix.Sitecore
                 configurator.SetProcessorFactory<DefaultProcessorFactory>();
 
             // Default Pipeline factories
-            if (serviceCollection.All(x => x.ServiceType != typeof(IModelPipelineFactory)))
-                configurator.SetModelPipelineFactory<DefaultModelPiplineFactory>();
+            if (serviceCollection.All(x => x.ServiceType != typeof(IMappingPipelineFactory)))
+                configurator.SetMappingPipelineFactory<DefaultModelPiplineFactory>();
 
             if (serviceCollection.All(x => x.ServiceType != typeof(IPropertyPipelineFactory)))
                 configurator.SetPropertyPipelineFactory<DefaultPropertyPipelineFactory>();
@@ -40,12 +41,12 @@ namespace Commix.Sitecore
             if (serviceCollection.All(x => x.ServiceType != typeof(ISchemeGenerator)))
                 serviceCollection.AddTransient<ISchemeGenerator, InMemorySchemaGeneratorProcessor>();
 
-            if (serviceCollection.All(x => x.ServiceType != typeof(IModelMapperProcessor)))
-                serviceCollection.AddTransient<IModelMapperProcessor, ModelMapperProcessor>();
+            if (serviceCollection.All(x => x.ServiceType != typeof(IMappingProcessor)))
+                serviceCollection.AddTransient<IMappingProcessor, MappingProcessor>();
             
             // Pipelines, intended that these are not replaced, but modified as needed with processors and configured via factory.
-            serviceCollection.AddTransient<ModelMappingPipeline>();
-            serviceCollection.AddTransient<PropertyMappingPipeline>();
+            serviceCollection.AddTransient<MappingPipeline>();
+            serviceCollection.AddTransient<PropertyPipeline>();
 
             return serviceCollection;
         }

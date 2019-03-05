@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-
-using Commix.Pipeline.Model;
+using Commix.Pipeline;
 
 
 namespace Commix.Sitecore

@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using Commix.Pipeline;
+using Commix.Pipeline.Mapping;
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 
@@ -16,8 +17,8 @@ namespace Commix.ConsoleTest.Tools
 
         public CommixConfiguration(IServiceCollection serviceCollection) => _serviceCollection = serviceCollection;
 
-        internal void SetModelPipelineFactory<T>() where T : class, IModelPipelineFactory
-            => _serviceCollection.AddSingleton<IModelPipelineFactory, T>();
+        internal void SetMappingPipelineFactory<T>() where T : class, IMappingPipelineFactory
+            => _serviceCollection.AddSingleton<IMappingPipelineFactory, T>();
 
         internal void SetPropertyPipelineFactory<T>() where T : class, IPropertyPipelineFactory
             => _serviceCollection.AddSingleton<IPropertyPipelineFactory, T>();
@@ -45,7 +46,7 @@ namespace Commix.ConsoleTest.Tools
                     case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
-                    case var type when typeof(IContextProcessor).IsAssignableFrom(type):
+                    case var type when typeof(IModelProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                 }

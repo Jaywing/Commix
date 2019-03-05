@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
 
-namespace Commix.Pipeline.Model
+namespace Commix.Pipeline.Mapping
 {
     /// <summary>
     /// Get the model mapping pipeline.
     /// </summary>
-    public interface IModelPipelineFactory
+    public interface IMappingPipelineFactory
     {
-        ModelMappingPipeline GetModelPipeline();
+        MappingPipeline GetMappingPipeline();
 
         /// <summary>
         /// Gets the output model.
