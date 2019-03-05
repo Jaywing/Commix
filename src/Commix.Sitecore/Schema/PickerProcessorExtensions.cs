@@ -10,9 +10,10 @@ namespace Commix.Sitecore.Schema
     public static class PickerProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Picker<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Property<PickerProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -21,9 +22,10 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaModelBuilder<TModel> Picker<TModel>(
-            this SchemaModelBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<PickerProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);

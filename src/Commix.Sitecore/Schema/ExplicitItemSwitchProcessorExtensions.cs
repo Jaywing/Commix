@@ -10,9 +10,10 @@ namespace Commix.Sitecore.Schema
     public static class ExplicitItemSwitchProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> ExplicitItemSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel, TProp> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<ExplicitItemSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -22,9 +23,10 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaModelBuilder<TModel> ExplicitItemSwitch<TModel>(
-            this SchemaModelBuilder<TModel> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel> builder, string pathOrId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<ExplicitItemSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);

@@ -5,14 +5,16 @@ using Commix.Pipeline.Property;
 using Commix.Schema;
 using Commix.Sitecore.Processors;
 
-namespace Commix.Sitecore.Schema
+namespace Commix.Schema
 {
+
     public static class CheckboxFieldProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> CheckboxField<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId)
+           this SitecoreHelpers<TModel, TProp> builder, string fieldId)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c => c
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(FieldSwitchProcessor.FieldId, fieldId)))

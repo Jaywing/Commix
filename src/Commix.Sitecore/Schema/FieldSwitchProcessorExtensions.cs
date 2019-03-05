@@ -13,9 +13,10 @@ namespace Commix.Sitecore.Schema
     public static class FieldSwitchProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel, TProp> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -24,9 +25,10 @@ namespace Commix.Sitecore.Schema
                 }));
         }
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -36,9 +38,10 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel, TProp> builder, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -47,21 +50,10 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaModelBuilder<TModel> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
-                .Add(Processor.Model<FieldSwitchProcessor>(c =>
-                {
-                    c.AllowedStages(PropertyStageMarker.Populating);
-                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
-                    configure?.Invoke(c);
-                }));
-        }
-
-        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaModelBuilder<TModel> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
-        {
-            return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
@@ -71,9 +63,23 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
-            this SchemaModelBuilder<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+            this SitecoreHelpers<TModel> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
+                .SchemaBuilder
+                .Add(Processor.Model<FieldSwitchProcessor>(c =>
+                {
+                    c.AllowedStages(PropertyStageMarker.Populating);
+                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
+                    configure?.Invoke(c);
+                }));
+        }
+
+        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
+            this SitecoreHelpers<TModel> builder, Action<SchemaProcessorBuilder> configure = null)
+        {
+            return builder
+                .SchemaBuilder
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);

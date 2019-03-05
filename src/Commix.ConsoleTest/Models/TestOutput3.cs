@@ -3,7 +3,6 @@ using System.Linq;
 
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
-using Commix.Schema.Extensions;
 
 
 namespace Commix.ConsoleTest.Models
