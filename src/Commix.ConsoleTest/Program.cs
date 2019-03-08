@@ -38,7 +38,7 @@ namespace Commix.ConsoleTest
             
             ServiceLocator.ServiceProvider = new ServiceCollection()
                 .AddCommix(c => c
-                    .ModelPipelineFactory<ConsoleTestModelPiplineFactory>()
+                    .MappingPipelineFactory<ConsoleTestModelPiplineFactory>()
                     .PropertyPipelineFactory<ConsoleTestPropertyPipelineFactory>())
                 .BuildServiceProvider();
 

@@ -5,6 +5,7 @@ using Commix.Pipeline.Property;
 using Commix.Pipeline.Property.Processors;
 using Commix.Schema;
 using Commix.Sitecore.Processors;
+using Sitecore.Data;
 
 namespace Commix.Sitecore.Schema
 {
@@ -17,9 +18,21 @@ namespace Commix.Sitecore.Schema
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId)
+        {
+            return StringField(builder, fieldId.ToString(), string.Empty, false);
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
             this SitecoreHelpers<TModel, TProp> builder, string fieldId, string defaultValue)
         {
             return StringField(builder, fieldId, defaultValue, false);
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
+        {
+            return StringField(builder, fieldId.ToString(), defaultValue, false);
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
@@ -36,6 +49,12 @@ namespace Commix.Sitecore.Schema
                 .Ensure(defaultValue);
         }
 
+        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue, bool disableWebEditing)
+        {
+            return StringField(builder, fieldId.ToString(), defaultValue, disableWebEditing);
+        }
+
         public static SchemaPropertyBuilder<TModel, TProp> StringFieldRaw<TModel, TProp>(
             this SitecoreHelpers<TModel, TProp> builder, string fieldId, string defaultValue)
         {
@@ -48,6 +67,12 @@ namespace Commix.Sitecore.Schema
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(StringFieldProcessor.RawFieldValue, true)))
                 .Ensure(defaultValue);
+        }
+
+        public static SchemaPropertyBuilder<TModel, TProp> StringFieldRaw<TModel, TProp>(
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
+        {
+            return StringFieldRaw(builder, fieldId.ToString(), defaultValue);
         }
     }
 }

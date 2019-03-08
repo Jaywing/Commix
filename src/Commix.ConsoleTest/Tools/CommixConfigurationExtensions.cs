@@ -6,7 +6,7 @@ namespace Commix.ConsoleTest.Tools
 {
     public static class CommixConfigurationExtensions
     {
-        public static CommixConfiguration ModelPipelineFactory<T>(this CommixConfiguration config)
+        public static CommixConfiguration MappingPipelineFactory<T>(this CommixConfiguration config)
             where T : class, IMappingPipelineFactory
         {
             config.SetMappingPipelineFactory<T>();
