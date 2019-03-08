@@ -13,18 +13,6 @@ namespace Commix.Sitecore.Schema
     public static class FieldSwitchProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
-        {
-            return builder
-                .SchemaBuilder
-                .Add(Processor.Model<FieldSwitchProcessor>(c =>
-                {
-                    c.AllowedStages(PropertyStageMarker.Populating);
-                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
-                    configure?.Invoke(c);
-                }));
-        }
-        public static SchemaPropertyBuilder<TModel, TProp> FieldSwitch<TModel, TProp>(
             this SitecoreHelpers<TModel, TProp> builder, ID fieldId, Action<SchemaProcessorBuilder> configure = null)
         {
             return builder
@@ -45,19 +33,6 @@ namespace Commix.Sitecore.Schema
                 .Add(Processor.Model<FieldSwitchProcessor>(c =>
                 {
                     c.AllowedStages(PropertyStageMarker.Populating);
-                    configure?.Invoke(c);
-                }));
-        }
-
-        public static SchemaModelBuilder<TModel> FieldSwitch<TModel>(
-            this SitecoreHelpers<TModel> builder, string fieldId, Action<SchemaProcessorBuilder> configure = null)
-        {
-            return builder
-                .SchemaBuilder
-                .Add(Processor.Model<FieldSwitchProcessor>(c =>
-                {
-                    c.AllowedStages(PropertyStageMarker.Populating);
-                    c.Option(FieldSwitchProcessor.FieldId, fieldId);
                     configure?.Invoke(c);
                 }));
         }

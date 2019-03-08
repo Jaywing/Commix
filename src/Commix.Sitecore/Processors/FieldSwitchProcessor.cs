@@ -37,8 +37,6 @@ namespace Commix.Sitecore.Processors
                         case Item item:
                             if (processorContext.TryGetOption(FieldId, out ID fieldId))
                                 contextField = item.Fields[fieldId];
-                            else if (processorContext.TryGetOption(FieldId, out string fieldValue))
-                                contextField = item.Fields[fieldValue];
                             else if (pipelineContext is PropertyContext propertyContext)
                                 contextField = item.Fields[propertyContext.PropertyInfo.Name];
                             break;

@@ -12,31 +12,19 @@ namespace Commix.Sitecore.Schema
     public static class StringFieldProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, string fieldId)
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId)
         {
             return StringField(builder, fieldId, string.Empty, false);
         }
-
+        
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, ID fieldId)
-        {
-            return StringField(builder, fieldId.ToString(), string.Empty, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, string fieldId, string defaultValue)
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
         {
             return StringField(builder, fieldId, defaultValue, false);
         }
 
         public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
-        {
-            return StringField(builder, fieldId.ToString(), defaultValue, false);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, string fieldId, string defaultValue, bool disableWebEditing)
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue, bool disableWebEditing)
         {
             return builder
                 .SchemaBuilder
@@ -49,14 +37,8 @@ namespace Commix.Sitecore.Schema
                 .Ensure(defaultValue);
         }
 
-        public static SchemaPropertyBuilder<TModel, TProp> StringField<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue, bool disableWebEditing)
-        {
-            return StringField(builder, fieldId.ToString(), defaultValue, disableWebEditing);
-        }
-
         public static SchemaPropertyBuilder<TModel, TProp> StringFieldRaw<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, string fieldId, string defaultValue)
+            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
         {
             return builder
                 .SchemaBuilder
@@ -67,12 +49,6 @@ namespace Commix.Sitecore.Schema
                     .AllowedStages(PropertyStageMarker.Populating)
                     .Option(StringFieldProcessor.RawFieldValue, true)))
                 .Ensure(defaultValue);
-        }
-
-        public static SchemaPropertyBuilder<TModel, TProp> StringFieldRaw<TModel, TProp>(
-            this SitecoreHelpers<TModel, TProp> builder, ID fieldId, string defaultValue)
-        {
-            return StringFieldRaw(builder, fieldId.ToString(), defaultValue);
         }
     }
 }

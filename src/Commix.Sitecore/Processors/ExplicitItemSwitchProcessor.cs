@@ -4,6 +4,7 @@ using Commix.Pipeline.Property;
 using Commix.Schema;
 
 using Sitecore;
+using Sitecore.Data;
 using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
@@ -13,7 +14,7 @@ namespace Commix.Sitecore.Processors
     /// </summary>
     public class ExplicitItemSwitchProcessor : IModelProcessor
     {
-        public static string Path = $"{typeof(ExplicitItemSwitchProcessor).Name}Path";
+        public static string IdKey = $"{typeof(ExplicitItemSwitchProcessor).Name}Id";
 
         public Action Next { get; set; }
 
@@ -23,8 +24,8 @@ namespace Commix.Sitecore.Processors
             {
                 if (!pipelineContext.Faulted)
                 {
-                    if (processorContext.TryGetOption(Path, out string path))
-                        pipelineContext.Context = Context.Database.GetItem(path);
+                    if (processorContext.TryGetOption(IdKey, out ID id))
+                        pipelineContext.Context = Context.Database.GetItem(id);
                     else
                         pipelineContext.Faulted = true;
                 }

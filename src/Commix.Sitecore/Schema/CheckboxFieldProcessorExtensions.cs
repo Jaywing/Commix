@@ -5,13 +5,15 @@ using Commix.Pipeline.Property;
 using Commix.Schema;
 using Commix.Sitecore.Processors;
 
+using Sitecore.Data;
+
 namespace Commix.Schema
 {
 
     public static class CheckboxFieldProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> CheckboxField<TModel, TProp>(
-           this SitecoreHelpers<TModel, TProp> builder, string fieldId)
+           this SitecoreHelpers<TModel, TProp> builder, ID fieldId)
         {
             return builder
                 .SchemaBuilder
