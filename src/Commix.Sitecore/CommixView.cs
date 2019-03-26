@@ -21,23 +21,24 @@ namespace Commix.Sitecore
         {
             if (viewData.Model is RenderingModel renderingModel)
             {
-                var commixOptions = ServiceLocator.ServiceProvider?.GetService<CommixOptions>();
-                if (commixOptions != null)
-                {
-                    if (commixOptions.Diagnostics)
-                    {
-                        var jsonTracer = ServiceLocator.ServiceProvider?.GetService<IJsonTracer>();
-                        if (jsonTracer != null)
-                        {
-                            viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>(
-                                (pipeline, context) =>
-                                {
-                                    if (context.Monitor != null)
-                                        jsonTracer.Attach(context.Monitor);
-                                }));
+                IJsonTracer tracer = null;
 
-                            viewData["commixTrace"] = jsonTracer.ToJson();
-                        }
+                var commixOptions = ServiceLocator.ServiceProvider?.GetService<CommixOptions>();
+                if (commixOptions != null && commixOptions.Diagnostics)
+                    tracer = ServiceLocator.ServiceProvider?.GetService<IJsonTracer>();
+
+                if (tracer != null)
+                {
+                    using (tracer)
+                    {
+                        viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>(
+                            (pipeline, context) =>
+                            {
+                                if (context.Monitor != null)
+                                    tracer.Attach(context.Monitor);
+                            }));
+
+                        viewData["commixTrace"] = tracer.ToJson();
                     }
                 }
                 else

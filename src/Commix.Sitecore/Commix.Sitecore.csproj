@@ -5,11 +5,11 @@
     <AssemblyName>Commix.Sitecore</AssemblyName>  
     <RootNamespace>Commix.Sitecore</RootNamespace>  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Jamie Gould</Authors>
+    <Authors>Jaywing</Authors>
     <Company>Jaywing</Company>
     <Version>1.0.0</Version>
     <IncludeSymbols>true</IncludeSymbols>
-     <Description>Commix Model Mapper - Sitecore extensions</Description>
+     <Description>Sitecore processors and configuration for Commix.</Description>
     <Copyright>Jaywing</Copyright>
     <RepositoryUrl>https://jaywing.visualstudio.com/Internal%20Projects/_git/Commix</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
