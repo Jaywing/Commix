@@ -11,11 +11,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.Sitecore
 {
-    public class CommixConfiguration
+    public class CommixConfigurator
     {
         private readonly IServiceCollection _serviceCollection;
 
-        public CommixConfiguration(IServiceCollection serviceCollection) => _serviceCollection = serviceCollection;
+        public CommixConfigurator(IServiceCollection serviceCollection)
+        {
+            _serviceCollection = serviceCollection;
+
+            Options = new CommixOptions();
+        }
 
         internal void SetMappingPipelineFactory<T>() where T : class, IMappingPipelineFactory
             => _serviceCollection.AddSingleton<IMappingPipelineFactory, T>();
@@ -25,6 +30,8 @@ namespace Commix.Sitecore
 
         internal void SetProcessorFactory<T>() where T : class, IProcessorFactory
             => _serviceCollection.AddSingleton<IProcessorFactory, T>();
+
+        public CommixOptions Options { get; }
 
         /// <summary>
         /// Scans all loaded assemblies with matchin assemble name prefix, registering processors that implement <see cref="IPropertyProcesser"/>

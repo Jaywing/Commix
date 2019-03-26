@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.Sitecore
 {
-    public static class CommixRegistrar
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Register Commix dependencies
@@ -18,13 +18,15 @@ namespace Commix.Sitecore
         /// <param name="serviceCollection">The service collection.</param>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static IServiceCollection AddCommix(this IServiceCollection serviceCollection, Action<CommixConfiguration> config = null)
+        public static IServiceCollection AddCommix(this IServiceCollection serviceCollection, Action<CommixConfigurator> config = null)
         {
-            var configurator = new CommixConfiguration(serviceCollection);
+            var configurator = new CommixConfigurator(serviceCollection);
 
             configurator.RegisterProcessors("Commix");
-
+            
             config?.Invoke(configurator);
+
+            serviceCollection.AddSingleton(configurator.Options);
 
             // Default Processor factory
             if (serviceCollection.All(x => x.ServiceType != typeof(IProcessorFactory)))
@@ -37,7 +39,7 @@ namespace Commix.Sitecore
             if (serviceCollection.All(x => x.ServiceType != typeof(IPropertyPipelineFactory)))
                 configurator.SetPropertyPipelineFactory<DefaultPropertyPipelineFactory>();
 
-            // Detault Model Pipline processors
+            // Default Model Pipeline processors
             if (serviceCollection.All(x => x.ServiceType != typeof(ISchemeGenerator)))
                 serviceCollection.AddTransient<ISchemeGenerator, InMemorySchemaGeneratorProcessor>();
 
