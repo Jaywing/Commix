@@ -7,7 +7,7 @@ using Sitecore.Mvc.Presentation;
 
 namespace Commix.Sitecore
 {
-    public class CommixViewModel<T>
+    public class CommixViewModel<T> : IJsonTraceViewModel
     {
         public IJsonTracer Trace { get; set; }
         public RenderingModel Rendering { get; }

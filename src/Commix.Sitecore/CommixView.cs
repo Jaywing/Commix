@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Sitecore.DependencyInjection;
 using Sitecore.Mvc.Presentation;
 
+using Sitecore_Context = Sitecore.Context;
+
 namespace Commix.Sitecore
 {
     public abstract class CommixView<T> : WebViewPage<CommixViewModel<T>>
@@ -24,6 +26,7 @@ namespace Commix.Sitecore
                 IJsonTracer tracer = null;
 
                 var commixOptions = ServiceLocator.ServiceProvider?.GetService<CommixOptions>();
+
                 if (commixOptions != null && commixOptions.Diagnostics)
                     tracer = ServiceLocator.ServiceProvider?.GetService<IJsonTracer>();
 
@@ -51,7 +54,7 @@ namespace Commix.Sitecore
                     viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>());
                 }
             }
-            else
+            else if (Sitecore_Context.Item != null)
             {
                 throw new InvalidOperationException($"CommixView expects base model Of RenderingModel, received: ${viewData.Model}");
             }
