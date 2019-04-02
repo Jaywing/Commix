@@ -40,9 +40,10 @@ namespace Commix.Sitecore
                                     tracer.Attach(context.Monitor);
                             });
 
-                        var viewModel = new CommixViewModel<T>(renderingModel, mappedModel) {Trace = tracer};
-
-                        viewModel.Trace = tracer;
+                        viewData.Model = new CommixViewModel<T>(renderingModel, mappedModel)
+                        {
+                            Trace = tracer
+                        };
                     }
                 }
                 else
