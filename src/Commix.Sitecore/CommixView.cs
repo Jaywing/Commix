@@ -31,14 +31,18 @@ namespace Commix.Sitecore
                 {
                     using (tracer)
                     {
-                        viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>(
+                        // If we are running diagnostics attach a trace to the pipeline monitor
+
+                        T mappedModel = renderingModel.Item.As<T>(
                             (pipeline, context) =>
                             {
                                 if (context.Monitor != null)
                                     tracer.Attach(context.Monitor);
-                            }));
+                            });
 
-                        viewData["commixTrace"] = tracer.ToJson();
+                        var viewModel = new CommixViewModel<T>(renderingModel, mappedModel) {Trace = tracer};
+
+                        viewModel.Trace = tracer;
                     }
                 }
                 else

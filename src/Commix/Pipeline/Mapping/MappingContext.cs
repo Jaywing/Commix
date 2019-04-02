@@ -8,6 +8,8 @@ namespace Commix.Pipeline.Mapping
     /// </summary>
     public class MappingContext : IMonitoredContext
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        
         /// <summary>
         /// Mapping source
         /// </summary>
