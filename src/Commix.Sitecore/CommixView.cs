@@ -13,8 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Sitecore.DependencyInjection;
 using Sitecore.Mvc.Presentation;
 
-using Sitecore_Context = Sitecore.Context;
-
 namespace Commix.Sitecore
 {
     public abstract class CommixView<T> : WebViewPage<CommixViewModel<T>>
@@ -23,43 +21,54 @@ namespace Commix.Sitecore
         {
             if (viewData.Model is RenderingModel renderingModel)
             {
-                IJsonTracer tracer = null;
-
-                var commixOptions = ServiceLocator.ServiceProvider?.GetService<CommixOptions>();
-
-                if (commixOptions != null && commixOptions.Diagnostics)
-                    tracer = ServiceLocator.ServiceProvider?.GetService<IJsonTracer>();
-
-                if (tracer != null)
-                {
-                    using (tracer)
-                    {
-                        // If we are running diagnostics attach a trace to the pipeline monitor
-
-                        T mappedModel = renderingModel.Item.As<T>(
-                            (pipeline, context) =>
-                            {
-                                if (context.Monitor != null)
-                                    tracer.Attach(context.Monitor);
-                            });
-
-                        viewData.Model = new CommixViewModel<T>(renderingModel, mappedModel)
-                        {
-                            Trace = tracer
-                        };
-                    }
-                }
-                else
-                {
-                    viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>());
-                }
+                SetFromRenderingModel(viewData, renderingModel);
             }
-            else if (Sitecore_Context.Item != null)
+            else if (RenderingContext.Current?.Rendering != null)
+            {
+                renderingModel = new RenderingModel();
+                renderingModel.Initialize(RenderingContext.Current.Rendering);
+                SetFromRenderingModel(viewData, renderingModel);
+            }
+            else
             {
                 throw new InvalidOperationException($"CommixView expects base model Of RenderingModel, received: ${viewData.Model}");
             }
 
             base.SetViewData(viewData);
+        }
+
+        private static void SetFromRenderingModel(ViewDataDictionary viewData, RenderingModel renderingModel)
+        {
+            IJsonTracer tracer = null;
+
+            var commixOptions = ServiceLocator.ServiceProvider?.GetService<CommixOptions>();
+
+            if (commixOptions != null && commixOptions.Diagnostics)
+                tracer = ServiceLocator.ServiceProvider?.GetService<IJsonTracer>();
+
+            if (tracer != null)
+            {
+                using (tracer)
+                {
+                    // If we are running diagnostics attach a trace to the pipeline monitor
+
+                    T mappedModel = renderingModel.Item.As<T>(
+                        (pipeline, context) =>
+                        {
+                            if (context.Monitor != null)
+                                tracer.Attach(context.Monitor);
+                        });
+
+                    viewData.Model = new CommixViewModel<T>(renderingModel, mappedModel)
+                    {
+                        Trace = tracer
+                    };
+                }
+            }
+            else
+            {
+                viewData.Model = new CommixViewModel<T>(renderingModel, renderingModel.Item.As<T>());
+            }
         }
     }
 
