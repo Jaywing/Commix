@@ -48,6 +48,9 @@ namespace Commix.Sitecore.Processors
                         case ID idValue:
                             pipelineContext.Context = Context.Item.Database.GetItem(idValue);
                             break;
+                        case ImageField imageField:
+                            pipelineContext.Context = imageField.MediaItem;
+                            break;
                         default:
                             pipelineContext.Faulted = true;
                             break;
