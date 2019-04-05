@@ -24,9 +24,11 @@ namespace Commix.Sitecore.Processors
                 {
                     switch (pipelineContext.Context)
                     {
-                        case Field field when field.Type == "checkbox":
-                            CheckboxField checkBoxField = field;
-                            pipelineContext.Context = checkBoxField.Checked;
+                        case CheckboxField checkboxField:
+                            pipelineContext.Context = checkboxField.Checked;
+                            break;
+                        case Field field when string.Equals(field.Type, "Checkbox", StringComparison.InvariantCultureIgnoreCase):
+                            pipelineContext.Context = ((CheckboxField)field).Checked;
                             break;
                         default:
                             pipelineContext.Faulted = true;
