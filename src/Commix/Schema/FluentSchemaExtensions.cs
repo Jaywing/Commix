@@ -4,10 +4,10 @@ namespace Commix.Schema
 {
     public static class FluentSchemaExtensions
     {
-        public static SchemaBuilder Schema<T>(this T model, Action<SchemaBuilder<T>> configure)
+        public static ModelSchemaBuilder Schema<T>(this T model, Action<ModelSchemaBuilder<T>> configure)
             where T : IFluentSchema
         {
-            var builder = new SchemaBuilder<T>();
+            var builder = new ModelSchemaBuilder<T>();
             configure(builder);
             return builder;
         }

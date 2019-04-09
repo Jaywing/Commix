@@ -11,7 +11,7 @@ namespace Commix.ConsoleTest.Models
     {
         public int Prop3 { get; set; }
         
-        public SchemaBuilder Map()
+        public ModelSchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Prop3, p => p
                     .Constant(9001)

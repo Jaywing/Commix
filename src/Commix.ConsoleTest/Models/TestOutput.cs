@@ -15,7 +15,7 @@ namespace Commix.ConsoleTest.Models
     {
         public string Name { get; set; }
 
-        public SchemaBuilder Map()
+        public ModelSchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Name, p => p
                     .Constant("Hello")
@@ -32,7 +32,7 @@ namespace Commix.ConsoleTest.Models
 
         public IEnumerable<TestInput2> Col { get; set; }
 
-        public SchemaBuilder Map()
+        public ModelSchemaBuilder Map()
             => this.Schema(s => s
                 .Model(c => c.Add(Processor.Model<TestModelProcessor>()))
                 .Property(m => m.Nested, c => c
@@ -60,7 +60,7 @@ namespace Commix.ConsoleTest.Models
 
             public string StageResult { get; set; }
 
-            public SchemaBuilder Map()
+            public ModelSchemaBuilder Map()
                 => this.Schema(s => s
                     .Property(m => m.Name, c => c.Get().Set())
                     .Property(m => m.StageResult, p => p
