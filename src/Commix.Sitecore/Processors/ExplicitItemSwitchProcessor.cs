@@ -26,6 +26,8 @@ namespace Commix.Sitecore.Processors
                 {
                     if (processorContext.TryGetOption(IdKey, out ID id))
                         pipelineContext.Context = Context.Database.GetItem(id);
+                    else if (processorContext.TryGetOption(IdKey, out string path))
+                        pipelineContext.Context = Context.Database.GetItem(path);
                     else
                         pipelineContext.Faulted = true;
                 }
