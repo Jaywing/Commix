@@ -5,6 +5,6 @@ namespace Commix.Schema
 {
     public interface IFluentSchema
     {
-        ModelSchemaBuilder Map();
+        SchemaBuilder Map();
     }
 }

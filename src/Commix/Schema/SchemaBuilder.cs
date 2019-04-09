@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Commix.Schema
 {
-    public abstract class ModelSchemaBuilder
+    public abstract class SchemaBuilder
     {
         internal List<Func<PipelineSchema>> SchemaBuilders { get; } = new List<Func<PipelineSchema>>();
 

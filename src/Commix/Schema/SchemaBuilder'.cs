@@ -5,14 +5,14 @@ using Commix.Tools;
 
 namespace Commix.Schema
 {
-    public class ModelSchemaBuilder<TModel> : ModelSchemaBuilder
+    public class SchemaBuilder<TModel> : SchemaBuilder
     {
-        public ModelSchemaBuilder()
+        public SchemaBuilder()
         {
             ModelType = typeof(TModel);
         }
 
-        public ModelSchemaBuilder<TModel> Property<TProp>(Expression<Func<TModel, TProp>> property,
+        public SchemaBuilder<TModel> Property<TProp>(Expression<Func<TModel, TProp>> property,
             Action<SchemaPropertyBuilder<TModel, TProp>> configure)
         {
             var propertyInfo = PropertyHelper<TModel>.GetProperty(property);
@@ -25,7 +25,7 @@ namespace Commix.Schema
             return this;
         }
 
-        public ModelSchemaBuilder<TModel> Model(Action<SchemaModelBuilder<TModel>> configure)
+        public SchemaBuilder<TModel> Model(Action<SchemaModelBuilder<TModel>> configure)
         {
             var propertyBuilder = new SchemaModelBuilder<TModel>();
 
@@ -36,7 +36,7 @@ namespace Commix.Schema
             return this;
         }
 
-        public ModelSchemaBuilder<TModel> Merge(ModelSchemaBuilder builder)
+        public SchemaBuilder<TModel> Merge(SchemaBuilder builder)
         {
             SchemaBuilders.AddRange(builder.SchemaBuilders);
 
