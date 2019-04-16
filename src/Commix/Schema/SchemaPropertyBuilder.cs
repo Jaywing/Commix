@@ -9,7 +9,7 @@ namespace Commix.Schema
 {
     public class SchemaPropertyBuilder : SchemeBuilder
     {
-        protected PropertyInfo PropertyInfo { get; set; }
+        public PropertyInfo PropertyInfo { get; }
         
         public SchemaPropertyBuilder(PropertyInfo propertyInfo) => PropertyInfo = propertyInfo ?? throw new ArgumentNullException(nameof(propertyInfo));
         
