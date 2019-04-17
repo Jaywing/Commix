@@ -19,19 +19,38 @@ namespace Commix.Sitecore
     {
         protected override void SetViewData(ViewDataDictionary viewData)
         {
-            if (viewData.Model is RenderingModel renderingModel)
+            switch (viewData.Model)
             {
-                SetFromRenderingModel(viewData, renderingModel);
-            }
-            else if (RenderingContext.Current?.Rendering != null)
-            {
-                renderingModel = new RenderingModel();
-                renderingModel.Initialize(RenderingContext.Current.Rendering);
-                SetFromRenderingModel(viewData, renderingModel);
-            }
-            else
-            {
-                throw new InvalidOperationException($"CommixView expects base model Of RenderingModel, received: ${viewData.Model}");
+                case RenderingModel pipelineRenderingModel:
+                    SetFromRenderingModel(viewData, pipelineRenderingModel);
+                    break;
+                case T mappedModel:
+                {
+                    RenderingModel renderingModel = null;
+                    if (RenderingContext.Current?.Rendering != null)
+                    {
+                        renderingModel = new RenderingModel();
+                        renderingModel.Initialize(RenderingContext.Current.Rendering);
+                    }
+
+                    viewData.Model = new CommixViewModel<T>(renderingModel, mappedModel);
+                    break;
+                }
+                default:
+                {
+                    if (RenderingContext.Current?.Rendering != null)
+                    {
+                        var renderingModel = new RenderingModel();
+                        renderingModel.Initialize(RenderingContext.Current.Rendering);
+                        SetFromRenderingModel(viewData, renderingModel);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"CommixView expects base model Of RenderingModel, received: ${viewData.Model}");
+                    }
+
+                    break;
+                }
             }
 
             base.SetViewData(viewData);
