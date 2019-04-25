@@ -15,6 +15,7 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>mapping strongly-typed</PackageTags>
     <PackageProjectUrl>https://jaywing.visualstudio.com/Internal%20Projects</PackageProjectUrl>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
