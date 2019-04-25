@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
 {
-    public class EnumProcessor<T> : IPropertyProcesser where T : struct
+    public class EnumProcessor<T> : IPropertyProcessor where T : struct
     {
         public Action Next { get; set; }
+
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try

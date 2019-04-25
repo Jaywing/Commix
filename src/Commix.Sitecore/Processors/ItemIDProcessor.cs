@@ -11,7 +11,7 @@ using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class ItemIDProcessor : IPropertyProcesser
+    public class ItemIDProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)

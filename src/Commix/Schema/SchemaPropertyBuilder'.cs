@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace Commix.Schema
 {
@@ -11,6 +6,7 @@ namespace Commix.Schema
     public class SchemaPropertyBuilder<TModel, TProp> : SchemaPropertyBuilder
     {
         public SchemaPropertyBuilder(PropertyInfo propertyInfo) : base(propertyInfo)
-        { }
+        {
+        }
     }
 }

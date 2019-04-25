@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-
 using Commix.Tools;
 
 namespace Commix.Schema
 {
     public class SchemaBuilder<TModel> : SchemaBuilder
     {
-        public SchemaBuilder()
-        {
-            ModelType = typeof(TModel);
-        }
+        public SchemaBuilder() => ModelType = typeof(TModel);
 
         public SchemaBuilder<TModel> Property<TProp>(Expression<Func<TModel, TProp>> property,
             Action<SchemaPropertyBuilder<TModel, TProp>> configure)

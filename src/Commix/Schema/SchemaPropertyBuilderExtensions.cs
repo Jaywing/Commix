@@ -1,15 +1,15 @@
 ﻿using System;
-
 using Commix.Pipeline.Model;
 using Commix.Pipeline.Property;
 
 namespace Commix.Schema
 {
     // ReSharper restore UnusedTypeParameter
+
     public static class SchemaPropertyBuilderExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Add<TModel, TProp, TProcessor>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, PropertyProcessorDefinition<TProcessor> processor) where TProcessor : IPropertyProcesser
+            this SchemaPropertyBuilder<TModel, TProp> builder, PropertyProcessorDefinition<TProcessor> processor) where TProcessor : IPropertyProcessor
         {
             if (processor == null)
                 throw new ArgumentNullException(nameof(processor));

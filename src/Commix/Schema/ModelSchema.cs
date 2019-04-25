@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Commix.Schema
 {
@@ -8,11 +7,8 @@ namespace Commix.Schema
     {
         public Type ModelType { get; }
 
-        public List<PipelineSchema> Schemas { get; } = new List<PipelineSchema>();
+        public List<IPipelineSchema> Schemas { get; } = new List<IPipelineSchema>();
 
-        public ModelSchema(Type modelType)
-        {
-            ModelType = modelType ?? throw new ArgumentNullException(nameof(modelType));
-        }
+        public ModelSchema(Type modelType) => ModelType = modelType ?? throw new ArgumentNullException(nameof(modelType));
     }
 }

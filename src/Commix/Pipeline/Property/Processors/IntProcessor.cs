@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
 {
-    public class IntProcessor : IPropertyProcesser
+    public class IntProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
 
@@ -39,10 +36,8 @@ namespace Commix.Pipeline.Property.Processors
     public static class IntProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> Int<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder)
-        {
-            return builder
+            this SchemaPropertyBuilder<TModel, TProp> builder) =>
+            builder
                 .Add(Processor.Property<IntProcessor>());
-        }
     }
 }

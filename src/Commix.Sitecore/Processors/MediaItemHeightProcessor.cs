@@ -8,7 +8,7 @@ using Sitecore.Data.Fields;
 
 namespace Commix.Sitecore.Processors
 {
-    public class MediaItemHeightProcessor : IPropertyProcesser
+    public class MediaItemHeightProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)

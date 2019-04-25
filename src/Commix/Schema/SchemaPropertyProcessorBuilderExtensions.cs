@@ -1,5 +1,4 @@
-﻿
-using Commix.Pipeline.Property;
+﻿using Commix.Pipeline.Property;
 
 namespace Commix.Schema
 {

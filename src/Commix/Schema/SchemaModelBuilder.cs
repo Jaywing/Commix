@@ -2,10 +2,6 @@
 {
     public class SchemaModelBuilder : SchemeBuilder
     {
-        public ModelProcessorSchema Build() =>
-            new ModelProcessorSchema
-            {
-                Processors = Processors
-            };
+        public ModelProcessorSchema Build() => new ModelProcessorSchema(Processors);
     }
 }

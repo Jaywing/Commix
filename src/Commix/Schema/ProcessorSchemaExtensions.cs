@@ -8,7 +8,7 @@ namespace Commix.Schema
         {
             if (schema.Options == null || !schema.Options.ContainsKey(key))
             {
-                value = default(T);
+                value = default;
                 return false;
             }
 
@@ -19,7 +19,7 @@ namespace Commix.Schema
             }
             catch (Exception)
             {
-                value = default(T);
+                value = default;
                 return false;
             }
         }

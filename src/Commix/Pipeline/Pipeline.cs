@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-
 using Commix.Diagnostics;
 
 namespace Commix.Pipeline
@@ -11,7 +9,7 @@ namespace Commix.Pipeline
     {
         private readonly List<ProcessorInstance> _processors = new List<ProcessorInstance>();
 
-        public void Add(IProcessor<TPipelineContext, TProcessorContext> pipelineContext, TProcessorContext processorContext) 
+        public void Add(IProcessor<TPipelineContext, TProcessorContext> pipelineContext, TProcessorContext processorContext)
             => _processors.Add(new ProcessorInstance(pipelineContext, processorContext));
 
         [DebuggerStepThrough]
@@ -36,11 +34,14 @@ namespace Commix.Pipeline
                     // skipped until one runs.
                     //
                     // This does NOT change the original execution order or sequence, meaning that if stage marker state changes on the pipeline skipped processors
-                    // can get the chance to run and can run more than once.
+                    // can get the chance to run and can run more than once. This is because the stepIndex is captured in the lambda closure. Even it
+                    // If 5 steps are skipped
 
-                    while (++stepIndex <= _processors.Count - 1 
+                    while (++stepIndex <= _processors.Count - 1
                            && !RunProcessor(_processors[stepIndex], monitor, context))
-                    { }
+                    {
+                        // Skipped
+                    }
                 };
             }
 

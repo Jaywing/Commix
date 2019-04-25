@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Commix;
 using Commix.ConsoleTest.Models;
 using Commix.ConsoleTest.Tools;
 using Commix.Diagnostics;
-using Commix.Diagnostics.Reactive;
-using Commix.Pipeline;
 using Commix.Pipeline.Mapping;
-using Commix.Pipeline.Property;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Commix.ConsoleTest
@@ -58,14 +50,14 @@ namespace Commix.ConsoleTest
             var results = new ConcurrentBag<TestOutput>();
 
             var threads = new List<Thread>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var id = i;
                 var thread = new Thread(() =>
                 {
                     var input = new TestInput();
 
-                    for (int xi = 0; xi < 10; xi++)
+                    for (int xi = 0; xi < 1000; xi++)
                     {
                         var jsonTrace = new NestedPipelineTrace(Thread.CurrentThread.ManagedThreadId);
 
@@ -74,9 +66,9 @@ namespace Commix.ConsoleTest
                             jsonTrace.Attach(context.Monitor);
                         });
 
-                        string json = jsonTrace.ToJson();
+                        //string json = jsonTrace.ToJson();
 
-                        File.WriteAllText($"Trace_{id}_{xi}.json", json, Encoding.UTF8);
+                        //File.WriteAllText($"Trace_{id}_{xi}.json", json, Encoding.UTF8);
 
                         results.Add(output);
                     }
@@ -92,7 +84,7 @@ namespace Commix.ConsoleTest
                 thread.Join();
             }
 
-            foreach (TestOutput testOutput in results)
+            foreach (var testOutput in results)
             {
                 if (string.IsNullOrEmpty(testOutput.Name))
                     throw new NullReferenceException();

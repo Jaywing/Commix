@@ -43,7 +43,7 @@ namespace Commix.ConsoleTest.Tools
                 {
                     case var type when type.IsAbstract || type.IsInterface:
                         continue;
-                    case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
+                    case var type when typeof(IPropertyProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                     case var type when typeof(IModelProcessor).IsAssignableFrom(type):

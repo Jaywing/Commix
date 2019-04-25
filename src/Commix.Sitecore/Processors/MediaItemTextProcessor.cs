@@ -9,7 +9,7 @@ using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class MediaItemTextProcessor : IPropertyProcesser
+    public class MediaItemTextProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)

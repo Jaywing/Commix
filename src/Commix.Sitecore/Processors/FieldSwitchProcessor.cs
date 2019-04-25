@@ -17,7 +17,7 @@ namespace Commix.Sitecore.Processors
     /// <summary>
     /// Switch the context to a field on a <see cref="Item"/>, expects the context to be a <see cref="Item"/>.
     /// </summary>
-    /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
+    /// <seealso cref="IPropertyProcessor" />
     public class FieldSwitchProcessor : IModelProcessor
     {
         public static string FieldId = $"{typeof(FieldSwitchProcessor).Name}FieldId";

@@ -2,8 +2,10 @@
 
 namespace Commix.Schema
 {
-    public class ModelProcessorSchema : PipelineSchema
+    public class ModelProcessorSchema : IPipelineSchema
     {
-        public IList<ProcessorSchema> Processors { get; set; }
+        public IList<ProcessorSchema> Processors { get; }
+
+        public ModelProcessorSchema(IList<ProcessorSchema> processors) => Processors = processors;
     }
 }

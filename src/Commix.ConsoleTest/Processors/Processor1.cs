@@ -17,7 +17,7 @@ namespace Commix.ConsoleTest.Processors
         }
     }
 
-    public class Processor3 : IPropertyProcesser
+    public class Processor3 : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
@@ -28,12 +28,23 @@ namespace Commix.ConsoleTest.Processors
         }
     }
 
-    public class Processor4 : IPropertyProcesser
+    public class Processor4 : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             pipelineContext.Context = "Processor4 Ran";
+
+            Next();
+        }
+    }
+
+    public class Processor5 : IPropertyProcessor
+    {
+        public Action Next { get; set; }
+        public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
+        {
+            pipelineContext.Context = "Processor5 Ran";
 
             Next();
         }

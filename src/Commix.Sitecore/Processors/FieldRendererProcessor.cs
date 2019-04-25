@@ -12,7 +12,7 @@ using Sitecore.Web.UI.WebControls;
 
 namespace Commix.Sitecore.Processors
 {
-    public class FieldRendererProcessor : IPropertyProcesser
+    public class FieldRendererProcessor : IPropertyProcessor
     {
         public static readonly string CssClass = $"{typeof(FieldRendererProcessor).Name}CssClass";
         public static readonly string Width = $"{typeof(FieldRendererProcessor).Name}Width";

@@ -12,7 +12,7 @@ using Sitecore.Resources.Media;
 
 namespace Commix.Sitecore.Processors
 {
-    public class LinkFieldUrlProcessor : IPropertyProcesser
+    public class LinkFieldUrlProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
 

@@ -8,7 +8,7 @@ using Sitecore.Globalization;
 
 namespace Commix.Sitecore.Processors
 {
-    public class DictionaryProcessor : IPropertyProcesser
+    public class DictionaryProcessor : IPropertyProcessor
     {
         public static string DictionaryKey = $"{typeof(DictionaryProcessor).Name}Dictionary";
         public static string DefaultValue = $"{typeof(DictionaryProcessor).Name}DefaultValue";

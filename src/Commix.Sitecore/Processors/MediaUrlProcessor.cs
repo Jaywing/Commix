@@ -11,7 +11,7 @@ using Sitecore.Resources.Media;
 
 namespace Commix.Sitecore.Processors
 {
-    public class MediaUrlProcessor : IPropertyProcesser
+    public class MediaUrlProcessor : IPropertyProcessor
     {
         public static string Width = $"{typeof(MediaUrlProcessor).Name}Width";
         public static string Height = $"{typeof(MediaUrlProcessor).Name}Height";

@@ -5,18 +5,15 @@ namespace Commix.Schema
 {
     public abstract class SchemaBuilder
     {
-        internal List<Func<PipelineSchema>> SchemaBuilders { get; } = new List<Func<PipelineSchema>>();
+        internal List<Func<IPipelineSchema>> SchemaBuilders { get; } = new List<Func<IPipelineSchema>>();
 
         protected Type ModelType { get; set; }
-        
+
         public ModelSchema Build()
         {
             var modelSchema = new ModelSchema(ModelType);
 
-            foreach (Func<PipelineSchema> schemaBuilder in SchemaBuilders)
-            {
-                modelSchema.Schemas.Add(schemaBuilder());
-            }
+            foreach (Func<IPipelineSchema> schemaBuilder in SchemaBuilders) modelSchema.Schemas.Add(schemaBuilder());
 
             return modelSchema;
         }

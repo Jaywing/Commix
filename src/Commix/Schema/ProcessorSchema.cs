@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using Commix.Pipeline.Property;
 
 namespace Commix.Schema
@@ -12,7 +10,7 @@ namespace Commix.Schema
         public Type Type { get; }
         public Dictionary<string, object> Options { get; }
         public PropertyStageMarker AllowedStages { get; internal set; } = PropertyStageMarker.All;
-        
+
         public ProcessorSchema(Guid instanceId, Type type, Dictionary<string, object> options)
         {
             InstanceId = instanceId;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Commix.Pipeline
+﻿namespace Commix.Pipeline
 {
     public interface IMonitoredContext
     {

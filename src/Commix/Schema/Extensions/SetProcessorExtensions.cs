@@ -8,7 +8,7 @@ namespace Commix.Schema
     public static class SetProcessorExtensions
     {
         public static SchemaPropertyBuilder<TModel, TProp> SetStage<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, PropertyStageMarker marker, 
+            this SchemaPropertyBuilder<TModel, TProp> builder, PropertyStageMarker marker,
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder

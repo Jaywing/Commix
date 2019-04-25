@@ -14,7 +14,7 @@ using Sitecore.Web.UI.WebControls;
 
 namespace Commix.Sitecore.Processors
 {
-    public class StringFieldProcessor : IPropertyProcesser
+    public class StringFieldProcessor : IPropertyProcessor
     {
         public static string DisableWebEditingOptionKey = $"{typeof(StringFieldProcessor).Name}.DisableWebEditing";
         public static string RawFieldValue = $"{typeof(StringFieldProcessor).Name}.RawFieldValue";

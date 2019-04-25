@@ -6,7 +6,7 @@ using Commix.Schema;
 namespace Commix.Pipeline.Mapping.Processors
 {
     /// <summary>
-    /// Default model pipeline processor, uses the pipeline schema to map a model.
+    ///     Default model pipeline processor, uses the pipeline schema to map a model.
     /// </summary>
     public class MappingProcessor : IMappingProcessor
     {
@@ -24,9 +24,7 @@ namespace Commix.Pipeline.Mapping.Processors
         public void Run(MappingContext pipelineContext, MappingProcessorContext processorContext)
         {
             if (pipelineContext.Schema != null)
-            {
-                foreach (PipelineSchema schema in pipelineContext.Schema.Schemas)
-                {
+                foreach (IPipelineSchema schema in pipelineContext.Schema.Schemas)
                     switch (schema)
                     {
                         case PropertyPipelineSchema propertySchema:
@@ -35,16 +33,14 @@ namespace Commix.Pipeline.Mapping.Processors
                         case ModelProcessorSchema mappingSchema:
                             RunModelPipeline(pipelineContext, mappingSchema);
                             break;
-                        
                     }
-                }
-            }
 
             Next();
         }
 
         /// <summary>
-        /// Builds and runs a property pipeline using a property schema, presets the property pipeline context to the the model pipeline source.
+        ///     Builds and runs a property pipeline using a property schema, presets the property pipeline context to the the model
+        ///     pipeline source.
         /// </summary>
         /// <param name="context">Model pipeline context</param>
         /// <param name="propertyPipelineSchema">Property pipeline context</param>
@@ -53,18 +49,9 @@ namespace Commix.Pipeline.Mapping.Processors
             PropertyPipeline propertyPipeline = _propertyPipelineFactory.GetPropertyPipeline();
 
             foreach (ProcessorSchema propertyProcessorSchema in propertyPipelineSchema.Processors)
-            {
-                if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IPropertyProcesser propertyProcesser))
-                {
-                    // Property processors run on indiviual properties within a Model
+                if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IPropertyProcessor propertyProcesser))
                     propertyPipeline.Add(propertyProcesser, propertyProcessorSchema);
-                }
-                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IModelProcessor modelProcessor))
-                {
-                    // Model processors run on the model itself
-                    propertyPipeline.Add(modelProcessor, propertyProcessorSchema);
-                }
-            }
+                else if (_processorFactory.TryGetProcessor(propertyProcessorSchema.Type, out IModelProcessor modelProcessor)) propertyPipeline.Add(modelProcessor, propertyProcessorSchema);
 
             propertyPipeline.Run(new PropertyContext(context, propertyPipelineSchema.PropertyInfo, context.Input) {Monitor = context.Monitor});
         }
@@ -74,10 +61,8 @@ namespace Commix.Pipeline.Mapping.Processors
             var modelPipeline = new ModelPipeline();
 
             foreach (ProcessorSchema schema in modelProcessorSchema.Processors)
-            {
                 if (_processorFactory.TryGetProcessor(schema.Type, out IModelProcessor contextProcessor))
                     modelPipeline.Add(contextProcessor, schema);
-            }
 
             var modelContext = new ModelContext(context, context.Input);
 

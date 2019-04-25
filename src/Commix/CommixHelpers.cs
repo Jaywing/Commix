@@ -5,16 +5,16 @@ namespace Commix
 {
     public static class CommixExtensions
     {
-        public static Lazy<IMappingPipelineFactory> PipelineFactory  { get; set; }
+        public static Lazy<IMappingPipelineFactory> PipelineFactory { get; set; }
 
         /// <summary>
-        /// Gets or sets the global pipeline configuration, called just before Model Pipeline execution.
+        ///     Gets or sets the global pipeline configuration, called just before Model Pipeline execution.
         /// </summary>
         /// <value>
-        /// The global pipeline configuration callback.
+        ///     The global pipeline configuration callback.
         /// </value>
         public static Action<MappingPipeline, MappingContext> GlobalPipelineConfig { get; set; }
-        
+
         public static T As<T>(this object source, Action<MappingPipeline, MappingContext> pipelineConfig = null)
         {
             if (PipelineFactory?.Value == null)

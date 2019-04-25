@@ -2,6 +2,5 @@
 {
     public class MappingPipeline : Pipeline<MappingContext, MappingProcessorContext>
     {
-
     }
 }

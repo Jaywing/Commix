@@ -12,8 +12,8 @@ namespace Commix.Sitecore.Processors
     /// <summary>
     /// Set the context to the value of a <see cref="CheckboxField"/>, expects the context to be a <see cref="CheckboxField"/>.
     /// </summary>
-    /// <seealso cref="Commix.Pipeline.Property.IPropertyProcesser" />
-    public class CheckboxFieldProcessor : IPropertyProcesser
+    /// <seealso cref="IPropertyProcessor" />
+    public class CheckboxFieldProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)

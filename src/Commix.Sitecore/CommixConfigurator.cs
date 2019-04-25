@@ -34,7 +34,7 @@ namespace Commix.Sitecore
         public CommixOptions Options { get; }
 
         /// <summary>
-        /// Scans all loaded assemblies with matchin assemble name prefix, registering processors that implement <see cref="IPropertyProcesser"/>
+        /// Scans all loaded assemblies with matchin assemble name prefix, registering processors that implement <see cref="IPropertyProcessor"/>
         /// </summary>
         /// <param name="assemblyPrefix">The assembly prefix.</param>
         internal void RegisterProcessors(string assemblyPrefix)
@@ -58,7 +58,7 @@ namespace Commix.Sitecore
                 {
                     case var type when type.IsAbstract || type.IsInterface:
                         continue;
-                    case var type when typeof(IPropertyProcesser).IsAssignableFrom(type):
+                    case var type when typeof(IPropertyProcessor).IsAssignableFrom(type):
                         _serviceCollection.AddTransient(type);
                         break;
                     case var type when typeof(IModelProcessor).IsAssignableFrom(type):

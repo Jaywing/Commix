@@ -11,7 +11,7 @@ using Sitecore.Resources.Media;
 
 namespace Commix.Sitecore.Processors
 {
-    public class ItemInternalUrlProcessor : IPropertyProcesser
+    public class ItemInternalUrlProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
 

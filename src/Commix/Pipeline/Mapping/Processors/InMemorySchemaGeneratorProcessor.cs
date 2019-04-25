@@ -6,7 +6,7 @@ using Commix.Schema;
 namespace Commix.Pipeline.Mapping.Processors
 {
     /// <summary>
-    /// Caching schema generator, thread safe.
+    ///     Caching schema generator, thread safe.
     /// </summary>
     public class InMemorySchemaGeneratorProcessor : SchemaGeneratorProcessor
     {

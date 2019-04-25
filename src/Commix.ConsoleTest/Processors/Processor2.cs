@@ -9,7 +9,7 @@ using Commix.Schema;
 
 namespace Commix.ConsoleTest.Processors
 {
-    public class Processor2 : IPropertyProcesser
+    public class Processor2 : IPropertyProcessor
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
@@ -23,7 +23,7 @@ namespace Commix.ConsoleTest.Processors
     /// <summary>
     /// Set the model target property value using the current context, unless the property pipeline is flagged as faulted.
     /// </summary>
-    public class SetProcessor : IPropertyProcesser
+    public class SetProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
 
@@ -53,7 +53,7 @@ namespace Commix.ConsoleTest.Processors
     /// <summary>
     /// Switch context to the value of a property on the model pipeline source.
     /// </summary>
-    public class GetProcessor : IPropertyProcesser
+    public class GetProcessor : IPropertyProcessor
     {
         public static string SourcePropertyOptionKey = $"{typeof(GetProcessor).Name}.SourcePropertyOptionKey";
 

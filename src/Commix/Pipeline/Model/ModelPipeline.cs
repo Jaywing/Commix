@@ -5,6 +5,5 @@ namespace Commix.Pipeline.Model
 {
     public class ModelPipeline : Pipeline<ModelContext, ProcessorSchema>
     {
-       
     }
 }

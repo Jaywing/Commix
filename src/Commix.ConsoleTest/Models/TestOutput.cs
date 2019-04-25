@@ -64,9 +64,11 @@ namespace Commix.ConsoleTest.Models
                 => this.Schema(s => s
                     .Property(m => m.Name, c => c.Get().Set())
                     .Property(m => m.StageResult, p => p
+                        .SetStage(PropertyStageMarker.Populating)
                         .Add(Processor.Property<Processor3>())
+                        .Add(Processor.Property<Processor4>())
                         .SetStage(PropertyStageMarker.Finalised, c => c.Option(SetStageProcessor.TypeCheck, typeof(string)))
-                        .Add(Processor.Property<Processor4>(o => o
+                        .Add(Processor.Property<Processor5>(o => o
                             .AllowedStages(PropertyStageMarker.Populating)
                         ))
                         .Set())

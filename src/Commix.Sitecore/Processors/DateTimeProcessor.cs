@@ -14,7 +14,7 @@ using SitecoreContext = Sitecore.Context;
 
 namespace Commix.Sitecore.Processors
 {
-    public class DateTimeProcessor : IPropertyProcesser
+    public class DateTimeProcessor : IPropertyProcessor
     {
         public static readonly string DateTimeFormat = $"{typeof(DateTimeProcessor).Name}DateTimeFormat";
 

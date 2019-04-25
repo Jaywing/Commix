@@ -9,7 +9,7 @@ using Sitecore.Data.Items;
 
 namespace Commix.Sitecore.Processors
 {
-    public class ChildrenSwitchProcessor : IPropertyProcesser
+    public class ChildrenSwitchProcessor : IPropertyProcessor
     {
         public Action Next { get; set; }
 

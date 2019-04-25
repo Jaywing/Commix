@@ -11,7 +11,7 @@ using Sitecore.Data.Fields;
 
 namespace Commix.Sitecore.Processors
 {
-    public class EnumFieldProcessor<T> : IPropertyProcesser where T : struct
+    public class EnumFieldProcessor<T> : IPropertyProcessor where T : struct
     {
         public Action Next { get; set; }
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)

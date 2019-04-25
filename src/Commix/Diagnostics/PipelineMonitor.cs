@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-
 using Commix.Pipeline;
 
 namespace Commix.Diagnostics
@@ -12,8 +10,8 @@ namespace Commix.Diagnostics
         public event EventHandler<PipelineErrorEventArgs> ErrorEvent;
         public event EventHandler<PipelineProcessorEventArgs> ProcessorRunEvent;
         public event EventHandler<PipelineProcessorEventArgs> ProcessorCompleteEvent;
-        public event EventHandler<PipelineProcessorExceptionEventArgs> ProcessorExceptionEvent; 
-        
+        public event EventHandler<PipelineProcessorExceptionEventArgs> ProcessorExceptionEvent;
+
         public virtual void OnRunEvent(PipelineEventArgs e)
         {
             RunEvent?.Invoke(this, e);

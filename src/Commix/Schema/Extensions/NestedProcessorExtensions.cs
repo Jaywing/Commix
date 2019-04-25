@@ -8,7 +8,7 @@ namespace Commix.Schema
     public static class NestedProcessorExtensions
     {
         /// <summary>
-        /// Map a nested class, unrelated to source model or property.
+        ///     Map a nested class, unrelated to source model or property.
         /// </summary>
         /// <typeparam name="TModel">The target model.</typeparam>
         /// <typeparam name="TProp">The target property.</typeparam>
@@ -16,7 +16,7 @@ namespace Commix.Schema
         /// <param name="configure"></param>
         /// <returns></returns>
         public static SchemaPropertyBuilder<TModel, TProp> Nested<TModel, TProp>(
-            this SchemaPropertyBuilder<TModel, TProp> builder, 
+            this SchemaPropertyBuilder<TModel, TProp> builder,
             Action<SchemaProcessorBuilder> configure = null)
         {
             return builder

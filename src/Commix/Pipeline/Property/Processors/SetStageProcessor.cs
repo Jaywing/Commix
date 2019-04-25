@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Linq;
-
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
 {
-    public class SetStageProcessor : IPropertyProcesser
+    public class SetStageProcessor : IPropertyProcessor
     {
-        public static string TypeCheck = $"{nameof(SetStageProcessor)}.TypeCheck"; 
-        public static string Marker = $"{nameof(SetStageProcessor)}.Marker"; 
-        
+        public static string TypeCheck = $"{nameof(SetStageProcessor)}.TypeCheck";
+        public static string Marker = $"{nameof(SetStageProcessor)}.Marker";
+
         public Action Next { get; set; }
+
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             if (processorContext.TryGetOption(Marker, out PropertyStageMarker marker))

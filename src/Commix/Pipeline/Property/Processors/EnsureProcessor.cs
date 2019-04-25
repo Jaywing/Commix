@@ -1,22 +1,23 @@
 ﻿using System;
-
 using Commix.Schema;
 
 namespace Commix.Pipeline.Property.Processors
 {
     /// <summary>
-    /// Ensure a context value based on current value or type, prevents casting errors before setting a property with the current context.
+    ///     Ensure a context value based on current value or type, prevents casting errors before setting a property with the
+    ///     current context.
     /// </summary>
-    public class EnsureProcessor : IPropertyProcesser
+    public class EnsureProcessor : IPropertyProcessor
     {
         public static string EnsureType = $"{typeof(EnsureProcessor).Name}EnsureType";
         public static string EnsureReplacement = $"{typeof(EnsureProcessor).Name}EnsureReplacement";
-        
+
         public Action Next { get; set; }
+
         public void Run(PropertyContext pipelineContext, ProcessorSchema processorContext)
         {
             try
-            { 
+            {
                 // Null or Empty value ensure
                 switch (pipelineContext.Context)
                 {
@@ -25,7 +26,7 @@ namespace Commix.Pipeline.Property.Processors
                         pipelineContext.Context = replacement;
                         break;
                     // If the context is an empty or null string, and we have a valid replacement switch context to the replacement.
-                    case string stringValue when string.IsNullOrEmpty(stringValue) && 
+                    case string stringValue when string.IsNullOrEmpty(stringValue) &&
                                                  processorContext.TryGetOption(EnsureReplacement, out string replacement):
                         pipelineContext.Context = replacement;
                         pipelineContext.Faulted = false;
@@ -34,7 +35,6 @@ namespace Commix.Pipeline.Property.Processors
 
                 // Type ensure
                 if (processorContext.TryGetOption(EnsureType, out Type typeToEnsure))
-                {
                     switch (pipelineContext.Context)
                     {
                         // Best case scenario we have a replacement of the same type to use.
@@ -45,7 +45,6 @@ namespace Commix.Pipeline.Property.Processors
                             pipelineContext.Faulted = false;
                             break;
                     }
-                }
             }
             catch
             {
