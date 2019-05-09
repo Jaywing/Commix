@@ -15,11 +15,14 @@ namespace Commix.ConsoleTest.Models
     {
         public string Name { get; set; }
 
+        
+
         public SchemaBuilder Map()
             => this.Schema(s => s
                 .Property(m => m.Name, p => p
                     .Constant("Hello")
                     .Set())
+                
             );
     }
 
@@ -31,6 +34,8 @@ namespace Commix.ConsoleTest.Models
         public TestOutput2 Nested { get; set; }
 
         public IEnumerable<TestInput2> Col { get; set; }
+
+        public TestEnum EnumTest { get; set; }
 
         public SchemaBuilder Map()
             => this.Schema(s => s
@@ -50,6 +55,10 @@ namespace Commix.ConsoleTest.Models
                     .Constant(new List<TestInput>{new TestInput(), new TestInput()})
                     .Collection(x => x.Define<TestInput, TestInput2>())
                     .Ensure(new List<TestInput2>{new TestInput2(){Name = "switched"}})
+                    .Set())
+                .Property(m => m.EnumTest, p => p
+                    .Get()
+                    .Add(Processor.Property<EnumProcessor<TestEnum>>())
                     .Set())
             );
 
