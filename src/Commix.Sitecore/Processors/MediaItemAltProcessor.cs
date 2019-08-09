@@ -24,6 +24,9 @@ namespace Commix.Sitecore.Processors
                     case MediaItem mediaItem:
                         pipelineContext.Context = mediaItem.DisplayName ?? mediaItem.Name;
                         break;
+                    case var item when item is MediaItem mediaItem:
+                        pipelineContext.Context = mediaItem.DisplayName ?? mediaItem.Name;
+                        break;
                     default:
                         pipelineContext.Faulted = true;
                         break;

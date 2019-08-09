@@ -42,6 +42,9 @@ namespace Commix.Sitecore.Processors
                         case MediaItem mediaItem:
                             pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem, mediaUrlOptions));
                             break;
+                        case var item when item is MediaItem mediaItem:
+                            pipelineContext.Context = HashingUtils.ProtectAssetUrl(MediaManager.GetMediaUrl(mediaItem, mediaUrlOptions));
+                            break;
                         default:
                             pipelineContext.Faulted = true;
                             break;
